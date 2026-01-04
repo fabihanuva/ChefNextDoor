@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "357997915856",
+    "project_id": "chefnextdoor-38ed6",
+    "storage_bucket": "chefnextdoor-38ed6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:357997915856:android:0b1b4fc30de200449178d5",
+        "android_client_info": {
+          "package_name": "com.example.chefnextdoor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtPQSVXWdOGPU2-vGi9708uDWU9ObzGzs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
