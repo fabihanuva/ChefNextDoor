@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/green_light">
+
+    <!-- Title -->
+    <TextView
+        android:text="Your Cart"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_dark"
+        android:layout_marginBottom="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <!-- Cart Items -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerCart"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:overScrollMode="never"
+        android:background="@android:color/white"
+        android:padding="8dp"/>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DDDDDD"
+        android:layout_marginVertical="12dp"/>
+
+    <!-- Subtotal -->
+    <TextView
+        android:id="@+id/txtSubtotal"
+        android:text="Subtotal: ৳0"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_dark"
+        android:layout_marginTop="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <!-- Delivery -->
+    <TextView
+        android:id="@+id/txtDeliveryFee"
+        android:text="Delivery Fee: ৳50"
+        android:textSize="16sp"
+        android:textColor="@color/text_dark"
+        android:layout_marginTop="6dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <!-- Grand Total -->
+    <TextView
+        android:id="@+id/txtGrandTotal"
+        android:text="Grand Total: ৳0"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/green_primary"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <!-- Confirm -->
+    <Button
+        android:id="@+id/btnConfirmOrder"
+        android:text="Confirm Order"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/green_primary"
+        android:textColor="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

@@ -1,12 +1,58 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="24dp"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/green_light"
+    android:padding="16dp">
 
-    <TextView android:text="Khichuri - ৳120"/>
-    <Button android:id="@+id/btnOrderNow"
-        android:text="Order Now"
-        android:layout_marginTop="16dp"/>
+    <TextView
+        android:id="@+id/txtChefName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chef Name"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/green_primary"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/txtChefNiche"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Specialty"
+        android:textSize="14sp"
+        android:textColor="@color/text_dark"
+        android:layout_marginBottom="12dp"/>
+
+
+    <!-- MENU LIST -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerMenu"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <!-- TOTAL -->
+    <TextView
+        android:id="@+id/txtTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total: ৳0"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginTop="8dp"/>
+
+    <!-- PLACE ORDER -->
+    <Button
+        android:id="@+id/btnPlaceOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Proceed to Cart"
+        android:backgroundTint="@color/green_primary"
+        android:textColor="@color/white"
+        android:layout_marginTop="8dp"/>
+
 </LinearLayout>
-

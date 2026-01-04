@@ -1,15 +1,50 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:gravity="center"
-    android:orientation="vertical"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="@color/green_background">
 
+    <!-- Title -->
+    <TextView
+        android:id="@+id/txtOrderTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Order Tracking"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_dark"
+        android:layout_marginBottom="20dp"/>
+
+    <!-- Order ID -->
+    <TextView
+        android:id="@+id/txtOrderId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Order ID: #-----"
+        android:textSize="18sp"
+        android:textColor="@color/text_dark"
+        android:layout_marginBottom="12dp"/>
+
+    <!-- Status -->
     <TextView
         android:id="@+id/txtOrderStatus"
-        android:textSize="20sp"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Preparing your food 🍳"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/green_primary"
+        android:layout_marginBottom="32dp"/>
 
+    <!-- Back -->
     <Button
         android:id="@+id/btnBackHome"
-        android:text="Back Home"
-        android:layout_marginTop="16dp"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Back to Home"
+        android:textSize="16sp"/>
 </LinearLayout>

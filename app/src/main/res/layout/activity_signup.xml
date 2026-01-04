@@ -1,27 +1,64 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="24dp"
-    android:orientation="vertical"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="@color/green_light">
 
-    <EditText android:hint="Full Name"
+    <!-- Title -->
+    <TextView
+        android:id="@+id/txtSignupTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create_account"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/green_primary"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- Full Name -->
+    <EditText
+        android:id="@+id/edtFullName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:hint="@string/full_name"
+        android:inputType="textPersonName"
+        android:autofillHints="name"
+        android:textColor="@color/text_dark"
+        android:textColorHint="@color/green_primary"/>
 
-    <EditText android:hint="Email"
-        android:layout_marginTop="12dp"
+    <!-- Email -->
+    <EditText
+        android:id="@+id/edtSignupEmail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:autofillHints="emailAddress"
+        android:textColor="@color/text_dark"
+        android:textColorHint="@color/green_primary"
+        android:layout_marginTop="12dp"/>
 
-    <EditText android:hint="Password"
+    <!-- Password -->
+    <EditText
+        android:id="@+id/edtSignupPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/password"
         android:inputType="textPassword"
-        android:layout_marginTop="12dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:autofillHints="password"
+        android:textColor="@color/text_dark"
+        android:textColorHint="@color/green_primary"
+        android:layout_marginTop="12dp"/>
 
+    <!-- Sign Up Button -->
     <Button
-        android:text="Sign Up"
-        android:layout_marginTop="16dp"
+        android:id="@+id/btnSignup"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="@string/sign_up"
+        android:layout_marginTop="20dp"/>
 </LinearLayout>

@@ -7,25 +7,29 @@
         android:icon="@mipmap/ic_launcher"
         android:label="ChefNextDoor"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
         android:theme="@style/Theme.ChefNextDoor">
 
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".SignupActivity" />
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".ChefProfileActivity" />
-        <activity android:name=".MenuActivity" />
-        <activity android:name=".OrderTrackingActivity" />
-
-        <!-- LAUNCHER -->
+        <!-- ✅ ONLY ONE LAUNCHER -->
         <activity
             android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- AUTH -->
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".SignupActivity" />
+
+        <!-- CORE FLOW -->
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".ChefListActivity" />
+        <activity android:name=".ChefProfileActivity" />
+        <activity android:name=".MenuActivity" />
+        <activity android:name=".CartActivity" />
+        <activity android:name=".OrderTrackingActivity" />
 
     </application>
 

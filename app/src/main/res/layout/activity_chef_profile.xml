@@ -1,21 +1,81 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="24dp"
-    android:orientation="vertical"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/green_light">
 
-    <TextView android:text="Chef Monisha"
-        android:textSize="22sp"
-        android:textStyle="bold"/>
-
-    <Button
-        android:id="@+id/btnViewMenu"
-        android:text="View Menu"
-        android:layout_marginTop="16dp"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
 
+        <!-- Chef Image -->
+        <ImageView
+            android:id="@+id/imgChef"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:src="@drawable/chef_placeholder"
+            android:background="@drawable/cart_item_bg"
+            android:padding="4dp"/>
 
+        <!-- Name -->
+        <TextView
+            android:id="@+id/txtChefName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chef Ayesha"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_dark"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center"/>
 
+        <!-- Rating -->
+        <TextView
+            android:id="@+id/txtRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⭐ 4.8 • 120+ orders"
+            android:textSize="16sp"
+            android:textColor="@color/text_dark"
+            android:layout_marginTop="4dp"
+            android:layout_gravity="center"/>
 
+        <!-- Niche -->
+        <TextView
+            android:id="@+id/txtNiche"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Homestyle Bengali Biryani Specialist"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="@color/green_primary"
+            android:layout_marginTop="12dp"/>
+
+        <!-- Bio -->
+        <TextView
+            android:id="@+id/txtBio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/text_dark"
+            android:lineSpacingExtra="4dp"
+            android:layout_marginTop="8dp"
+            android:text="With over 8 years of experience in home-style Bengali cooking, Chef Ayesha specializes in authentic biryani, polao, and traditional festive dishes. Every meal is prepared fresh using locally sourced ingredients, ensuring rich flavor, hygiene, and homemade warmth in every bite." />
+
+        <!-- View Menu Button -->
+        <Button
+            android:id="@+id/btnViewMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Menu"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/green_primary"
+            android:layout_marginTop="20dp"/>
+    </LinearLayout>
+</ScrollView>

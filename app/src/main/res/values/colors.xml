@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+
+    <!-- Core Greens -->
+    <color name="green_primary">#1E6F5C</color>
+    <color name="green_dark">#155A4A</color>
+    <color name="green_light">#E8F5E9</color>
+
+    <!-- Backgrounds -->
+    <color name="green_background">#E8F5E9</color>
+
+    <!-- Text Colors -->
+    <color name="text_dark">#1B1B1B</color>
+    <color name="text_light">#FFFFFF</color>
+
+    <!-- Buttons -->
+    <color name="green_button">#2E7D32</color>
+
+    <!-- Common -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
 </resources>
