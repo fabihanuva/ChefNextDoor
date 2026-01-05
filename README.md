@@ -5,7 +5,7 @@ Users can browse chefs, view chef profiles, explore menus, select food items wit
 
 This project was developed as part of an Android development academic project to demonstrate core concepts such as Activities, RecyclerView, Adapters, Intents, and dynamic UI updates.
 
-📱 Features
+📱 Features:
 
 👩‍🍳 Browse a list of available home chefs
 
@@ -24,20 +24,17 @@ This project was developed as part of an Android development academic project to
 🎯 Clean UI with reusable components
 
 
-🛠️ Technologies Used
+🛠️ Technologies Used:
 
 Language: Java
-
 Platform: Android (Android Studio)
-
 UI: XML layouts
-
 Architecture: Activity-based with RecyclerView & Adapters
-
 Minimum SDK: Compatible with modern Android versions
 
 
-📂 Project Structure (Important Files)
+📂 Project Structure:
+
 com.example.chefnextdoor
 │
 ├── ChefListActivity.java        # Displays list of chefs
@@ -56,78 +53,57 @@ com.example.chefnextdoor
     ├── item_menu.xml
 
 
-🔄 Application Flow
+🔄 Application Flow:
 
-ChefListActivity
+ChefListActivity---Entry point of the app
+Displays a list of chefs using RecyclerView.
 
-Entry point of the app
-
-Displays a list of chefs using RecyclerView
-
-ChefProfileActivity
-
-Opens when a chef is selected
-
+ChefProfileActivity---Opens when a chef is selected
 Receives chef_id via Intent
+Displays chef image, rating, niche and bio.
 
-Displays chef image, rating, niche, and bio
-
-MenuActivity
-
-Loads menu dynamically based on chef_id
-
+MenuActivity---Loads menu dynamically based on chef_id
 Allows users to select food quantities
+Updates total price in real time.
 
-Updates total price in real time
+Cart Validation--Ensures at least one item is selected before proceeding.
 
-Cart Validation
 
-Ensures at least one item is selected before proceeding
+🧠 Key Concepts Demonstrated:
 
-🧠 Key Concepts Demonstrated
+RecyclerView & ViewHolder pattern.
+Adapter-to-Activity communication using interfaces.
+Intent-based navigation with extras.
+Dynamic UI updates.
+Separation of concerns (UI, logic, data).
+Scalable and reusable code structure.
 
-RecyclerView & ViewHolder pattern
 
-Adapter-to-Activity communication using interfaces
-
-Intent-based navigation with extras
-
-Dynamic UI updates
-
-Separation of concerns (UI, logic, data)
-
-Scalable and reusable code structure
-
-🎓 Learning Outcomes
+🎓 Learning Outcomes:
 
 Through this project, I gained hands-on experience in:
 
-Building multi-screen Android applications
+1. Building multi-screen Android applications.
+2. Managing complex UI interactions.
+3. Handling user input and state (quantities & totals).
+4. Writing clean, readable, and maintainable Java code.
+5. Designing scalable app architecture.
+   
 
-Managing complex UI interactions
+🚀 Future Improvements:
 
-Handling user input and state (quantities & totals)
+1. Add real database (Firebase / Room).
+2. User authentication.
+3. Order history and tracking.
+4. Payment gateway integration.
+5. Location-based chef discovery.
 
-Writing clean, readable, and maintainable Java code
-
-Designing scalable app architecture
-
-🚀 Future Improvements
-
-Add real database (Firebase / Room)
-
-User authentication
-
-Order history and tracking
-
-Payment gateway integration
-
-Location-based chef discovery
 
 👤 Author
 Fabiha Nuva
 Software Engineering Student
 Metropolitan University, Sylhet
+
 
 📌 Note
 This project is created for educational purposes and demonstrates core Android development principles.
