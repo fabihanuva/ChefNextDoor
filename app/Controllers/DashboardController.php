@@ -6,47 +6,36 @@ use App\Core\Session;
 
 class DashboardController extends Controller {
 
-    // Customer Dashboard
     public function index() {
         $user = requireAuth();
 
-        // Restrict: only customers
         if ($user['role'] !== 'customer') {
-            header("Location: /ChefNextDoor/public/login");
+            header("Location: " . url('/chef-dashboard'));
             exit;
         }
 
         $this->view('dashboard.php', ['user' => $user]);
     }
 
-    // Chef Dashboard
     public function chef() {
         $user = requireAuth();
 
-        // Restrict: only chefs
         if ($user['role'] !== 'chef') {
-            header("Location: /ChefNextDoor/public/login");
+            header("Location: " . url('/dashboard'));
             exit;
         }
 
-        // For now simple output (you can replace with view later)
-        echo "Welcome to Chef Dashboard, " . $user['name'];
+        $this->view('chef-dashboard.php', ['user' => $user]);
     }
 
-    // Test Mail Feature
     public function testMail() {
         $user = requireAuth();
 
-        $to = $user['email'];
-        $subject = 'Test Email from AuthBoard';
-
-        $body = "Hello {$user['name']},\n\n";
-        $body .= "This is a test email to verify that Mailtrap integration is working correctly.\n\n";
-        $body .= "If you received this email, your email configuration is set up properly!\n\n";
-        $body .= "Sent at: " . date('Y-m-d H:i:s') . "\n\n";
-        $body .= "Best regards,\nAuthBoard Team";
-
-        $result = \App\Core\Mailer::send($to, $subject, $body);
+        $result = \App\Core\Mailer::send(
+            $user['email'],
+            'Welcome to ChefNextDoor',
+            "Hello {$user['name']},\n\nThanks for joining ChefNextDoor!\n\nSent at: " . date('Y-m-d H:i:s')
+        );
 
         if ($result) {
             Session::set('success', 'Test email sent successfully!');
@@ -54,8 +43,7 @@ class DashboardController extends Controller {
             Session::set('error', 'Failed to send test email.');
         }
 
-        // FIXED redirect
-        header("Location: /ChefNextDoor/public/dashboard");
+        header("Location: " . url('/dashboard'));
         exit;
     }
 }

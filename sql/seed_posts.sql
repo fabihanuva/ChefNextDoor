@@ -1,12 +1,7 @@
 -- Seed file for sample users and posts
 -- Password for all users: password123
 
-USE authboard;
-
-
-
--- Insert sample users (password: password123) - COMMENTED OUT IF USERS ALREADY EXIST
--- Uncomment below if you need to create users
+-- Insert sample users ...
 /*
 INSERT INTO users (name, email, password) VALUES
 ('Alice Johnson', 'alice@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'),

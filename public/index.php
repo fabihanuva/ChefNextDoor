@@ -7,7 +7,14 @@ ini_set('display_errors', 1);
 
 // --- 1. Load dependencies ---
 require __DIR__ . '/../vendor/autoload.php';
+
+
+// Load .env file
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv->load();
+
 require __DIR__ . '/../app/helpers.php';
+
 
 use App\Core\Router;
 use App\Core\Session;
@@ -35,6 +42,12 @@ $router->get('/chef-dashboard', [$dash, 'chef']); // ✅ ADDED
 $router->get('/test-mail', [$dash, 'testMail']);
 $router->get('/posts',     [$posts, 'index']);
 
+// Placeholder routes for Chef features
+$router->get('/dishes/create', function() { echo "Add New Dish feature coming soon!"; });
+$router->get('/dishes',        function() { echo "My Dishes feature coming soon!"; });
+$router->get('/orders',        function() { echo "Manage Orders feature coming soon!"; });
+$router->get('/earnings',      function() { echo "Earnings feature coming soon!"; });
+
 // API
 $router->get('/api/posts', [$posts, 'getPosts']);
 
@@ -48,13 +61,9 @@ $router->get('/logout', [$auth, 'logout']);
 
 // --- 5. Fix URL before dispatch (CRITICAL) ---
 $uri = $_SERVER['REQUEST_URI'] ?? '/';
-
-// Remove project base path
-$basePath = '/ChefNextDoor/public';
-$uri = str_replace($basePath, '', $uri);
-
-// Remove query string
+$uri = str_replace('/ChefNextDoor/public', '', $uri);
 $uri = strtok($uri, '?');
+if ($uri === '' || $uri === false) $uri = '/';
 
 // --- 6. Dispatch ---
 $router->dispatch($uri, $_SERVER['REQUEST_METHOD'] ?? 'GET');

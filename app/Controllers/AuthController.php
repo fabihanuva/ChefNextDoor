@@ -17,72 +17,75 @@ class AuthController extends Controller {
     }
 
     public function register() {
-        $name = trim($_POST['name'] ?? '');
-        $role = $_POST['role'] ?? 'customer';
-        $email = trim($_POST['email'] ?? '');
+        $name     = trim($_POST['name'] ?? '');
+        $role     = $_POST['role'] ?? 'customer';
+        $email    = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
 
-        // Validation
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo "Invalid email address.";
-            return;
+            Session::set('error', 'Invalid email address.');
+            header("Location: " . url('/register'));
+            exit;
         }
 
         if (strlen($password) < 6) {
-            echo "Password must be at least 6 characters.";
-            return;
+            Session::set('error', 'Password must be at least 6 characters.');
+            header("Location: " . url('/register'));
+            exit;
         }
 
-        // Hash password
+        if (User::findByEmail($email)) {
+            Session::set('error', 'This email is already registered. Please login.');
+            header("Location: " . url('/register'));
+            exit;
+        }
+
         $hashed = password_hash($password, PASSWORD_BCRYPT);
+        $userId = User::create($name, $role, $email, $hashed);
 
-        // Save user
-        User::create($name, $role, $email, $hashed);
+        if ($role === 'chef') {
+            \App\Models\ChefProfile::create($userId);
+        }
 
-        // Send welcome email (optional)
-        Mailer::send($email, 'Welcome to AuthBoard', "Hello $name,\n\nThanks for registering at AuthBoard.");
+        Mailer::send($email, 'Welcome to ChefNextDoor', "Hello $name,\n\nThanks for joining ChefNextDoor!");
 
-        // Redirect to login
-        header("Location: /ChefNextDoor/public/login");
+        Session::set('success', 'Account created! Please login.');
+        header("Location: " . url('/login'));
         exit;
     }
 
     public function login() {
-        $email = trim($_POST['email'] ?? '');
+        $email    = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
 
         $user = User::findByEmail($email);
 
         if ($user && password_verify($password, $user['password'])) {
-
-            // Store full user info INCLUDING role
             Session::set('user', [
-                'id' => $user['id'],
-                'name' => $user['name'],
+                'id'    => $user['id'],
+                'name'  => $user['name'],
                 'email' => $user['email'],
-                'role' => $user['role']
+                'role'  => $user['role']
             ]);
 
-            // Role-based redirect
             if ($user['role'] === 'chef') {
-                header("Location: /ChefNextDoor/public/chef-dashboard");
+                header("Location: " . url('/chef-dashboard'));
             } elseif ($user['role'] === 'customer') {
-                header("Location: /ChefNextDoor/public/dashboard");
+                header("Location: " . url('/dashboard'));
             } else {
-                header("Location: /ChefNextDoor/public/login");
+                header("Location: " . url('/login'));
             }
-
             exit;
         }
 
-        echo 'Invalid credentials.';
+        Session::set('error', 'Invalid email or password.');
+        header("Location: " . url('/login'));
+        exit;
     }
 
     public function logout() {
         Session::destroy();
-
-        // IMPORTANT: do NOT use url('/login') here
-        header("Location: /ChefNextDoor/public/login");
+        header("Location: " . url('/login'));
         exit;
     }
 }

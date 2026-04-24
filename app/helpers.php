@@ -10,7 +10,7 @@
  *   url('/assets/style.css') => '/admin-board/assets/style.css'
  */
 function url(string $path = ''): string {
-    $basePath = rtrim(getenv('BASE_PATH') ?: '', '/');
+    $basePath = '/ChefNextDoor/public';
     $path = '/' . ltrim($path, '/');
     return $basePath . $path;
 }

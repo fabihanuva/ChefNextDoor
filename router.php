@@ -17,4 +17,4 @@ if ($path !== '/' && is_file($file)) {
 }
 
 // Everything else goes through index.php
-require __DIR__ . '/index.php';
+require __DIR__ . '/public/index.php';

@@ -1,40 +1,82 @@
 <?php
 use App\Core\Session;
-$title = 'Dashboard | AuthBoard';
+$title = 'Dashboard | ChefNextDoor';
 ob_start();
 ?>
+<div class="min-h-screen bg-brand-50">
 
-<?php if (Session::get('success')): ?>
-    <div class="message success">
-        <?= htmlspecialchars(Session::get('success')) ?>
-        <?php Session::remove('success'); ?>
+    <!-- Navbar -->
+    <nav class="bg-white border-b border-orange-100 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <span class="text-2xl">🍳</span>
+            <span class="text-lg font-bold text-brand-600">ChefNextDoor</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <span class="text-sm text-gray-500">Hi, <strong class="text-gray-700"><?= htmlspecialchars($user['name']) ?></strong></span>
+            <a href="<?= url('/logout') ?>"
+               class="text-sm bg-brand-500 hover:bg-brand-600 text-white px-4 py-2 rounded-xl font-medium transition-colors">
+                Logout
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto px-6 py-10">
+
+        <!-- Flash messages -->
+        <?php if (Session::get('success')): ?>
+            <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl text-sm">
+                <?= htmlspecialchars(Session::get('success')) ?>
+                <?php Session::remove('success'); ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (Session::get('error')): ?>
+            <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
+                <?= htmlspecialchars(Session::get('error')) ?>
+                <?php Session::remove('error'); ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Welcome banner -->
+        <div class="bg-white rounded-2xl border border-orange-100 p-6 mb-6 flex items-center gap-4">
+            <div class="w-14 h-14 rounded-full bg-brand-100 flex items-center justify-center text-2xl font-bold text-brand-600">
+                <?= strtoupper(substr($user['name'], 0, 1)) ?>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold text-gray-800">Welcome back, <?= htmlspecialchars($user['name']) ?>! 👋</h1>
+                <p class="text-sm text-gray-500 mt-0.5"><?= htmlspecialchars($user['email']) ?> &mdash; <span class="capitalize text-brand-600 font-medium"><?= htmlspecialchars($user['role']) ?></span></p>
+            </div>
+        </div>
+
+        <!-- Quick actions -->
+        <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Quick Actions</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+            <a href="<?= url('/posts') ?>"
+               class="bg-white rounded-2xl border border-orange-100 p-5 hover:border-brand-400 transition-colors group">
+                <div class="text-3xl mb-3">🍽️</div>
+                <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">Browse Dishes</h3>
+                <p class="text-xs text-gray-400 mt-1">Explore home-cooked meals near you</p>
+            </a>
+
+            <a href="#"
+               class="bg-white rounded-2xl border border-orange-100 p-5 hover:border-brand-400 transition-colors group">
+                <div class="text-3xl mb-3">🛒</div>
+                <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">My Orders</h3>
+                <p class="text-xs text-gray-400 mt-1">Track your current and past orders</p>
+            </a>
+
+            <a href="#"
+               class="bg-white rounded-2xl border border-orange-100 p-5 hover:border-brand-400 transition-colors group">
+                <div class="text-3xl mb-3">❤️</div>
+                <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">Favourites</h3>
+                <p class="text-xs text-gray-400 mt-1">Your saved dishes and chefs</p>
+            </a>
+
+        </div>
     </div>
-<?php endif; ?>
-
-<?php if (Session::get('error')): ?>
-    <div class="message error">
-        <?= htmlspecialchars(Session::get('error')) ?>
-        <?php Session::remove('error'); ?>
-    </div>
-<?php endif; ?>
-
-<h2>Welcome, <?php echo  htmlspecialchars($user['name']) ?></h2>
-<p>Your email: <?= htmlspecialchars($user['email']) ?></p>
-
-<div class="email-test-card">
-    <h3>Email Testing</h3>
-    <p>
-        Test your Mailtrap integration by sending a test email to <strong><?= htmlspecialchars($user['email']) ?></strong>
-    </p>
-    <a href="<?= url('/test-mail') ?>" class="btn btn-success"
-       onclick="return confirm('Send a test email to <?= htmlspecialchars($user['email']) ?>?');">
-        Send Test Email
-    </a>
-    <p class="hint">
-        Check your <a href="https://mailtrap.io/inboxes" target="_blank">Mailtrap inbox</a> to see the email.
-    </p>
 </div>
-
 <?php
 $content = ob_get_clean();
 include __DIR__ . '/layout.php';

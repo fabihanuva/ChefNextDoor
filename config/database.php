@@ -13,7 +13,7 @@ function getDatabase(): PDO {
 
     if ($pdo === null) {
         $host = getenv('DB_HOST') ?: '127.0.0.1';
-        $db   = getenv('DB_NAME') ?: 'authboard';
+        $db   = getenv('DB_NAME') ?: 'chefnextdoor';
         $user = getenv('DB_USER') ?: 'root';
         $pass = getenv('DB_PASS') ?: '';
 

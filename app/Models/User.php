@@ -13,10 +13,10 @@ class User {
         return $row ?: null;
     }
 
-    public static function create(string $name, string $email, string $password): int {
-        $pdo = getDatabase();
-        $stmt = $pdo->prepare('INSERT INTO users (name, email, password) VALUES (?, ?, ?)');
-        $stmt->execute([$name, $email, $password]);
-        return (int) $pdo->lastInsertId();
-    }
+public static function create(string $name, string $role, string $email, string $password): int {
+    $pdo = getDatabase();
+    $stmt = $pdo->prepare('INSERT INTO users (name, role, email, password) VALUES (?, ?, ?, ?)');
+    $stmt->execute([$name, $role, $email, $password]);
+    return (int) $pdo->lastInsertId();
+}
 }

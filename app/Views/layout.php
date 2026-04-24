@@ -1,26 +1,34 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title><?= $title ?? 'AuthBoard' ?></title>
-    <link rel="stylesheet" href="<?= url('/assets/style.css') ?>">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><?= htmlspecialchars($title ?? 'ChefNextDoor') ?></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50:  '#fff7ed',
+                            100: '#ffedd5',
+                            400: '#fb923c',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Gabarito', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-<div class="container">
-    <header>
-        <h1>AuthBoard</h1>
-        <?php if (!empty($_SESSION['user'])): ?>
-            <nav><a href="<?= url('/dashboard') ?>">Dashboard</a> | <a href="<?= url('/posts') ?>">Posts</a> | <a href="<?= url('/logout') ?>">Logout</a></nav>
-        <?php endif; ?>
-    </header>
-
-    <main>
-        <?php echo $content ; ?>
-    </main>
-
-    <footer>
-        <small>AuthBoard - teaching project</small>
-    </footer>
-</div>
+<body class="bg-brand-50 min-h-screen font-sans text-gray-800">
+    <?= $content ?? '' ?>
 </body>
 </html>
