@@ -20,7 +20,7 @@ use App\Controllers\AuthController;
 use App\Controllers\DashboardController;
 use App\Controllers\PostController;
 use App\Controllers\DishController;
-
+use App\Controllers\CustomerController;
 // --- 2. Start session ---
 Session::start();
 
@@ -30,7 +30,7 @@ $auth   = new AuthController();
 $dash   = new DashboardController();
 $posts  = new PostController();
 $dish   = new DishController();
-
+$customer = new CustomerController();
 // --- 4. Define routes ---
 
 // Auth pages (GET)
@@ -56,7 +56,17 @@ $router->get('/dishes/edit',   [$dish, 'edit']);
 $router->post('/dishes/store',  [$dish, 'store']);
 $router->post('/dishes/update', [$dish, 'update']);
 $router->post('/dishes/delete', [$dish, 'destroy']);
+// Customer routes
+$router->get('/browse',         [$customer, 'browse']);
+$router->get('/dish',           [$customer, 'dish']);
+$router->get('/cart',           [$customer, 'cart']);
+$router->get('/checkout',       [$customer, 'checkout']);
+$router->get('/orders/history', [$customer, 'orderHistory']);
 
+$router->post('/cart/add',      [$customer, 'addToCart']);
+$router->post('/cart/remove',   [$customer, 'removeFromCart']);
+$router->post('/cart/update',   [$customer, 'updateCart']);
+$router->post('/order/place',   [$customer, 'placeOrder']);
 // Placeholder routes
 $router->get('/orders',   function() { echo "Manage Orders coming soon!"; });
 $router->get('/earnings', function() { echo "Earnings coming soon!"; });
