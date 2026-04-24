@@ -8,19 +8,18 @@ ini_set('display_errors', 1);
 // --- 1. Load dependencies ---
 require __DIR__ . '/../vendor/autoload.php';
 
-
 // Load .env file
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
 require __DIR__ . '/../app/helpers.php';
 
-
 use App\Core\Router;
 use App\Core\Session;
 use App\Controllers\AuthController;
 use App\Controllers\DashboardController;
 use App\Controllers\PostController;
+use App\Controllers\DishController;
 
 // --- 2. Start session ---
 Session::start();
@@ -30,34 +29,43 @@ $router = new Router();
 $auth   = new AuthController();
 $dash   = new DashboardController();
 $posts  = new PostController();
+$dish   = new DishController();
 
 // --- 4. Define routes ---
 
-// Pages (GET)
+// Auth pages (GET)
 $router->get('/',          [$auth, 'showLogin']);
 $router->get('/login',     [$auth, 'showLogin']);
 $router->get('/register',  [$auth, 'showRegister']);
-$router->get('/dashboard', [$dash, 'index']);
-$router->get('/chef-dashboard', [$dash, 'chef']); // ✅ ADDED
-$router->get('/test-mail', [$dash, 'testMail']);
+
+// Dashboards (GET)
+$router->get('/dashboard',      [$dash, 'index']);
+$router->get('/chef-dashboard', [$dash, 'chef']);
+$router->get('/test-mail',      [$dash, 'testMail']);
+
+// Posts (GET)
 $router->get('/posts',     [$posts, 'index']);
-
-// Placeholder routes for Chef features
-$router->get('/dishes/create', function() { echo "Add New Dish feature coming soon!"; });
-$router->get('/dishes',        function() { echo "My Dishes feature coming soon!"; });
-$router->get('/orders',        function() { echo "Manage Orders feature coming soon!"; });
-$router->get('/earnings',      function() { echo "Earnings feature coming soon!"; });
-
-// API
 $router->get('/api/posts', [$posts, 'getPosts']);
 
-// POST routes
+// Dish routes (GET)
+$router->get('/dishes',        [$dish, 'index']);
+$router->get('/dishes/create', [$dish, 'create']);
+$router->get('/dishes/edit',   [$dish, 'edit']);
+
+// Dish routes (POST)
+$router->post('/dishes/store',  [$dish, 'store']);
+$router->post('/dishes/update', [$dish, 'update']);
+$router->post('/dishes/delete', [$dish, 'destroy']);
+
+// Placeholder routes
+$router->get('/orders',   function() { echo "Manage Orders coming soon!"; });
+$router->get('/earnings', function() { echo "Earnings coming soon!"; });
+
+// Auth routes
 $router->post('/register', [$auth, 'register']);
 $router->post('/login',    [$auth, 'login']);
 $router->post('/posts',    [$posts, 'create']);
-
-// Auth
-$router->get('/logout', [$auth, 'logout']);
+$router->get('/logout',    [$auth, 'logout']);
 
 // --- 5. Fix URL before dispatch (CRITICAL) ---
 $uri = $_SERVER['REQUEST_URI'] ?? '/';
