@@ -28,9 +28,76 @@ class DashboardController extends Controller {
             exit;
         }
 
-        $this->view('chef-dashboard.php', ['user' => $user]);
+        $pdo = \getDatabase();
+
+        // Total dishes
+        $stmt = $pdo->prepare('SELECT COUNT(*) as total FROM dishes WHERE chef_id = ?');
+        $stmt->execute([$user['id']]);
+        $totalDishes = $stmt->fetch()['total'];
+
+        // Pending orders
+        $stmt = $pdo->prepare('SELECT COUNT(*) as total FROM orders WHERE chef_id = ? AND status = "pending"');
+        $stmt->execute([$user['id']]);
+        $pendingOrders = $stmt->fetch()['total'];
+
+        // Total earnings (delivered orders only)
+        $stmt = $pdo->prepare('SELECT SUM(total_price) as total FROM orders WHERE chef_id = ? AND status = "delivered"');
+        $stmt->execute([$user['id']]);
+        $earnings = $stmt->fetch()['total'] ?? 0;
+
+        // Average rating
+        $stmt = $pdo->prepare('SELECT AVG(rating) as avg FROM reviews WHERE chef_id = ?');
+        $stmt->execute([$user['id']]);
+        $avgRating = round((float)($stmt->fetch()['avg'] ?? 0), 1);
+
+        // Recent reviews
+        $stmt = $pdo->prepare('
+            SELECT reviews.*, users.name as customer_name
+            FROM reviews
+            JOIN users ON reviews.customer_id = users.id
+            WHERE reviews.chef_id = ?
+            ORDER BY reviews.created_at DESC
+            LIMIT 5
+        ');
+        $stmt->execute([$user['id']]);
+        $reviews = $stmt->fetchAll();
+
+        $this->view('chef-dashboard.php', [
+            'user'          => $user,
+            'totalDishes'   => $totalDishes,
+            'pendingOrders' => $pendingOrders,
+            'earnings'      => $earnings,
+            'avgRating'     => $avgRating,
+            'reviews'       => $reviews,
+        ]);
     }
 
+    public function chefReviews() {
+        $user = requireAuth();
+        if ($user['role'] !== 'chef') {
+            header("Location: " . url('/dashboard'));
+            exit;
+        }
+
+        $pdo  = \getDatabase();
+        $stmt = $pdo->prepare('
+            SELECT reviews.*, users.name as customer_name
+            FROM reviews
+            JOIN users ON reviews.customer_id = users.id
+            WHERE reviews.chef_id = ?
+            ORDER BY reviews.created_at DESC
+        ');
+        $stmt->execute([$user['id']]);
+        $reviews = $stmt->fetchAll();
+
+        $avgRating = round(array_sum(array_column($reviews, 'rating')) / max(count($reviews), 1), 1);
+
+        $this->view('chef/reviews.php', [
+            'user'      => $user,
+            'reviews'   => $reviews,
+            'avgRating' => $avgRating,
+        ]);
+   }
     public function testMail() {
         $user = requireAuth();
 
@@ -50,59 +117,59 @@ class DashboardController extends Controller {
         exit;
     }
     // Chef order management
-public function orders() {
-    $user = requireAuth();
-    if ($user['role'] !== 'chef') {
-        header("Location: " . url('/dashboard'));
-        exit;
-    }
+    public function orders() {
+        $user = requireAuth();
+        if ($user['role'] !== 'chef') {
+            header("Location: " . url('/dashboard'));
+            exit;
+        }
 
-    $pdo  = \getDatabase();
-    $stmt = $pdo->prepare('
-        SELECT orders.*, users.name as customer_name
-        FROM orders
-        JOIN users ON orders.customer_id = users.id
-        WHERE orders.chef_id = ?
-        ORDER BY orders.created_at DESC
-    ');
-    $stmt->execute([$user['id']]);
-    $orders = $stmt->fetchAll();
+        $pdo = \getDatabase();
+        $stmt = $pdo->prepare('
+            SELECT orders.*, users.name as customer_name
+            FROM orders
+            JOIN users ON orders.customer_id = users.id
+            WHERE orders.chef_id = ?
+            ORDER BY orders.created_at DESC
+        ');
+        $stmt->execute([$user['id']]);
+        $orders = $stmt->fetchAll();
 
-    $this->view('chef/orders.php', ['user' => $user, 'orders' => $orders]);
-}
+        $this->view('chef/orders.php', ['user' => $user, 'orders' => $orders]);
+    } 
 
-// Update order status
-public function updateOrderStatus() {
-    $user      = requireAuth();
-    $order_id  = (int) ($_POST['order_id'] ?? 0);
-    $status    = $_POST['status'] ?? '';
+    // Update order status
+    public function updateOrderStatus() {
+        $user      = requireAuth();
+        $order_id  = (int) ($_POST['order_id'] ?? 0);
+        $status    = $_POST['status'] ?? '';
 
-    $allowed = ['accepted', 'preparing', 'out_for_delivery', 'delivered', 'cancelled'];
+        $allowed = ['accepted', 'preparing', 'out_for_delivery', 'delivered', 'cancelled'];
 
-    if (!in_array($status, $allowed)) {
-        Session::set('error', 'Invalid status.');
+        if (!in_array($status, $allowed)) {
+            Session::set('error', 'Invalid status.');
+            header("Location: " . url('/chef/orders'));
+            exit;
+        }
+
+        $pdo  = \getDatabase();
+
+        // Make sure this order belongs to this chef
+        $stmt = $pdo->prepare('SELECT * FROM orders WHERE id = ? AND chef_id = ?');
+        $stmt->execute([$order_id, $user['id']]);
+        $order = $stmt->fetch();
+
+        if (!$order) {
+            Session::set('error', 'Order not found.');
+            header("Location: " . url('/chef/orders'));
+            exit;
+        }
+
+        $stmt = $pdo->prepare('UPDATE orders SET status = ? WHERE id = ?');
+        $stmt->execute([$status, $order_id]);
+
+        Session::set('success', 'Order status updated!');
         header("Location: " . url('/chef/orders'));
         exit;
     }
-
-    $pdo  = \getDatabase();
-
-    // Make sure this order belongs to this chef
-    $stmt = $pdo->prepare('SELECT * FROM orders WHERE id = ? AND chef_id = ?');
-    $stmt->execute([$order_id, $user['id']]);
-    $order = $stmt->fetch();
-
-    if (!$order) {
-        Session::set('error', 'Order not found.');
-        header("Location: " . url('/chef/orders'));
-        exit;
-    }
-
-    $stmt = $pdo->prepare('UPDATE orders SET status = ? WHERE id = ?');
-    $stmt->execute([$status, $order_id]);
-
-    Session::set('success', 'Order status updated!');
-    header("Location: " . url('/chef/orders'));
-    exit;
-}
 }

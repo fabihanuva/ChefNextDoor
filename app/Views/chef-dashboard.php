@@ -14,6 +14,7 @@ ob_start();
             <a href="<?= url('/logout') ?>" class="text-sm bg-brand-500 hover:bg-brand-600 text-white px-4 py-2 rounded-xl font-medium transition-colors">Logout</a>
         </div>
     </nav>
+
     <div class="max-w-4xl mx-auto px-6 py-10">
 
         <!-- Flash messages -->
@@ -42,25 +43,29 @@ ob_start();
             </div>
         </div>
 
-        <!-- Stats -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        <!-- Real Stats -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
             <div class="bg-white rounded-2xl border border-orange-100 p-5 text-center">
-                <p class="text-3xl font-bold text-brand-500">0</p>
+                <p class="text-3xl font-bold text-brand-500"><?= $totalDishes ?></p>
                 <p class="text-sm text-gray-500 mt-1">My Dishes</p>
             </div>
             <div class="bg-white rounded-2xl border border-orange-100 p-5 text-center">
-                <p class="text-3xl font-bold text-brand-500">0</p>
+                <p class="text-3xl font-bold text-yellow-500"><?= $pendingOrders ?></p>
                 <p class="text-sm text-gray-500 mt-1">Pending Orders</p>
             </div>
             <div class="bg-white rounded-2xl border border-orange-100 p-5 text-center">
-                <p class="text-3xl font-bold text-brand-500">$0</p>
+                <p class="text-3xl font-bold text-green-500">৳<?= number_format($earnings, 0) ?></p>
                 <p class="text-sm text-gray-500 mt-1">Earnings</p>
+            </div>
+            <div class="bg-white rounded-2xl border border-orange-100 p-5 text-center">
+                <p class="text-3xl font-bold text-brand-500"><?= $avgRating > 0 ? $avgRating . '⭐' : 'N/A' ?></p>
+                <p class="text-sm text-gray-500 mt-1">Avg Rating</p>
             </div>
         </div>
 
         <!-- Actions -->
         <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Manage</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
             <a href="<?= url('/dishes/create') ?>" class="bg-white rounded-2xl border border-orange-100 p-5 hover:border-brand-400 transition-colors group">
                 <div class="text-3xl mb-3">➕</div>
                 <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">Add New Dish</h3>
@@ -76,12 +81,32 @@ ob_start();
                 <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">Manage Orders</h3>
                 <p class="text-xs text-gray-400 mt-1">Accept, prepare and deliver orders</p>
             </a>
-            <a href="<?= url('/chef-dashboard') ?>" class="bg-white rounded-2xl border border-orange-100 p-5 hover:border-brand-400 transition-colors group">
-                <div class="text-3xl mb-3">📊</div>
-                <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">Earnings</h3>
-                <p class="text-xs text-gray-400 mt-1">View your revenue and ratings</p>
+            <a href="<?= url('/chef/reviews') ?>" class="bg-white rounded-2xl border border-orange-100 p-5 hover:border-brand-400 transition-colors group">
+                <div class="text-3xl mb-3">⭐</div>
+                <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">My Reviews</h3>
+                <p class="text-xs text-gray-400 mt-1">See what customers say about you</p>
             </a>
         </div>
+
+        <!-- Recent Reviews -->
+        <?php if (!empty($reviews)): ?>
+            <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Recent Reviews</h2>
+            <div class="space-y-3">
+                <?php foreach ($reviews as $review): ?>
+                    <div class="bg-white rounded-2xl border border-orange-100 p-4">
+                        <div class="flex items-center justify-between mb-1">
+                            <p class="font-medium text-gray-800 text-sm"><?= htmlspecialchars($review['customer_name']) ?></p>
+                            <span class="text-brand-500 text-sm">
+                                <?= str_repeat('⭐', $review['rating']) ?>
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500"><?= htmlspecialchars($review['comment'] ?? '') ?></p>
+                        <p class="text-xs text-gray-300 mt-1"><?= date('d M Y', strtotime($review['created_at'])) ?></p>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
     </div>
 </div>
 <?php
