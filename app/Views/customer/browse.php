@@ -1,5 +1,6 @@
 <?php
 use App\Core\Session;
+use App\Models\Favorite;
 $title = 'Browse Dishes | ChefNextDoor';
 ob_start();
 ?>
@@ -17,6 +18,7 @@ ob_start();
                     <span class="ml-1 bg-brand-500 text-white text-xs px-1.5 py-0.5 rounded-full"><?= $cartCount ?></span>
                 <?php endif; ?>
             </a>
+            <a href="<?= url('/favorites') ?>" class="text-sm text-gray-500 hover:text-brand-600">❤️ Favourites</a>
             <a href="<?= url('/dashboard') ?>" class="text-sm text-gray-500 hover:text-brand-600">← Dashboard</a>
             <a href="<?= url('/logout') ?>" class="text-sm bg-brand-500 hover:bg-brand-600 text-white px-4 py-2 rounded-xl font-medium transition-colors">Logout</a>
         </div>
@@ -64,13 +66,21 @@ ob_start();
                                 <span class="text-xs px-2 py-0.5 rounded-full bg-brand-50 text-brand-600">
                                     <?= htmlspecialchars($d['category'] ?? 'Other') ?>
                                 </span>
-                                <form method="POST" action="<?= url('/cart/add') ?>">
-                                    <input type="hidden" name="dish_id" value="<?= $d['id'] ?>" />
-                                    <button type="submit"
-                                        class="text-xs bg-brand-500 hover:bg-brand-600 text-white px-3 py-1.5 rounded-xl font-medium transition-colors">
-                                        + Add to Cart
-                                    </button>
-                                </form>
+                                <div class="flex gap-2">
+                                    <form method="POST" action="<?= url('/favorite/toggle') ?>">
+                                        <input type="hidden" name="dish_id" value="<?= $d['id'] ?>" />
+                                        <button type="submit" class="text-lg hover:scale-110 transition-transform">
+                                            <?= Favorite::isFavorited($user['id'], $d['id']) ? '❤️' : '🤍' ?>
+                                        </button>
+                                    </form>
+                                    <form method="POST" action="<?= url('/cart/add') ?>">
+                                        <input type="hidden" name="dish_id" value="<?= $d['id'] ?>" />
+                                        <button type="submit"
+                                            class="text-xs bg-brand-500 hover:bg-brand-600 text-white px-3 py-1.5 rounded-xl font-medium transition-colors">
+                                            + Add to Cart
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

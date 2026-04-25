@@ -82,6 +82,12 @@ $router->post('/login',    [$auth, 'login']);
 $router->post('/posts',    [$posts, 'create']);
 $router->get('/logout',    [$auth, 'logout']);
 
+// Reviews & Favourites
+$router->get('/review',           [$customer, 'reviewForm']);
+$router->post('/review/submit',   [$customer, 'submitReview']);
+$router->post('/favorite/toggle', [$customer, 'toggleFavorite']);
+$router->get('/favorites',        [$customer, 'favorites']);
+
 // --- 5. Fix URL before dispatch (CRITICAL) ---
 $uri = $_SERVER['REQUEST_URI'] ?? '/';
 $uri = str_replace('/ChefNextDoor/public', '', $uri);

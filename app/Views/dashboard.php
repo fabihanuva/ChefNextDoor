@@ -58,27 +58,34 @@ ob_start();
 
         <!-- Quick actions -->
         <h2 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Quick Actions</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
 
             <a href="<?= url('/browse') ?>"
-               class="bg-white rounded-2xl border border-orange-100 p-5 hover:border-brand-400 transition-colors group">
-                <div class="text-3xl mb-3">🍽️</div>
-                <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">Browse Dishes</h3>
-                <p class="text-xs text-gray-400 mt-1">Explore home-cooked meals near you</p>
+                class="bg-white rounded-2xl border border-orange-100 p-5 hover:border-brand-400 transition-colors group">
+                    <div class="text-3xl mb-3">🍽️</div>
+                    <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">Browse Dishes</h3>
+                    <p class="text-xs text-gray-400 mt-1">Explore home-cooked meals near you</p>
             </a>
 
             <a href="<?= url('/orders/history') ?>"
-               class="bg-white rounded-2xl border border-orange-100 p-5 hover:border-brand-400 transition-colors group">
-                <div class="text-3xl mb-3">📦</div>
-                <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">My Orders</h3>
-                <p class="text-xs text-gray-400 mt-1">Track your current and past orders</p>
+                class="bg-white rounded-2xl border border-orange-100 p-5 hover:border-brand-400 transition-colors group">
+                    <div class="text-3xl mb-3">📦</div>
+                    <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">My Orders</h3>
+                    <p class="text-xs text-gray-400 mt-1">Track your current and past orders</p>
             </a>
 
             <a href="<?= url('/cart') ?>"
-               class="bg-white rounded-2xl border border-orange-100 p-5 hover:border-brand-400 transition-colors group">
-                <div class="text-3xl mb-3">🛒</div>
-                <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">My Cart</h3>
-                <p class="text-xs text-gray-400 mt-1">View and manage your cart</p>
+                class="bg-white rounded-2xl border border-orange-100 p-5 hover:border-brand-400 transition-colors group">
+                    <div class="text-3xl mb-3">🛒</div>
+                    <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">My Cart</h3>
+                    <p class="text-xs text-gray-400 mt-1">View and manage your cart</p>
+            </a>
+
+            <a href="<?= url('/favorites') ?>"
+                class="bg-white rounded-2xl border border-orange-100 p-5 hover:border-brand-400 transition-colors group">
+                    <div class="text-3xl mb-3">❤️</div>
+                    <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">Favourites</h3>
+                    <p class="text-xs text-gray-400 mt-1">Your saved dishes and chefs</p>
             </a>
 
         </div>

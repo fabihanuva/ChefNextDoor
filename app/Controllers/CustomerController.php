@@ -4,6 +4,8 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Core\Session;
 use App\Models\Dish;
+use App\Models\Review;
+use App\Models\Favorite;
 
 require_once __DIR__ . '/../../config/database.php';
 
@@ -181,5 +183,91 @@ class CustomerController extends Controller {
         $stmt->execute([$user['id']]);
         $orders = $stmt->fetchAll();
         $this->view('customer/orders.php', ['user' => $user, 'orders' => $orders]);
+    }
+    
+    // Show review form
+    public function reviewForm() {
+        $user     = requireAuth();
+        $order_id = (int) ($_GET['order_id'] ?? 0);
+        $pdo      = \getDatabase();
+
+        $stmt = $pdo->prepare('SELECT * FROM orders WHERE id = ? AND customer_id = ? AND status = "delivered"');
+        $stmt->execute([$order_id, $user['id']]);
+        $order = $stmt->fetch();
+
+        if (!$order) {
+            Session::set('error', 'You can only review delivered orders.');
+            header("Location: " . url('/orders/history'));
+            exit;
+        }
+
+        if (Review::alreadyReviewed($order_id)) {
+            Session::set('error', 'You have already reviewed this order.');
+            header("Location: " . url('/orders/history'));
+            exit;
+        }
+
+        $this->view('customer/review.php', ['user' => $user, 'order' => $order]);
+    }
+
+    // Submit review
+    public function submitReview() {
+        $user     = requireAuth();
+        $order_id = (int) ($_POST['order_id'] ?? 0);
+        $rating   = (int) ($_POST['rating'] ?? 0);
+        $comment  = trim($_POST['comment'] ?? '');
+        $pdo      = \getDatabase();
+
+        $stmt = $pdo->prepare('SELECT * FROM orders WHERE id = ? AND customer_id = ? AND status = "delivered"');
+        $stmt->execute([$order_id, $user['id']]);
+        $order = $stmt->fetch();
+
+        if (!$order || $rating < 1 || $rating > 5) {
+            Session::set('error', 'Invalid review.');
+            header("Location: " . url('/orders/history'));
+            exit;
+        }
+
+        if (Review::alreadyReviewed($order_id)) {
+            Session::set('error', 'You have already reviewed this order.');
+            header("Location: " . url('/orders/history'));
+            exit;
+        }
+
+        Review::create([
+            'customer_id' => $user['id'],
+            'chef_id'     => $order['chef_id'],
+            'order_id'    => $order_id,
+            'rating'      => $rating,
+            'comment'     => $comment,
+        ]);
+
+        Session::set('success', 'Review submitted! ⭐');
+        header("Location: " . url('/orders/history'));
+        exit;
+    }
+
+    // Toggle favorite
+    public function toggleFavorite() {
+        $user    = requireAuth();
+        $dish_id = (int) ($_POST['dish_id'] ?? 0);
+
+        if (Favorite::isFavorited($user['id'], $dish_id)) {
+            Favorite::remove($user['id'], $dish_id);
+            Session::set('success', 'Removed from favourites.');
+        } else {
+            Favorite::add($user['id'], $dish_id);
+            Session::set('success', 'Added to favourites! ❤️');
+        }
+
+        header("Location: " . url('/browse'));
+        exit;
+    }
+
+    // View favourites
+    public function favorites() {
+        $user   = requireAuth();
+        $dishes = Favorite::findByCustomer($user['id']);
+        $this->view('customer/favorites.php', ['user' => $user, 'dishes' => $dishes]);
     }
 }

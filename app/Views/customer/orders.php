@@ -1,5 +1,6 @@
 <?php
 use App\Core\Session;
+use App\Models\Review;
 $title = 'My Orders | ChefNextDoor';
 ob_start();
 ?>
@@ -40,12 +41,12 @@ ob_start();
                 <?php foreach ($orders as $order): ?>
                     <?php
                     $statusColors = [
-                        'pending'         => 'bg-yellow-50 text-yellow-600',
-                        'accepted'        => 'bg-blue-50 text-blue-600',
-                        'preparing'       => 'bg-purple-50 text-purple-600',
-                        'out_for_delivery'=> 'bg-orange-50 text-orange-600',
-                        'delivered'       => 'bg-green-50 text-green-600',
-                        'cancelled'       => 'bg-red-50 text-red-500',
+                        'pending'          => 'bg-yellow-50 text-yellow-600',
+                        'accepted'         => 'bg-blue-50 text-blue-600',
+                        'preparing'        => 'bg-purple-50 text-purple-600',
+                        'out_for_delivery' => 'bg-orange-50 text-orange-600',
+                        'delivered'        => 'bg-green-50 text-green-600',
+                        'cancelled'        => 'bg-red-50 text-red-500',
                     ];
                     $statusColor = $statusColors[$order['status']] ?? 'bg-gray-50 text-gray-500';
                     ?>
@@ -65,6 +66,15 @@ ob_start();
                         </div>
                         <div class="border-t border-gray-50 pt-3">
                             <p class="text-xs text-gray-500">📍 <?= htmlspecialchars($order['delivery_address']) ?></p>
+
+                            <?php if ($order['status'] === 'delivered' && !Review::alreadyReviewed($order['id'])): ?>
+                                <a href="<?= url('/review?order_id=' . $order['id']) ?>"
+                                    class="inline-block mt-3 text-xs bg-brand-500 hover:bg-brand-600 text-white px-4 py-2 rounded-xl font-medium transition-colors">
+                                    ⭐ Leave a Review
+                                </a>
+                            <?php elseif ($order['status'] === 'delivered'): ?>
+                                <span class="inline-block mt-3 text-xs text-green-600 font-medium">✅ Reviewed</span>
+                            <?php endif; ?>
                         </div>
                     </div>
                 <?php endforeach; ?>
