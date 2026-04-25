@@ -67,6 +67,11 @@ $router->post('/cart/add',      [$customer, 'addToCart']);
 $router->post('/cart/remove',   [$customer, 'removeFromCart']);
 $router->post('/cart/update',   [$customer, 'updateCart']);
 $router->post('/order/place',   [$customer, 'placeOrder']);
+
+// Chef order management
+$router->get('/chef/orders',          [$dash, 'orders']);
+$router->post('/chef/orders/update',  [$dash, 'updateOrderStatus']);
+
 // Placeholder routes
 $router->get('/orders',   function() { echo "Manage Orders coming soon!"; });
 $router->get('/earnings', function() { echo "Earnings coming soon!"; });

@@ -71,7 +71,7 @@ ob_start();
                 <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">My Dishes</h3>
                 <p class="text-xs text-gray-400 mt-1">View and manage your listed dishes</p>
             </a>
-            <a href="<?= url('/orders') ?>" class="bg-white rounded-2xl border border-orange-100 p-5 hover:border-brand-400 transition-colors group">
+            <a href="<?= url('/chef/orders') ?>" class="bg-white rounded-2xl border border-orange-100 p-5 hover:border-brand-400 transition-colors group">
                 <div class="text-3xl mb-3">📦</div>
                 <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">Manage Orders</h3>
                 <p class="text-xs text-gray-400 mt-1">Accept, prepare and deliver orders</p>
