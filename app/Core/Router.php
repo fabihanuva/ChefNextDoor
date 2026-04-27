@@ -58,8 +58,11 @@ class Router {
 
         if (!$callback) {
             http_response_code(404);
-            echo "<h1>404 Not Found</h1>";
-            echo "<p>The requested page was not found.</p>";
+            $title   = '404 | ChefNextDoor';
+            $content = '';
+            ob_start();
+            include __DIR__ . '/../Views/404.php';
+            echo ob_get_clean();
             return;
         }
 

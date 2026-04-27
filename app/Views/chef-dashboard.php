@@ -10,6 +10,7 @@ ob_start();
             <span class="text-lg font-bold text-brand-600">ChefNextDoor</span>
         </div>
         <div class="flex items-center gap-4">
+            <a href="<?= url('/chef/profile') ?>" class="text-sm text-gray-500 hover:text-brand-600">👨‍🍳 My Profile</a>
             <span class="text-sm text-gray-500">Hi, <strong class="text-gray-700"><?= htmlspecialchars($user['name']) ?></strong></span>
             <a href="<?= url('/logout') ?>" class="text-sm bg-brand-500 hover:bg-brand-600 text-white px-4 py-2 rounded-xl font-medium transition-colors">Logout</a>
         </div>

@@ -21,6 +21,7 @@ use App\Controllers\DashboardController;
 use App\Controllers\PostController;
 use App\Controllers\DishController;
 use App\Controllers\CustomerController;
+use App\Controllers\ProfileController;
 // --- 2. Start session ---
 Session::start();
 
@@ -31,6 +32,7 @@ $dash   = new DashboardController();
 $posts  = new PostController();
 $dish   = new DishController();
 $customer = new CustomerController();
+$profile = new ProfileController();
 // --- 4. Define routes ---
 
 // Auth pages (GET)
@@ -89,6 +91,14 @@ $router->post('/favorite/toggle', [$customer, 'toggleFavorite']);
 $router->get('/favorites',        [$customer, 'favorites']);
 
 $router->get('/chef/reviews', [$dash, 'chefReviews']);
+
+// Profile
+$router->get('/profile',          [$profile, 'show']);
+$router->post('/profile/update',  [$profile, 'update']);
+$router->post('/profile/password',[$profile, 'changePassword']);
+
+$router->get('/chef/profile',         [$profile, 'chefProfile']);
+$router->post('/chef/profile/update', [$profile, 'updateChefProfile']);
 
 // --- 5. Fix URL before dispatch (CRITICAL) ---
 $uri = $_SERVER['REQUEST_URI'] ?? '/';

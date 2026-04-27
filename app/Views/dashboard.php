@@ -19,6 +19,7 @@ ob_start();
                     <span class="ml-1 bg-brand-500 text-white text-xs px-1.5 py-0.5 rounded-full"><?= $cartCount ?></span>
                 <?php endif; ?>
             </a>
+            <a href="<?= url('/profile') ?>" class="text-sm text-gray-500 hover:text-brand-600">👤 Profile</a>
             <span class="text-sm text-gray-500">Hi, <strong class="text-gray-700"><?= htmlspecialchars($user['name']) ?></strong></span>
             <a href="<?= url('/logout') ?>"
                class="text-sm bg-brand-500 hover:bg-brand-600 text-white px-4 py-2 rounded-xl font-medium transition-colors">
@@ -62,30 +63,30 @@ ob_start();
 
             <a href="<?= url('/browse') ?>"
                 class="bg-white rounded-2xl border border-orange-100 p-5 hover:border-brand-400 transition-colors group">
-                    <div class="text-3xl mb-3">🍽️</div>
-                    <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">Browse Dishes</h3>
-                    <p class="text-xs text-gray-400 mt-1">Explore home-cooked meals near you</p>
+                <div class="text-3xl mb-3">🍽️</div>
+                <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">Browse Dishes</h3>
+                <p class="text-xs text-gray-400 mt-1">Explore home-cooked meals near you</p>
             </a>
 
             <a href="<?= url('/orders/history') ?>"
                 class="bg-white rounded-2xl border border-orange-100 p-5 hover:border-brand-400 transition-colors group">
-                    <div class="text-3xl mb-3">📦</div>
-                    <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">My Orders</h3>
-                    <p class="text-xs text-gray-400 mt-1">Track your current and past orders</p>
+                <div class="text-3xl mb-3">📦</div>
+                <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">My Orders</h3>
+                <p class="text-xs text-gray-400 mt-1">Track your current and past orders</p>
             </a>
 
             <a href="<?= url('/cart') ?>"
                 class="bg-white rounded-2xl border border-orange-100 p-5 hover:border-brand-400 transition-colors group">
-                    <div class="text-3xl mb-3">🛒</div>
-                    <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">My Cart</h3>
-                    <p class="text-xs text-gray-400 mt-1">View and manage your cart</p>
+                <div class="text-3xl mb-3">🛒</div>
+                <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">My Cart</h3>
+                <p class="text-xs text-gray-400 mt-1">View and manage your cart</p>
             </a>
 
             <a href="<?= url('/favorites') ?>"
                 class="bg-white rounded-2xl border border-orange-100 p-5 hover:border-brand-400 transition-colors group">
-                    <div class="text-3xl mb-3">❤️</div>
-                    <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">Favourites</h3>
-                    <p class="text-xs text-gray-400 mt-1">Your saved dishes and chefs</p>
+                <div class="text-3xl mb-3">❤️</div>
+                <h3 class="font-semibold text-gray-800 group-hover:text-brand-600">Favourites</h3>
+                <p class="text-xs text-gray-400 mt-1">Your saved dishes and chefs</p>
             </a>
 
         </div>
