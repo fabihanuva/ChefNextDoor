@@ -1,103 +1,90 @@
 <?php
 use App\Core\Session;
-$title = 'Chef Profile | ChefNextDoor';
+$title = 'Chef Profile Settings | ChefNextDoor';
 ob_start();
 ?>
-<div class="min-h-screen bg-brand-50">
-    <nav class="bg-white border-b border-orange-100 px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-            <span class="text-2xl">🍳</span>
-            <span class="text-lg font-bold text-brand-600">ChefNextDoor</span>
-        </div>
-        <div class="flex items-center gap-4">
-            <a href="<?= url('/chef-dashboard') ?>" class="text-sm text-gray-500 hover:text-brand-600">← Dashboard</a>
-            <a href="<?= url('/logout') ?>" class="text-sm bg-brand-500 hover:bg-brand-600 text-white px-4 py-2 rounded-xl font-medium transition-colors">Logout</a>
-        </div>
-    </nav>
+<div class="max-w-4xl mx-auto px-6 py-12">
+    <div class="flex items-center gap-4 mb-10">
+        <a href="<?= url('/chef-dashboard') ?>" class="p-2 rounded-full hover:bg-white transition-colors text-slate-400 hover:text-brand-600">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </a>
+        <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Chef Profile Settings</h1>
+    </div>
 
-    <div class="max-w-2xl mx-auto px-6 py-10">
-        <h1 class="text-2xl font-bold text-gray-800 mb-6">👨‍🍳 Chef Profile</h1>
-
-        <?php if (Session::get('success')): ?>
-            <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl text-sm">
-                <?= htmlspecialchars(Session::get('success')) ?>
-                <?php Session::remove('success'); ?>
-            </div>
-        <?php endif; ?>
-
-        <?php if (Session::get('error')): ?>
-            <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
-                <?= htmlspecialchars(Session::get('error')) ?>
-                <?php Session::remove('error'); ?>
-            </div>
-        <?php endif; ?>
-
-        <!-- Profile card -->
-        <div class="bg-white rounded-2xl border border-orange-100 p-6 mb-5">
-            <div class="flex items-center gap-4 mb-6">
-                <div class="w-16 h-16 rounded-full bg-brand-100 flex items-center justify-center text-3xl font-bold text-brand-600">
-                    <?= strtoupper(substr($user['name'], 0, 1)) ?>
-                </div>
-                <div>
-                    <p class="font-bold text-gray-800 text-lg"><?= htmlspecialchars($user['name']) ?></p>
-                    <p class="text-sm text-gray-400"><?= htmlspecialchars($user['email']) ?></p>
-                    <span class="text-xs px-2 py-0.5 rounded-full bg-brand-50 text-brand-600 font-medium">Chef</span>
-                </div>
-            </div>
-
-            <form method="POST" action="<?= url('/chef/profile/update') ?>" class="space-y-4">
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Bio</label>
-                    <textarea name="bio" rows="3" placeholder="Tell customers about yourself..."
-                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400 text-sm resize-none"><?= htmlspecialchars($profile['bio'] ?? '') ?></textarea>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Specialty</label>
-                    <input type="text" name="specialty" placeholder="e.g. Bangladeshi cuisine, Biryani, Desserts"
-                        value="<?= htmlspecialchars($profile['specialty'] ?? '') ?>"
-                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400 text-sm" />
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Location</label>
-                    <input type="text" name="location" placeholder="e.g. Sylhet, Bangladesh"
-                        value="<?= htmlspecialchars($profile['location'] ?? '') ?>"
-                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400 text-sm" />
-                </div>
-
-                <button type="submit"
-                    class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-6 py-2.5 rounded-xl transition-colors text-sm">
-                    Save Profile
-                </button>
-            </form>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <!-- Sidebar -->
+        <div class="space-y-1">
+            <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-brand-50 text-brand-700 font-bold transition-all shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Public Bio
+            </a>
+            <a href="<?= url('/profile') ?>" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-white hover:text-slate-800 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Security
+            </a>
+            <a href="<?= url('/chef/profile/public?id=' . $user['id']) ?>" target="_blank" class="flex items-center gap-3 px-4 py-3 rounded-xl text-brand-600 hover:bg-brand-50 transition-all mt-4 border border-brand-100 border-dashed">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                View Public Profile
+            </a>
         </div>
 
-        <!-- Also update name/password -->
-        <div class="bg-white rounded-2xl border border-orange-100 p-6">
-            <h2 class="font-semibold text-gray-800 mb-4">🔒 Change Password</h2>
-            <form method="POST" action="<?= url('/profile/password') ?>" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
-                    <input type="password" name="current_password" required
-                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400 text-sm" />
+        <!-- Main Form Area -->
+        <div class="md:col-span-2 space-y-8">
+            <div class="card-base p-8 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-500 to-orange-400"></div>
+                
+                <div class="flex items-center gap-6 mb-8 pb-8 border-b border-gray-50">
+                    <div class="w-20 h-20 rounded-2xl bg-brand-100 flex items-center justify-center text-3xl font-bold text-brand-600 shadow-inner">
+                        <?= strtoupper(substr($user['name'], 0, 1)) ?>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800"><?= htmlspecialchars($user['name']) ?></h2>
+                        <p class="text-slate-400 text-sm">Update your public chef profile to attract more customers.</p>
+                    </div>
+                </div>
+
+                <form method="POST" action="<?= url('/chef/profile/update') ?>" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Professional Bio</label>
+                        <textarea name="bio" rows="4" placeholder="Tell customers about your culinary journey, experience, and why they should choose your food..."
+                            class="input-base resize-none"><?= htmlspecialchars($profile['bio'] ?? '') ?></textarea>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Primary Specialty</label>
+                            <input type="text" name="specialty" placeholder="e.g. Authentic Bengali Cuisine"
+                                value="<?= htmlspecialchars($profile['specialty'] ?? '') ?>"
+                                class="input-base" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Kitchen Location</label>
+                            <input type="text" name="location" placeholder="e.g. Gulshan, Dhaka"
+                                value="<?= htmlspecialchars($profile['location'] ?? '') ?>"
+                                class="input-base" />
+                        </div>
+                    </div>
+
+                    <div class="pt-4 flex items-center gap-4">
+                        <button type="submit" class="btn-primary !px-10">
+                            Save Chef Profile
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Help Card -->
+            <div class="bg-blue-50 border border-blue-100 rounded-2xl p-6 flex items-start gap-4">
+                <div class="text-blue-500 mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
-                    <input type="password" name="new_password" required placeholder="At least 6 characters"
-                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400 text-sm" />
+                    <h4 class="text-sm font-bold text-blue-900 mb-1">Why complete your profile?</h4>
+                    <p class="text-xs text-blue-700 leading-relaxed">
+                        Complete profiles receive up to 3x more orders! Customers love knowing who's cooking their food and where it's coming from. Make your bio personal and inviting.
+                    </p>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
-                    <input type="password" name="confirm_password" required
-                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400 text-sm" />
-                </div>
-                <button type="submit"
-                    class="bg-gray-800 hover:bg-gray-900 text-white font-semibold px-6 py-2.5 rounded-xl transition-colors text-sm">
-                    Change Password
-                </button>
-            </form>
+            </div>
         </div>
     </div>
 </div>

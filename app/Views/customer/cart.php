@@ -3,96 +3,99 @@ use App\Core\Session;
 $title = 'My Cart | ChefNextDoor';
 ob_start();
 ?>
-<div class="min-h-screen bg-brand-50">
-    <nav class="bg-white border-b border-orange-100 px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-            <span class="text-2xl">🍳</span>
-            <span class="text-lg font-bold text-brand-600">ChefNextDoor</span>
+<div class="max-w-4xl mx-auto px-6 py-12">
+    <div class="flex items-center gap-4 mb-10">
+        <a href="<?= url('/browse') ?>" class="p-2 rounded-full hover:bg-white transition-colors text-slate-400 hover:text-brand-600">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </a>
+        <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Shopping Cart</h1>
+    </div>
+
+    <?php if (empty($cart)): ?>
+        <div class="card-base p-20 text-center">
+            <div class="w-24 h-24 bg-brand-50 rounded-full flex items-center justify-center text-5xl mx-auto mb-6">🛒</div>
+            <h2 class="text-2xl font-bold text-slate-800 mb-2">Your cart is empty</h2>
+            <p class="text-slate-500 max-w-sm mx-auto mb-8">Looks like you haven't added any home-cooked goodness to your cart yet.</p>
+            <a href="<?= url('/browse') ?>" class="btn-primary">
+                Browse Delicious Dishes
+            </a>
         </div>
-        <div class="flex items-center gap-4">
-            <a href="<?= url('/browse') ?>" class="text-sm text-gray-500 hover:text-brand-600">← Browse</a>
-            <a href="<?= url('/logout') ?>" class="text-sm bg-brand-500 hover:bg-brand-600 text-white px-4 py-2 rounded-xl font-medium transition-colors">Logout</a>
-        </div>
-    </nav>
-
-    <div class="max-w-2xl mx-auto px-6 py-10">
-        <h1 class="text-2xl font-bold text-gray-800 mb-6">🛒 My Cart</h1>
-
-        <?php if (Session::get('success')): ?>
-            <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl text-sm">
-                <?= htmlspecialchars(Session::get('success')) ?>
-                <?php Session::remove('success'); ?>
-            </div>
-        <?php endif; ?>
-
-        <?php if (Session::get('error')): ?>
-            <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
-                <?= htmlspecialchars(Session::get('error')) ?>
-                <?php Session::remove('error'); ?>
-            </div>
-        <?php endif; ?>
-
-        <?php if (empty($cart)): ?>
-            <div class="bg-white rounded-2xl border border-orange-100 p-12 text-center">
-                <div class="text-5xl mb-4">🛒</div>
-                <h2 class="text-lg font-semibold text-gray-700">Your cart is empty</h2>
-                <p class="text-sm text-gray-400 mt-1 mb-5">Add some delicious dishes!</p>
-                <a href="<?= url('/browse') ?>"
-                    class="bg-brand-500 hover:bg-brand-600 text-white text-sm font-semibold px-6 py-2.5 rounded-xl transition-colors">
-                    Browse Dishes
-                </a>
-            </div>
-        <?php else: ?>
-            <div class="space-y-3 mb-6">
+    <?php else: ?>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+            <!-- Items List -->
+            <div class="lg:col-span-2 space-y-4">
                 <?php foreach ($cart as $item): ?>
-                    <div class="bg-white rounded-2xl border border-orange-100 p-4 flex items-center gap-4">
-                        <?php if ($item['image']): ?>
-                            <img src="/ChefNextDoor/uploads/dishes/<?= htmlspecialchars($item['image']) ?>"
-                                 class="w-16 h-16 rounded-xl object-cover" />
-                        <?php else: ?>
-                            <div class="w-16 h-16 rounded-xl bg-brand-50 flex items-center justify-center text-2xl">🍽️</div>
-                        <?php endif; ?>
-
-                        <div class="flex-1">
-                            <h3 class="font-semibold text-gray-800 text-sm"><?= htmlspecialchars($item['title']) ?></h3>
-                            <p class="text-brand-600 font-bold text-sm">৳<?= number_format($item['price'], 2) ?></p>
+                    <div class="card-base p-5 flex items-center gap-6">
+                        <div class="w-20 h-20 shrink-0 rounded-2xl overflow-hidden bg-slate-100">
+                            <?php if ($item['image']): ?>
+                                <img src="/ChefNextDoor/uploads/dishes/<?= htmlspecialchars($item['image']) ?>"
+                                     class="w-full h-full object-cover" />
+                            <?php else: ?>
+                                <div class="w-full h-full flex items-center justify-center text-3xl">🍲</div>
+                            <?php endif; ?>
                         </div>
 
-                        <div class="flex items-center gap-2">
-                            <form method="POST" action="<?= url('/cart/update') ?>" class="flex items-center gap-2">
-                                <input type="hidden" name="dish_id" value="<?= $item['id'] ?>" />
-                                <input type="number" name="quantity" value="<?= $item['quantity'] ?>" min="0"
-                                    class="w-14 text-center px-2 py-1 border border-gray-200 rounded-lg text-sm" />
-                                <button type="submit" class="text-xs text-brand-600 hover:underline">Update</button>
-                            </form>
+                        <div class="flex-grow">
+                            <h3 class="font-bold text-slate-800"><?= htmlspecialchars($item['title']) ?></h3>
+                            <p class="text-brand-600 font-black text-sm mt-1">৳<?= number_format($item['price'], 0) ?></p>
+                            
+                            <div class="flex items-center gap-4 mt-3">
+                                <form method="POST" action="<?= url('/cart/update') ?>" class="flex items-center bg-slate-50 rounded-lg p-1 border border-slate-100">
+                                    <input type="hidden" name="dish_id" value="<?= $item['id'] ?>" />
+                                    <input type="number" name="quantity" value="<?= $item['quantity'] ?>" min="0"
+                                        class="w-12 bg-transparent text-center text-sm font-bold text-slate-700 outline-none" />
+                                    <button type="submit" class="text-[10px] font-black uppercase text-brand-600 px-2 hover:bg-white rounded-md transition-colors">Update</button>
+                                </form>
 
-                            <form method="POST" action="<?= url('/cart/remove') ?>">
-                                <input type="hidden" name="dish_id" value="<?= $item['id'] ?>" />
-                                <button type="submit" class="text-red-400 hover:text-red-600 text-sm">🗑️</button>
-                            </form>
+                                <form method="POST" action="<?= url('/cart/remove') ?>">
+                                    <input type="hidden" name="dish_id" value="<?= $item['id'] ?>" />
+                                    <button type="submit" class="text-slate-300 hover:text-red-500 transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
 
-                        <div class="text-right min-w-[60px]">
-                            <p class="font-bold text-gray-800 text-sm">৳<?= number_format($item['price'] * $item['quantity'], 2) ?></p>
+                        <div class="text-right">
+                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tighter mb-1">Subtotal</p>
+                            <p class="font-black text-slate-800">৳<?= number_format($item['price'] * $item['quantity'], 0) ?></p>
                         </div>
                     </div>
                 <?php endforeach; ?>
             </div>
 
-            <!-- Total -->
-            <div class="bg-white rounded-2xl border border-orange-100 p-5 mb-4">
-                <div class="flex justify-between items-center">
-                    <span class="font-semibold text-gray-700">Total</span>
-                    <span class="text-xl font-bold text-brand-600">৳<?= number_format($total, 2) ?></span>
+            <!-- Order Summary -->
+            <div class="lg:col-span-1">
+                <div class="card-base p-8 sticky top-24">
+                    <h2 class="text-xl font-bold text-slate-800 mb-6 pb-6 border-b border-gray-50">Order Summary</h2>
+                    
+                    <div class="space-y-4 mb-8">
+                        <div class="flex justify-between text-slate-500 text-sm font-medium">
+                            <span>Subtotal</span>
+                            <span>৳<?= number_format($total, 0) ?></span>
+                        </div>
+                        <div class="flex justify-between text-slate-500 text-sm font-medium">
+                            <span>Delivery Fee</span>
+                            <span class="text-green-600 font-bold">FREE</span>
+                        </div>
+                        <div class="pt-4 border-t border-gray-50 flex justify-between items-center">
+                            <span class="font-bold text-slate-800">Total Amount</span>
+                            <span class="text-2xl font-black text-brand-600">৳<?= number_format($total, 0) ?></span>
+                        </div>
+                    </div>
+
+                    <a href="<?= url('/checkout') ?>" class="btn-primary w-full flex items-center justify-center gap-2 group">
+                        Checkout Now
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </a>
+                    
+                    <p class="text-[10px] text-slate-400 mt-6 text-center leading-relaxed">
+                        Shipping and taxes will be calculated at checkout.<br>Secure payment guaranteed.
+                    </p>
                 </div>
             </div>
-
-            <a href="<?= url('/checkout') ?>"
-                class="block w-full text-center bg-brand-500 hover:bg-brand-600 text-white font-semibold py-3 rounded-xl transition-colors">
-                Proceed to Checkout →
-            </a>
-        <?php endif; ?>
-    </div>
+        </div>
+    <?php endif; ?>
 </div>
 <?php
 $content = ob_get_clean();

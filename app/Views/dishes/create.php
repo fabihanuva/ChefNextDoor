@@ -3,60 +3,52 @@ use App\Core\Session;
 $title = 'Add New Dish | ChefNextDoor';
 ob_start();
 ?>
-<div class="min-h-screen bg-brand-50">
-    <nav class="bg-white border-b border-orange-100 px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-            <span class="text-2xl">🍳</span>
-            <span class="text-lg font-bold text-brand-600">ChefNextDoor</span>
-        </div>
-        <div class="flex items-center gap-4">
-            <a href="<?= url('/chef-dashboard') ?>" class="text-sm text-gray-500 hover:text-brand-600">← Dashboard</a>
-            <a href="<?= url('/logout') ?>" class="text-sm bg-brand-500 hover:bg-brand-600 text-white px-4 py-2 rounded-xl font-medium transition-colors">Logout</a>
-        </div>
-    </nav>
+<div class="max-w-3xl mx-auto px-6 py-12">
+    <div class="flex items-center gap-4 mb-10">
+        <a href="<?= url('/dishes') ?>" class="p-2 rounded-full hover:bg-white transition-colors text-slate-400 hover:text-brand-600">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </a>
+        <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Add New Dish</h1>
+    </div>
 
-    <div class="max-w-2xl mx-auto px-6 py-10">
-        <h1 class="text-2xl font-bold text-gray-800 mb-6">🍽️ Add New Dish</h1>
-
-        <?php if (Session::get('error')): ?>
-            <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
-                <?= htmlspecialchars(Session::get('error')) ?>
-                <?php Session::remove('error'); ?>
-            </div>
-        <?php endif; ?>
-
-        <div class="bg-white rounded-2xl border border-orange-100 p-8">
-            <form method="POST" action="<?= url('/dishes/store') ?>" enctype="multipart/form-data" class="space-y-5">
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Dish Title *</label>
-                    <input type="text" name="title" required placeholder="e.g. Homemade Biryani"
-                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400 text-sm" />
+    <div class="card-base p-8 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-500 to-orange-400"></div>
+        
+        <form method="POST" action="<?= url('/dishes/store') ?>" enctype="multipart/form-data" class="space-y-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Title -->
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Dish Title *</label>
+                    <input type="text" name="title" required placeholder="e.g. Traditional Spicy Mutton Biryani"
+                        class="input-base" />
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                    <textarea name="description" rows="3" placeholder="Describe your dish..."
-                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400 text-sm resize-none"></textarea>
+                <!-- Description -->
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Detailed Description</label>
+                    <textarea name="description" rows="4" placeholder="Tell your customers what makes this dish special..."
+                        class="input-base resize-none"></textarea>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Price (৳) *</label>
+                <!-- Price & Stock -->
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Price (৳) *</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">৳</span>
                         <input type="number" name="price" required min="0" step="0.01" placeholder="0.00"
-                            class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400 text-sm" />
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Stock (portions)</label>
-                        <input type="number" name="stock" min="0" value="0" placeholder="0"
-                            class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400 text-sm" />
+                            class="input-base !pl-8" />
                     </div>
                 </div>
-
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                    <select name="category"
-                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400 text-sm">
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Available Stock</label>
+                    <input type="number" name="stock" min="0" value="5" placeholder="Number of portions"
+                        class="input-base" />
+                </div>
+
+                <!-- Category -->
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Category</label>
+                    <select name="category" class="input-base appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20stroke%3D%22%236b7280%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%221.5%22%20d%3D%22m6%208%204%204%204-4%22%2F%3E%3C%2Fsvg%3E')] bg-[length:1.25rem_1.25rem] bg-[right_0.5rem_center] bg-no-repeat">
                         <option value="">Select category</option>
                         <option value="Rice">Rice</option>
                         <option value="Curry">Curry</option>
@@ -69,32 +61,34 @@ ob_start();
                     </select>
                 </div>
 
+                <!-- Image -->
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Dish Image</label>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Dish Image</label>
                     <input type="file" name="image" accept="image/*"
-                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-500 file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:bg-brand-50 file:text-brand-600 file:text-sm" />
-                    <p class="text-xs text-gray-400 mt-1">JPG, PNG or WEBP. Max 2MB.</p>
+                        class="block w-full text-sm text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100 transition-all" />
                 </div>
 
-                <div class="flex items-center gap-2">
-                    <input type="checkbox" name="availability" id="availability" value="1" checked
-                        class="w-4 h-4 accent-brand-500" />
-                    <label for="availability" class="text-sm text-gray-700">Available for ordering</label>
+                <!-- Availability -->
+                <div class="md:col-span-2">
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <div class="relative">
+                            <input type="checkbox" name="availability" id="availability" value="1" checked class="sr-only peer" />
+                            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-500"></div>
+                        </div>
+                        <span class="text-sm font-bold text-slate-700 group-hover:text-slate-900 transition-colors">Mark as available for ordering</span>
+                    </label>
                 </div>
+            </div>
 
-                <div class="flex gap-3 pt-2">
-                    <button type="submit"
-                        class="flex-1 bg-brand-500 hover:bg-brand-600 text-white font-semibold py-2.5 rounded-xl transition-colors text-sm">
-                        Add Dish
-                    </button>
-                    <a href="<?= url('/dishes') ?>"
-                        class="flex-1 text-center border border-gray-200 hover:bg-gray-50 text-gray-600 font-semibold py-2.5 rounded-xl transition-colors text-sm">
-                        Cancel
-                    </a>
-                </div>
-
-            </form>
-        </div>
+            <div class="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-50">
+                <button type="submit" class="btn-primary !px-12">
+                    Publish Dish
+                </button>
+                <a href="<?= url('/dishes') ?>" class="flex items-center justify-center px-8 py-2.5 rounded-xl text-slate-500 font-bold hover:bg-slate-50 transition-all text-sm">
+                    Discard Changes
+                </a>
+            </div>
+        </form>
     </div>
 </div>
 <?php

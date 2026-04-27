@@ -3,95 +3,103 @@ use App\Core\Session;
 $title = 'My Profile | ChefNextDoor';
 ob_start();
 ?>
-<div class="min-h-screen bg-brand-50">
-    <nav class="bg-white border-b border-orange-100 px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-            <span class="text-2xl">🍳</span>
-            <span class="text-lg font-bold text-brand-600">ChefNextDoor</span>
-        </div>
-        <div class="flex items-center gap-4">
-            <?php if ($user['role'] === 'chef'): ?>
-                <a href="<?= url('/chef-dashboard') ?>" class="text-sm text-gray-500 hover:text-brand-600">← Dashboard</a>
-            <?php else: ?>
-                <a href="<?= url('/dashboard') ?>" class="text-sm text-gray-500 hover:text-brand-600">← Dashboard</a>
-            <?php endif; ?>
-            <a href="<?= url('/logout') ?>" class="text-sm bg-brand-500 hover:bg-brand-600 text-white px-4 py-2 rounded-xl font-medium transition-colors">Logout</a>
-        </div>
-    </nav>
+<div class="max-w-4xl mx-auto px-6 py-12">
+    <div class="flex items-center gap-4 mb-10">
+        <a href="<?= url($user['role'] === 'chef' ? '/chef-dashboard' : '/dashboard') ?>" class="p-2 rounded-full hover:bg-white transition-colors text-slate-400 hover:text-brand-600">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </a>
+        <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Account Settings</h1>
+    </div>
 
-    <div class="max-w-2xl mx-auto px-6 py-10">
-        <h1 class="text-2xl font-bold text-gray-800 mb-6">👤 My Profile</h1>
-
-        <?php if (Session::get('success')): ?>
-            <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl text-sm">
-                <?= htmlspecialchars(Session::get('success')) ?>
-                <?php Session::remove('success'); ?>
-            </div>
-        <?php endif; ?>
-
-        <?php if (Session::get('error')): ?>
-            <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
-                <?= htmlspecialchars(Session::get('error')) ?>
-                <?php Session::remove('error'); ?>
-            </div>
-        <?php endif; ?>
-
-        <!-- Profile Info -->
-        <div class="bg-white rounded-2xl border border-orange-100 p-6 mb-5">
-            <div class="flex items-center gap-4 mb-6">
-                <div class="w-16 h-16 rounded-full bg-brand-100 flex items-center justify-center text-3xl font-bold text-brand-600">
-                    <?= strtoupper(substr($user['name'], 0, 1)) ?>
-                </div>
-                <div>
-                    <p class="font-bold text-gray-800 text-lg"><?= htmlspecialchars($user['name']) ?></p>
-                    <p class="text-sm text-gray-400"><?= htmlspecialchars($user['email']) ?></p>
-                    <span class="text-xs px-2 py-0.5 rounded-full bg-brand-50 text-brand-600 capitalize font-medium"><?= $user['role'] ?></span>
-                </div>
-            </div>
-
-            <form method="POST" action="<?= url('/profile/update') ?>" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                    <input type="text" name="name" required value="<?= htmlspecialchars($user['name']) ?>"
-                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400 text-sm" />
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <input type="email" value="<?= htmlspecialchars($user['email']) ?>" disabled
-                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-sm text-gray-400" />
-                    <p class="text-xs text-gray-400 mt-1">Email cannot be changed.</p>
-                </div>
-                <button type="submit"
-                    class="bg-brand-500 hover:bg-brand-600 text-white font-semibold px-6 py-2.5 rounded-xl transition-colors text-sm">
-                    Save Changes
-                </button>
-            </form>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <!-- Sidebar Navigation -->
+        <div class="space-y-1">
+            <a href="#profile" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-brand-50 text-brand-700 font-bold transition-all shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Personal Info
+            </a>
+            <a href="#security" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-white hover:text-slate-800 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Security
+            </a>
+            <a href="<?= url('/logout') ?>" class="flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 transition-all mt-6">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+                Logout
+            </a>
         </div>
 
-        <!-- Change Password -->
-        <div class="bg-white rounded-2xl border border-orange-100 p-6">
-            <h2 class="font-semibold text-gray-800 mb-4">🔒 Change Password</h2>
-            <form method="POST" action="<?= url('/profile/password') ?>" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
-                    <input type="password" name="current_password" required
-                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400 text-sm" />
+        <!-- Main Form Area -->
+        <div class="md:col-span-2 space-y-8">
+            <!-- Profile Info Card -->
+            <div id="profile" class="card-base p-8">
+                <div class="flex items-center gap-6 mb-8 pb-8 border-b border-gray-50">
+                    <div class="w-20 h-20 rounded-2xl bg-brand-100 flex items-center justify-center text-3xl font-bold text-brand-600 shadow-inner">
+                        <?= strtoupper(substr($user['name'], 0, 1)) ?>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800"><?= htmlspecialchars($user['name']) ?></h2>
+                        <p class="text-slate-400 text-sm"><?= htmlspecialchars($user['email']) ?></p>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-brand-50 text-brand-600 uppercase tracking-wider mt-2">
+                            <?= $user['role'] ?> account
+                        </span>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
-                    <input type="password" name="new_password" required placeholder="At least 6 characters"
-                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400 text-sm" />
+
+                <form method="POST" action="<?= url('/profile/update') ?>" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Full Name</label>
+                        <input type="text" name="name" required value="<?= htmlspecialchars($user['name']) ?>"
+                            class="input-base" placeholder="Your full name" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Email Address</label>
+                        <input type="email" value="<?= htmlspecialchars($user['email']) ?>" disabled
+                            class="input-base bg-slate-50 border-slate-100 text-slate-400 cursor-not-allowed" />
+                        <p class="text-xs text-slate-400 mt-2 italic">Contact support to change your email address.</p>
+                    </div>
+                    <div class="pt-2">
+                        <button type="submit" class="btn-primary w-full sm:w-auto">
+                            Update Profile
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Security Card -->
+            <div id="security" class="card-base p-8">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="p-2 bg-slate-100 rounded-lg text-slate-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-800">Password & Security</h2>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
-                    <input type="password" name="confirm_password" required
-                        class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400 text-sm" />
-                </div>
-                <button type="submit"
-                    class="bg-gray-800 hover:bg-gray-900 text-white font-semibold px-6 py-2.5 rounded-xl transition-colors text-sm">
-                    Change Password
-                </button>
-            </form>
+
+                <form method="POST" action="<?= url('/profile/password') ?>" class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-bold text-slate-700 mb-2">Current Password</label>
+                        <input type="password" name="current_password" required placeholder="••••••••"
+                            class="input-base" />
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-2">New Password</label>
+                            <input type="password" name="new_password" required placeholder="Min. 6 chars"
+                                class="input-base" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 mb-2">Confirm New Password</label>
+                            <input type="password" name="confirm_password" required placeholder="Repeat new password"
+                                class="input-base" />
+                        </div>
+                    </div>
+                    <div class="pt-2">
+                        <button type="submit"
+                            class="bg-slate-800 hover:bg-slate-900 text-white font-bold px-8 py-3 rounded-xl transition-all shadow-lg active:scale-95 text-sm">
+                            Change Password
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

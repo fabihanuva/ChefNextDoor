@@ -36,17 +36,22 @@ async function loadPosts() {
 
             data.posts.forEach(function (post) {
                 const postCard = document.createElement('div');
-                postCard.className = 'post-card';
+                postCard.className = 'card-base p-6';
 
                 const postDate = new Date(post.created_at);
                 const timeAgo = getTimeAgo(postDate);
 
                 postCard.innerHTML =
-                    '<div class="post-header">' +
-                        '<span class="post-author">' + escapeHtml(post.user_name) + '</span>' +
-                        '<span class="post-time">' + timeAgo + '</span>' +
+                    '<div class="flex items-center gap-3 mb-4">' +
+                        '<div class="w-10 h-10 rounded-full bg-brand-100 flex items-center justify-center text-brand-600 font-bold">' +
+                            escapeHtml(post.user_name.charAt(0).toUpperCase()) +
+                        '</div>' +
+                        '<div>' +
+                            '<p class="text-sm font-bold text-slate-800 leading-none">' + escapeHtml(post.user_name) + '</p>' +
+                            '<p class="text-[11px] text-slate-400 mt-1 uppercase tracking-wider font-medium">' + timeAgo + '</p>' +
+                        '</div>' +
                     '</div>' +
-                    '<div class="post-content">' + escapeHtml(post.content) + '</div>';
+                    '<div class="text-slate-600 text-sm leading-relaxed whitespace-pre-wrap break-words">' + escapeHtml(post.content) + '</div>';
 
                 container.appendChild(postCard);
             });
@@ -56,18 +61,18 @@ async function loadPosts() {
 
             if (!hasMore) {
                 const noMore = document.createElement('div');
-                noMore.className = 'no-more';
-                noMore.textContent = 'No more posts';
+                noMore.className = 'text-center py-10 text-slate-400 text-sm font-medium italic';
+                noMore.textContent = 'You have reached the end of the timeline.';
                 container.appendChild(noMore);
             }
         } else if (currentPage === 1) {
             document.getElementById('postsContainer').innerHTML =
-                '<div class="no-more">No posts yet. Be the first to post!</div>';
+                '<div class="card-base p-12 text-center text-slate-400 font-medium italic">No posts yet. Be the first to post!</div>';
         }
     } catch (error) {
         if (currentPage === 1) {
             document.getElementById('postsContainer').innerHTML =
-                '<div class="message error">Failed to load posts: ' + error.message + '</div>';
+                '<div class="bg-red-50 border border-red-100 text-red-600 p-4 rounded-xl text-sm text-center font-medium">Failed to load posts: ' + error.message + '</div>';
         }
     }
 

@@ -6,6 +6,7 @@ use App\Core\Session;
 use App\Models\Dish;
 use App\Models\Review;
 use App\Models\Favorite;
+use App\Models\ChefProfile;
 
 require_once __DIR__ . '/../../config/database.php';
 
@@ -13,13 +14,42 @@ class CustomerController extends Controller {
 
     // Browse all available dishes
     public function browse() {
-        $user   = requireAuth();
+        $user = requireAuth();
         if ($user['role'] !== 'customer') {
             header("Location: " . url('/chef-dashboard'));
             exit;
         }
-        $dishes = Dish::all();
-        $this->view('customer/browse.php', ['user' => $user, 'dishes' => $dishes]);
+
+        $keyword  = $_GET['s'] ?? null;
+        $category = $_GET['category'] ?? null;
+
+        $dishes = Dish::search($keyword, $category);
+        $this->view('customer/browse.php', [
+            'user' => $user, 
+            'dishes' => $dishes,
+            'search' => $keyword,
+            'currentCategory' => $category ?: 'All'
+        ]);
+    }
+
+    // Public chef profile
+    public function chef() {
+        $user    = requireAuth();
+        $chefId  = (int) ($_GET['id'] ?? 0);
+        $profile = ChefProfile::findByUserId($chefId);
+
+        if (!$profile) {
+            Session::set('error', 'Chef not found.');
+            header("Location: " . url('/browse'));
+            exit;
+        }
+
+        $dishes = Dish::findByChef($chefId);
+        $this->view('customer/chef.php', [
+            'user' => $user, 
+            'profile' => $profile, 
+            'dishes' => $dishes
+        ]);
     }
 
     // View single dish

@@ -14,9 +14,15 @@ class ChefProfile {
 
     public static function findByUserId(int $userId): ?array {
         $pdo  = getDatabase();
-        $stmt = $pdo->prepare('SELECT * FROM chef_profiles WHERE user_id = ? LIMIT 1');
+        $stmt = $pdo->prepare('SELECT chef_profiles.*, users.name, users.email FROM chef_profiles JOIN users ON chef_profiles.user_id = users.id WHERE chef_profiles.user_id = ? LIMIT 1');
         $stmt->execute([$userId]);
         $row  = $stmt->fetch();
         return $row ?: null;
+    }
+
+    public static function update(int $userId, array $data): void {
+        $pdo  = getDatabase();
+        $stmt = $pdo->prepare('UPDATE chef_profiles SET bio = ?, specialty = ?, location = ? WHERE user_id = ?');
+        $stmt->execute([$data['bio'], $data['specialty'], $data['location'], $userId]);
     }
 }

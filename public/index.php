@@ -22,6 +22,7 @@ use App\Controllers\PostController;
 use App\Controllers\DishController;
 use App\Controllers\CustomerController;
 use App\Controllers\ProfileController;
+use App\Controllers\SupportController;
 // --- 2. Start session ---
 Session::start();
 
@@ -33,12 +34,19 @@ $posts  = new PostController();
 $dish   = new DishController();
 $customer = new CustomerController();
 $profile = new ProfileController();
+$support = new SupportController();
 // --- 4. Define routes ---
 
 // Auth pages (GET)
 $router->get('/',          [$auth, 'showLogin']);
 $router->get('/login',     [$auth, 'showLogin']);
 $router->get('/register',  [$auth, 'showRegister']);
+
+// Support pages (GET)
+$router->get('/about',     [$support, 'about']);
+$router->get('/help',      [$support, 'help']);
+$router->get('/terms',     [$support, 'terms']);
+$router->get('/privacy',   [$support, 'privacy']);
 
 // Dashboards (GET)
 $router->get('/dashboard',      [$dash, 'index']);
@@ -61,6 +69,7 @@ $router->post('/dishes/delete', [$dish, 'destroy']);
 // Customer routes
 $router->get('/browse',         [$customer, 'browse']);
 $router->get('/dish',           [$customer, 'dish']);
+$router->get('/chef/profile/public', [$customer, 'chef']);
 $router->get('/cart',           [$customer, 'cart']);
 $router->get('/checkout',       [$customer, 'checkout']);
 $router->get('/orders/history', [$customer, 'orderHistory']);
