@@ -64,36 +64,26 @@ ob_start();
                 <?php endforeach; ?>
             </div>
 
-            <!-- Order Summary -->
-            <div class="lg:col-span-1">
-                <div class="card-base p-8 sticky top-24">
-                    <h2 class="text-xl font-bold text-slate-800 mb-6 pb-6 border-b border-gray-50">Order Summary</h2>
-                    
-                    <div class="space-y-4 mb-8">
-                        <div class="flex justify-between text-slate-500 text-sm font-medium">
-                            <span>Subtotal</span>
-                            <span>৳<?= number_format($total, 0) ?></span>
-                        </div>
-                        <div class="flex justify-between text-slate-500 text-sm font-medium">
-                            <span>Delivery Fee</span>
-                            <span class="text-green-600 font-bold">FREE</span>
-                        </div>
-                        <div class="pt-4 border-t border-gray-50 flex justify-between items-center">
-                            <span class="font-bold text-slate-800">Total Amount</span>
-                            <span class="text-2xl font-black text-brand-600">৳<?= number_format($total, 0) ?></span>
-                        </div>
+            <!-- Total -->
+            <div class="bg-white rounded-2xl border border-brand-100 p-5 mb-4">
+                <div class="flex justify-between items-center text-sm text-gray-500 mb-2">
+                    <span>Subtotal</span>
+                    <span>৳<?= number_format($subtotal, 2) ?></span>
+                </div>
+                    <div class="flex justify-between items-center text-sm text-gray-500 mb-3">
+                        <span>Delivery Fee</span>
+                        <span>৳<?= number_format($deliveryFee, 2) ?></span>
                     </div>
-
-                    <a href="<?= url('/checkout') ?>" class="btn-primary w-full flex items-center justify-center gap-2 group">
-                        Checkout Now
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover:translate-x-1 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                    </a>
-                    
-                    <p class="text-[10px] text-slate-400 mt-6 text-center leading-relaxed">
-                        Shipping and taxes will be calculated at checkout.<br>Secure payment guaranteed.
-                    </p>
+                <div class="border-t border-gray-100 pt-3 flex justify-between items-center">
+                    <span class="font-bold text-gray-800">Grand Total</span>
+                    <span class="text-xl font-bold text-brand-600">৳<?= number_format($total, 2) ?></span>
                 </div>
             </div>
+
+            <a href="<?= url('/checkout') ?>"
+            class="block w-full text-center bg-brand-500 hover:bg-brand-600 text-white font-semibold py-3 rounded-xl transition-colors">
+            Confirm Order →
+            </a>
         </div>
     <?php endif; ?>
 </div>

@@ -143,9 +143,17 @@ class CustomerController extends Controller {
             header("Location: " . url('/chef-dashboard'));
             exit;
         }
-        $cart  = Session::get('cart') ?? [];
-        $total = array_sum(array_map(fn($i) => $i['price'] * $i['quantity'], $cart));
-        $this->view('customer/cart.php', ['user' => $user, 'cart' => $cart, 'total' => $total]);
+        $cart         = Session::get('cart') ?? [];
+        $subtotal     = array_sum(array_map(fn($i) => $i['price'] * $i['quantity'], $cart));
+        $deliveryFee  = empty($cart) ? 0 : 50;
+        $total        = $subtotal + $deliveryFee;
+        $this->view('customer/cart.php', [
+            'user'        => $user,
+            'cart'        => $cart,
+            'subtotal'    => $subtotal,
+            'deliveryFee' => $deliveryFee,
+            'total'       => $total
+        ]);
     }
 
     // Add to cart
@@ -221,8 +229,17 @@ class CustomerController extends Controller {
             exit;
         }
 
-        $total = array_sum(array_map(fn($i) => $i['price'] * $i['quantity'], $cart));
-        $this->view('customer/checkout.php', ['user' => $user, 'cart' => $cart, 'total' => $total]);
+        $subtotal    = array_sum(array_map(fn($i) => $i['price'] * $i['quantity'], $cart));
+        $deliveryFee = 50;
+        $total       = $subtotal + $deliveryFee;
+
+        $this->view('customer/checkout.php', [
+            'user'        => $user,
+            'cart'        => $cart,
+            'subtotal'    => $subtotal,
+            'deliveryFee' => $deliveryFee,
+            'total'       => $total
+        ]);
     }
 
     // Place order
@@ -369,5 +386,43 @@ class CustomerController extends Controller {
         $user   = requireAuth();
         $dishes = Favorite::findByCustomer($user['id']);
         $this->view('customer/favorites.php', ['user' => $user, 'dishes' => $dishes]);
+    }
+
+    // Track order
+    public function trackOrder() {
+        $user     = requireAuth();
+        $order_id = (int) ($_GET['id'] ?? 0);
+        $pdo      = \getDatabase();
+
+        $stmt = $pdo->prepare('
+            SELECT orders.*, users.name as chef_name
+            FROM orders
+            JOIN users ON orders.chef_id = users.id
+            WHERE orders.id = ? AND orders.customer_id = ?
+        ');
+        $stmt->execute([$order_id, $user['id']]);
+        $order = $stmt->fetch();
+
+        if (!$order) {
+            Session::set('error', 'Order not found.');
+            header("Location: " . url('/orders/history'));
+            exit;
+        }
+
+        // Get order items
+        $stmt = $pdo->prepare('
+            SELECT order_items.*, dishes.title, dishes.image
+            FROM order_items
+            JOIN dishes ON order_items.dish_id = dishes.id
+            WHERE order_items.order_id = ?
+        ');
+        $stmt->execute([$order_id]);
+        $items = $stmt->fetchAll();
+
+        $this->view('customer/track.php', [
+            'user'  => $user,
+            'order' => $order,
+            'items' => $items,
+        ]);
     }
 }

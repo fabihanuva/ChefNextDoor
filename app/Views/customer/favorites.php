@@ -6,7 +6,7 @@ ob_start();
 <div class="min-h-screen bg-brand-50">
     <nav class="bg-white border-b border-orange-100 px-6 py-4 flex items-center justify-between">
         <div class="flex items-center gap-2">
-            <span class="text-2xl">🍳</span>
+            <img src="/ChefNextDoor/assets/images/chefnextdoor_logo.jpeg" alt="ChefNextDoor" class="w-8 h-8 object-contain" />
             <span class="text-lg font-bold text-brand-600">ChefNextDoor</span>
         </div>
         <div class="flex items-center gap-4">

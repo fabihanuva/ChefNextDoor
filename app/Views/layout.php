@@ -62,7 +62,7 @@
         <div class="max-w-5xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
                 <div class="flex items-center gap-2 mb-3">
-                    <span class="text-2xl">🍳</span>
+                    <img src="/ChefNextDoor/assets/images/chefnextdoor_logo.jpeg" alt="ChefNextDoor" class="w-8 h-8 object-contain" />
                     <span class="text-lg font-bold text-brand-600">ChefNextDoor</span>
                 </div>
                 <p class="text-sm text-gray-500 leading-relaxed">From Their Home to Your Heart</p>

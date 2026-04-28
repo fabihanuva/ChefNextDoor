@@ -35,82 +35,79 @@ $dish   = new DishController();
 $customer = new CustomerController();
 $profile = new ProfileController();
 $support = new SupportController();
+
 // --- 4. Define routes ---
 
-// Auth pages (GET)
-$router->get('/',          [$auth, 'showLogin']);
-$router->get('/login',     [$auth, 'showLogin']);
-$router->get('/register',  [$auth, 'showRegister']);
+// Auth (GET)
+$router->get('/',         [$auth, 'showLogin']);
+$router->get('/login',    [$auth, 'showLogin']);
+$router->get('/register', [$auth, 'showRegister']);
+$router->get('/logout',   [$auth, 'logout']);
 
-// Support pages (GET)
-$router->get('/about',     [$support, 'about']);
-$router->get('/help',      [$support, 'help']);
-$router->get('/terms',     [$support, 'terms']);
-$router->get('/privacy',   [$support, 'privacy']);
+// Auth (POST)
+$router->post('/register', [$auth, 'register']);
+$router->post('/login',    [$auth, 'login']);
 
-// Dashboards (GET)
+// Support pages
+$router->get('/about',   [$support, 'about']);
+$router->get('/help',    [$support, 'help']);
+$router->get('/terms',   [$support, 'terms']);
+$router->get('/privacy', [$support, 'privacy']);
+
+// Dashboards
 $router->get('/dashboard',      [$dash, 'index']);
 $router->get('/chef-dashboard', [$dash, 'chef']);
 $router->get('/test-mail',      [$dash, 'testMail']);
 
-// Posts (GET)
+// Posts
 $router->get('/posts',     [$posts, 'index']);
 $router->get('/api/posts', [$posts, 'getPosts']);
+$router->post('/posts',    [$posts, 'create']);
 
-// Dish routes (GET)
+// Dishes (GET)
 $router->get('/dishes',        [$dish, 'index']);
 $router->get('/dishes/create', [$dish, 'create']);
 $router->get('/dishes/edit',   [$dish, 'edit']);
 
-// Dish routes (POST)
+// Dishes (POST)
 $router->post('/dishes/store',  [$dish, 'store']);
 $router->post('/dishes/update', [$dish, 'update']);
 $router->post('/dishes/delete', [$dish, 'destroy']);
-// Customer routes
-$router->get('/browse',         [$customer, 'browse']);
-$router->get('/dish',           [$customer, 'dish']);
+
+// Customer (GET)
+$router->get('/browse',              [$customer, 'browse']);
+$router->get('/chefs',               [$customer, 'chefs']);
+$router->get('/chef-menu',           [$customer, 'chefMenu']);
 $router->get('/chef/profile/public', [$customer, 'chef']);
-$router->get('/cart',           [$customer, 'cart']);
-$router->get('/checkout',       [$customer, 'checkout']);
-$router->get('/orders/history', [$customer, 'orderHistory']);
+$router->get('/dish',                [$customer, 'dish']);
+$router->get('/cart',                [$customer, 'cart']);
+$router->get('/checkout',            [$customer, 'checkout']);
+$router->get('/orders/history',      [$customer, 'orderHistory']);
+$router->get('/order/track',         [$customer, 'trackOrder']);
+$router->get('/review',              [$customer, 'reviewForm']);
+$router->get('/favorites',           [$customer, 'favorites']);
 
-$router->get('/chefs',      [$customer, 'chefs']);
-$router->get('/chef-menu',  [$customer, 'chefMenu']);
-
-$router->post('/cart/add',      [$customer, 'addToCart']);
-$router->post('/cart/remove',   [$customer, 'removeFromCart']);
-$router->post('/cart/update',   [$customer, 'updateCart']);
-$router->post('/order/place',   [$customer, 'placeOrder']);
-
-// Chef order management
-$router->get('/chef/orders',          [$dash, 'orders']);
-$router->post('/chef/orders/update',  [$dash, 'updateOrderStatus']);
-
-// Placeholder routes
-$router->get('/orders',   function() { echo "Manage Orders coming soon!"; });
-$router->get('/earnings', function() { echo "Earnings coming soon!"; });
-
-// Auth routes
-$router->post('/register', [$auth, 'register']);
-$router->post('/login',    [$auth, 'login']);
-$router->post('/posts',    [$posts, 'create']);
-$router->get('/logout',    [$auth, 'logout']);
-
-// Reviews & Favourites
-$router->get('/review',           [$customer, 'reviewForm']);
+// Customer (POST)
+$router->post('/cart/add',        [$customer, 'addToCart']);
+$router->post('/cart/remove',     [$customer, 'removeFromCart']);
+$router->post('/cart/update',     [$customer, 'updateCart']);
+$router->post('/order/place',     [$customer, 'placeOrder']);
 $router->post('/review/submit',   [$customer, 'submitReview']);
 $router->post('/favorite/toggle', [$customer, 'toggleFavorite']);
-$router->get('/favorites',        [$customer, 'favorites']);
 
-$router->get('/chef/reviews', [$dash, 'chefReviews']);
+// Chef order management
+$router->get('/chef/orders',         [$dash, 'orders']);
+$router->get('/chef/reviews',        [$dash, 'chefReviews']);
+$router->post('/chef/orders/update', [$dash, 'updateOrderStatus']);
 
 // Profile
-$router->get('/profile',          [$profile, 'show']);
-$router->post('/profile/update',  [$profile, 'update']);
-$router->post('/profile/password',[$profile, 'changePassword']);
-
+$router->get('/profile',              [$profile, 'show']);
 $router->get('/chef/profile',         [$profile, 'chefProfile']);
+$router->post('/profile/update',      [$profile, 'update']);
+$router->post('/profile/password',    [$profile, 'changePassword']);
 $router->post('/chef/profile/update', [$profile, 'updateChefProfile']);
+
+
 
 // --- 5. Fix URL before dispatch (CRITICAL) ---
 $uri = $_SERVER['REQUEST_URI'] ?? '/';
