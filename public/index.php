@@ -74,6 +74,9 @@ $router->get('/cart',           [$customer, 'cart']);
 $router->get('/checkout',       [$customer, 'checkout']);
 $router->get('/orders/history', [$customer, 'orderHistory']);
 
+$router->get('/chefs',      [$customer, 'chefs']);
+$router->get('/chef-menu',  [$customer, 'chefMenu']);
+
 $router->post('/cart/add',      [$customer, 'addToCart']);
 $router->post('/cart/remove',   [$customer, 'removeFromCart']);
 $router->post('/cart/update',   [$customer, 'updateCart']);

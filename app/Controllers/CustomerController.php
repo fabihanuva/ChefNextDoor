@@ -51,6 +51,75 @@ class CustomerController extends Controller {
             'dishes' => $dishes
         ]);
     }
+    
+    
+    // Browse chefs
+    public function chefs() {
+        $user = requireAuth();
+        if ($user['role'] !== 'customer') {
+            header("Location: " . url('/chef-dashboard'));
+            exit;
+        }
+        $pdo  = \getDatabase();
+        $stmt = $pdo->prepare('
+            SELECT users.id, users.name, chef_profiles.bio, chef_profiles.specialty,
+                chef_profiles.location, chef_profiles.rating,
+                AVG(reviews.rating) as avg_rating,
+                COUNT(reviews.id) as review_count
+            FROM users
+            LEFT JOIN chef_profiles ON users.id = chef_profiles.user_id
+            LEFT JOIN reviews ON users.id = reviews.chef_id
+            WHERE users.role = "chef"
+            GROUP BY users.id
+            ORDER BY avg_rating DESC
+        ');
+        $stmt->execute();
+        $chefs = $stmt->fetchAll();
+        $this->view('customer/chefs.php', ['user' => $user, 'chefs' => $chefs]);
+    }
+
+    // View chef menu
+    public function chefMenu() {
+        $user    = requireAuth();
+        $chef_id = (int) ($_GET['id'] ?? 0);
+        $pdo     = \getDatabase();
+
+        // Get chef info
+        $stmt = $pdo->prepare('
+            SELECT users.id, users.name, chef_profiles.bio,
+                chef_profiles.specialty, chef_profiles.location,
+                AVG(reviews.rating) as avg_rating,
+                COUNT(reviews.id) as review_count
+            FROM users
+            LEFT JOIN chef_profiles ON users.id = chef_profiles.user_id
+            LEFT JOIN reviews ON users.id = reviews.chef_id
+            WHERE users.id = ? AND users.role = "chef"
+            GROUP BY users.id
+        ');
+        $stmt->execute([$chef_id]);
+        $chef = $stmt->fetch();
+
+        if (!$chef) {
+            Session::set('error', 'Chef not found.');
+            header("Location: " . url('/chefs'));
+            exit;
+        }
+
+        // Get chef dishes
+        $stmt = $pdo->prepare('SELECT * FROM dishes WHERE chef_id = ? AND availability = 1 ORDER BY created_at DESC');
+        $stmt->execute([$chef_id]);
+        $dishes = $stmt->fetchAll();
+
+        // Get cart
+        $cart = Session::get('cart') ?? [];
+
+        $this->view('customer/chef-menu.php', [
+            'user'   => $user,
+            'chef'   => $chef,
+            'dishes' => $dishes,
+            'cart'   => $cart,
+        ]);
+    }
 
     // View single dish
     public function dish() {
@@ -107,8 +176,8 @@ class CustomerController extends Controller {
         }
 
         Session::set('cart', $cart);
-        Session::set('success', $dish['title'] . ' added to cart!');
-        header("Location: " . url('/browse'));
+        Session::set('success', '✓ ' . $dish['title'] . ' added to cart!');
+        header("Location: " . url('/chef-menu?id=' . $dish['chef_id']));
         exit;
     }
 
@@ -200,7 +269,7 @@ class CustomerController extends Controller {
 
         // Clear cart
         Session::set('cart', []);
-        Session::set('success', 'Order placed successfully! 🎉');
+        Session::set('success', '✓ Order placed successfully! 🎉');
         header("Location: " . url('/orders/history'));
         exit;
     }
@@ -272,7 +341,7 @@ class CustomerController extends Controller {
             'comment'     => $comment,
         ]);
 
-        Session::set('success', 'Review submitted! ⭐');
+        Session::set('success', '✓ Review submitted! ⭐');
         header("Location: " . url('/orders/history'));
         exit;
     }
@@ -290,7 +359,8 @@ class CustomerController extends Controller {
             Session::set('success', 'Added to favourites! ❤️');
         }
 
-        header("Location: " . url('/browse'));
+        $dish = \App\Models\Dish::findById($dish_id);
+        header("Location: " . url('/chef-menu?id=' . ($dish['chef_id'] ?? '')));
         exit;
     }
 
