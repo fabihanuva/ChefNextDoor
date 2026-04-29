@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><?= htmlspecialchars($title ?? 'ChefNextDoor') ?></title>
+    <title><?= e($title ?? 'ChefNextDoor') ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
     .btn-primary {
@@ -94,7 +94,7 @@
     <?php if ($toast): ?>
     <div id="toast"
         class="fixed bottom-6 right-6 bg-brand-500 text-white px-5 py-3 rounded-2xl shadow-lg text-sm font-medium flex items-center gap-2 z-50">
-        <?= htmlspecialchars($toast) ?>
+        <?= e($toast) ?>
     </div>
     <script>
         setTimeout(() => {

@@ -46,7 +46,7 @@ $user = Session::get('user');
                         <div class="w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center text-brand-600 font-bold text-sm">
                             <?= strtoupper(substr($user['name'], 0, 1)) ?>
                         </div>
-                        <span class="text-sm font-medium text-gray-700 hidden sm:block"><?= htmlspecialchars($user['name']) ?></span>
+                        <span class="text-sm font-medium text-gray-700 hidden sm:block"><?= e($user['name']) ?></span>
                     </button>
                     <!-- Simple dropdown on hover -->
                     <div class="absolute right-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">

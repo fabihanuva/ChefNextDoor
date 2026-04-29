@@ -124,7 +124,7 @@ ob_start();
                             </div>
                             <div class="text-sm">
                                 <p class="text-gray-400 font-medium">Prepared by</p>
-                                <p class="font-bold text-gray-800">Chef <?= htmlspecialchars($order['chef_name']) ?></p>
+                                <p class="font-bold text-gray-800">Chef <?= e($order['chef_name']) ?></p>
                             </div>
                         </div>
 
@@ -145,7 +145,7 @@ ob_start();
                             <?php endif; ?>
                             <div class="text-gray-400 text-xs flex items-center gap-2 max-w-[200px]">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                                <span class="truncate"><?= htmlspecialchars($order['delivery_address']) ?></span>
+                                <span class="truncate"><?= e($order['delivery_address']) ?></span>
                             </div>
                         </div>
                     </div>

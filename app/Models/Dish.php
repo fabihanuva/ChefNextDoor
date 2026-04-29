@@ -1,8 +1,6 @@
 <?php
 namespace App\Models;
-
 use PDO;
-
 require_once __DIR__ . '/../../config/database.php';
 
 class Dish {
@@ -15,13 +13,13 @@ class Dish {
         ');
         $stmt->execute([
             $data['chef_id'],
-            $data['title'],
-            $data['description'],
-            $data['price'],
-            $data['image'],
-            $data['category'],
-            $data['availability'],
-            $data['stock'],
+            $data['title'] ?? '',
+            $data['description'] ?? '',
+            $data['price'] ?? 0,
+            $data['image'] ?? '',
+            $data['category'] ?? '',
+            $data['availability'] ?? 1,
+            $data['stock'] ?? 0,
         ]);
         return (int) $pdo->lastInsertId();
     }
@@ -49,13 +47,13 @@ class Dish {
             WHERE id=?
         ');
         $stmt->execute([
-            $data['title'],
-            $data['description'],
-            $data['price'],
-            $data['image'],
-            $data['category'],
-            $data['availability'],
-            $data['stock'],
+            $data['title'] ?? '',
+            $data['description'] ?? '',
+            $data['price'] ?? 0,
+            $data['image'] ?? '',
+            $data['category'] ?? '',
+            $data['availability'] ?? 1,
+            $data['stock'] ?? 0,
             $id,
         ]);
     }
@@ -68,23 +66,31 @@ class Dish {
 
     public static function all(): array {
         $pdo  = getDatabase();
-        $stmt = $pdo->query('SELECT dishes.*, users.name as chef_name FROM dishes JOIN users ON dishes.chef_id = users.id ORDER BY dishes.created_at DESC');
+        $stmt = $pdo->query('
+            SELECT dishes.*, users.name as chef_name
+            FROM dishes
+            JOIN users ON dishes.chef_id = users.id
+            ORDER BY dishes.created_at DESC
+        ');
         return $stmt->fetchAll();
     }
 
     public static function search(?string $keyword = null, ?string $category = null): array {
-        $pdo = getDatabase();
-        $sql = 'SELECT dishes.*, users.name as chef_name FROM dishes JOIN users ON dishes.chef_id = users.id WHERE dishes.availability = 1';
+        $pdo    = getDatabase();
+        $sql    = 'SELECT dishes.*, users.name as chef_name
+                   FROM dishes
+                   JOIN users ON dishes.chef_id = users.id
+                   WHERE dishes.availability = 1';
         $params = [];
 
         if ($keyword) {
-            $sql .= ' AND (dishes.title LIKE ? OR dishes.description LIKE ?)';
+            $sql     .= ' AND (dishes.title LIKE ? OR dishes.description LIKE ?)';
             $params[] = "%$keyword%";
             $params[] = "%$keyword%";
         }
 
         if ($category && $category !== 'All') {
-            $sql .= ' AND dishes.category = ?';
+            $sql     .= ' AND dishes.category = ?';
             $params[] = $category;
         }
 

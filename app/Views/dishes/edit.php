@@ -15,7 +15,8 @@ ob_start();
         <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-500 to-orange-400"></div>
         
         <form method="POST" action="<?= url('/dishes/update') ?>" enctype="multipart/form-data" class="space-y-8">
-            <input type="hidden" name="id" value="<?= $dish['id'] ?>" />
+            <?= csrf_field() ?>
+            <input type="hidden" name="id" value="<?= $dish['id'] ?>">
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Title -->

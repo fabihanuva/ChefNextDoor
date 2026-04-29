@@ -64,6 +64,7 @@ ob_start();
 
             <div class="card-base p-8">
                 <form method="POST" action="<?= url('/login') ?>" class="space-y-5">
+                    <?= csrf_field() ?>
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-2">Email Address</label>
                         <input type="email" name="email" required placeholder="name@example.com"

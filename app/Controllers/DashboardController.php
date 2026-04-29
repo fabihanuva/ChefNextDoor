@@ -4,6 +4,8 @@ namespace App\Controllers;
 use App\Core\Controller;
 use App\Core\Session;
 use App\Models\Dish;
+use App\Models\Order;
+use App\Models\Review;
 
 require_once __DIR__ . '/../../config/database.php';
 
@@ -36,31 +38,16 @@ class DashboardController extends Controller {
         $totalDishes = $stmt->fetch()['total'];
 
         // Pending orders
-        $stmt = $pdo->prepare('SELECT COUNT(*) as total FROM orders WHERE chef_id = ? AND status = "pending"');
-        $stmt->execute([$user['id']]);
-        $pendingOrders = $stmt->fetch()['total'];
+        $pendingOrders = Order::countPendingByChef($user['id']);
 
         // Total earnings (delivered orders only)
-        $stmt = $pdo->prepare('SELECT SUM(total_price) as total FROM orders WHERE chef_id = ? AND status = "delivered"');
-        $stmt->execute([$user['id']]);
-        $earnings = $stmt->fetch()['total'] ?? 0;
+        $earnings = Order::earningsByChef($user['id']);
 
         // Average rating
-        $stmt = $pdo->prepare('SELECT AVG(rating) as avg FROM reviews WHERE chef_id = ?');
-        $stmt->execute([$user['id']]);
-        $avgRating = round((float)($stmt->fetch()['avg'] ?? 0), 1);
+        $avgRating = Review::averageRating($user['id']);
 
         // Recent reviews
-        $stmt = $pdo->prepare('
-            SELECT reviews.*, users.name as customer_name
-            FROM reviews
-            JOIN users ON reviews.customer_id = users.id
-            WHERE reviews.chef_id = ?
-            ORDER BY reviews.created_at DESC
-            LIMIT 5
-        ');
-        $stmt->execute([$user['id']]);
-        $reviews = $stmt->fetchAll();
+        $reviews = Review::latestByChef($user['id']);
 
         $this->view('chef-dashboard.php', [
             'user'          => $user,
@@ -79,18 +66,8 @@ class DashboardController extends Controller {
             exit;
         }
 
-        $pdo  = \getDatabase();
-        $stmt = $pdo->prepare('
-            SELECT reviews.*, users.name as customer_name
-            FROM reviews
-            JOIN users ON reviews.customer_id = users.id
-            WHERE reviews.chef_id = ?
-            ORDER BY reviews.created_at DESC
-        ');
-        $stmt->execute([$user['id']]);
-        $reviews = $stmt->fetchAll();
-
-        $avgRating = round(array_sum(array_column($reviews, 'rating')) / max(count($reviews), 1), 1);
+        $reviews = Review::findByChef($user['id']);
+        $avgRating = Review::averageRating($user['id']);
 
         $this->view('chef/reviews.php', [
             'user'      => $user,
@@ -124,22 +101,14 @@ class DashboardController extends Controller {
             exit;
         }
 
-        $pdo = \getDatabase();
-        $stmt = $pdo->prepare('
-            SELECT orders.*, users.name as customer_name
-            FROM orders
-            JOIN users ON orders.customer_id = users.id
-            WHERE orders.chef_id = ?
-            ORDER BY orders.created_at DESC
-        ');
-        $stmt->execute([$user['id']]);
-        $orders = $stmt->fetchAll();
+        $orders = Order::findByChef($user['id']);
 
         $this->view('chef/orders.php', ['user' => $user, 'orders' => $orders]);
     } 
 
     // Update order status
     public function updateOrderStatus() {
+        checkCsrf();
         $user      = requireAuth();
         $order_id  = (int) ($_POST['order_id'] ?? 0);
         $status    = $_POST['status'] ?? '';

@@ -20,14 +20,14 @@ ob_start();
 
         <?php if (Session::get('success')): ?>
             <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl text-sm">
-                <?= htmlspecialchars(Session::get('success')) ?>
+                <?= e(Session::get('success')) ?>
                 <?php Session::remove('success'); ?>
             </div>
         <?php endif; ?>
 
         <?php if (Session::get('error')): ?>
             <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
-                <?= htmlspecialchars(Session::get('error')) ?>
+                <?= e(Session::get('error')) ?>
                 <?php Session::remove('error'); ?>
             </div>
         <?php endif; ?>
@@ -69,9 +69,9 @@ ob_start();
                         <div class="flex items-start justify-between mb-3">
                             <div>
                                 <p class="font-semibold text-gray-800">Order #<?= $order['id'] ?></p>
-                                <p class="text-xs text-gray-400 mt-0.5">👤 <?= htmlspecialchars($order['customer_name']) ?></p>
+                                <p class="text-xs text-gray-400 mt-0.5">👤 <?= e($order['customer_name']) ?></p>
                                 <p class="text-xs text-gray-400">📅 <?= date('d M Y, h:i A', strtotime($order['created_at'])) ?></p>
-                                <p class="text-xs text-gray-400 mt-1">📍 <?= htmlspecialchars($order['delivery_address']) ?></p>
+                                <p class="text-xs text-gray-400 mt-1">📍 <?= e($order['delivery_address']) ?></p>
                             </div>
                             <div class="text-right">
                                 <span class="text-xs px-3 py-1 rounded-full font-medium border <?= $statusColor ?>">
@@ -86,6 +86,7 @@ ob_start();
                             <div class="border-t border-gray-50 pt-3 flex gap-2 flex-wrap">
                                 <?php if ($next): ?>
                                     <form method="POST" action="<?= url('/chef/orders/update') ?>">
+                                        <?= csrf_field() ?>
                                         <input type="hidden" name="order_id" value="<?= $order['id'] ?>" />
                                         <input type="hidden" name="status" value="<?= $next ?>" />
                                         <button type="submit"
@@ -98,6 +99,7 @@ ob_start();
                                 <?php if ($order['status'] === 'pending'): ?>
                                     <form method="POST" action="<?= url('/chef/orders/update') ?>"
                                         onsubmit="return confirm('Cancel this order?')">
+                                        <?= csrf_field() ?>
                                         <input type="hidden" name="order_id" value="<?= $order['id'] ?>" />
                                         <input type="hidden" name="status" value="cancelled" />
                                         <button type="submit"

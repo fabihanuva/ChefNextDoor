@@ -23,16 +23,16 @@ ob_start();
             <div class="flex-grow text-center md:text-left">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
                     <div>
-                        <h1 class="text-4xl font-black text-slate-900 tracking-tight mb-1"><?= htmlspecialchars($profile['name']) ?></h1>
-                        <p class="text-brand-600 font-bold uppercase tracking-[0.2em] text-xs"><?= htmlspecialchars($profile['specialty'] ?? 'Home Chef Extraordinaire') ?></p>
+                        <h1 class="text-4xl font-black text-slate-900 tracking-tight mb-1"><?= e($profile['name']) ?></h1>
+                        <p class="text-brand-600 font-bold uppercase tracking-[0.2em] text-xs"><?= e($profile['specialty'] ?? 'Home Chef Extraordinaire') ?></p>
                     </div>
                     <div class="flex items-center justify-center md:justify-end gap-3">
                         <div class="px-4 py-2 rounded-xl bg-slate-50 border border-slate-100 flex items-center gap-2">
                             <span class="text-yellow-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                             </span>
-                            <span class="text-slate-700 font-bold">4.9</span>
-                            <span class="text-slate-400 text-xs font-medium">(120+ reviews)</span>
+                            <span class="text-slate-700 font-bold"><?= $profile['avg_rating'] > 0 ? number_format($profile['avg_rating'], 1) : 'N/A' ?></span>
+                            <span class="text-slate-400 text-xs font-medium">(<?= $profile['review_count'] ?> reviews)</span>
                         </div>
                     </div>
                 </div>
@@ -44,7 +44,7 @@ ob_start();
                 <div class="flex flex-wrap items-center justify-center md:justify-start gap-6 text-sm">
                     <div class="flex items-center gap-2 text-slate-500">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-brand-500"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-                        <span class="font-medium"><?= htmlspecialchars($profile['location'] ?? 'Available for delivery') ?></span>
+                        <span class="font-medium"><?= e($profile['location'] ?? 'Available for delivery') ?></span>
                     </div>
                     <div class="flex items-center gap-2 text-slate-500">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-brand-500"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
@@ -75,8 +75,8 @@ ob_start();
                     <!-- Image Section -->
                     <div class="relative h-48 overflow-hidden">
                         <?php if ($d['image']): ?>
-                            <img src="/ChefNextDoor/uploads/dishes/<?= htmlspecialchars($d['image']) ?>"
-                                 alt="<?= htmlspecialchars($d['title']) ?>"
+                            <img src="/ChefNextDoor/uploads/dishes/<?= e($d['image']) ?>"
+                                 alt="<?= e($d['title']) ?>"
                                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                         <?php else: ?>
                             <div class="w-full h-full bg-slate-100 flex items-center justify-center text-5xl">🍲</div>
@@ -84,7 +84,7 @@ ob_start();
                         
                         <div class="absolute top-4 left-4">
                             <span class="px-3 py-1 rounded-full bg-white/90 backdrop-blur-sm text-brand-600 text-[10px] font-bold uppercase tracking-wider shadow-sm">
-                                <?= htmlspecialchars($d['category'] ?? 'General') ?>
+                                <?= e($d['category'] ?? 'General') ?>
                             </span>
                         </div>
                     </div>
@@ -93,25 +93,27 @@ ob_start();
                     <div class="p-5 flex-grow flex flex-col">
                         <div class="flex justify-between items-start mb-3">
                             <h3 class="font-bold text-slate-800 text-lg leading-snug group-hover:text-brand-600 transition-colors">
-                                <?= htmlspecialchars($d['title']) ?>
+                                <?= e($d['title']) ?>
                             </h3>
                             <span class="text-xl font-black text-brand-600">৳<?= number_format($d['price'], 0) ?></span>
                         </div>
 
                         <p class="text-sm text-slate-500 line-clamp-2 mb-6 leading-relaxed flex-grow">
-                            <?= htmlspecialchars($d['description'] ?? 'No description provided.') ?>
+                            <?= e($d['description'] ?? 'No description provided.') ?>
                         </p>
 
-                        <div class="mt-auto flex items-center gap-3">
+                        <div class="mt-4 flex gap-2">
                             <form method="POST" action="<?= url('/cart/add') ?>" class="flex-grow">
-                                <input type="hidden" name="dish_id" value="<?= $d['id'] ?>" />
+                                <?= csrf_field() ?>
+                                <input type="hidden" name="dish_id" value="<?= $d['id'] ?>">
                                 <button type="submit" class="w-full btn-primary !py-2.5 !text-sm flex items-center justify-center gap-2 group/btn">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="group-hover/btn:translate-x-1 transition-transform"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
                                     Add to Cart
                                 </button>
                             </form>
                             <form method="POST" action="<?= url('/favorite/toggle') ?>">
-                                <input type="hidden" name="dish_id" value="<?= $d['id'] ?>" />
+                                <?= csrf_field() ?>
+                                <input type="hidden" name="dish_id" value="<?= $d['id'] ?>">
                                 <button type="submit" class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center hover:bg-red-50 hover:text-red-500 transition-all active:scale-95">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="<?= Favorite::isFavorited($user['id'], $d['id']) ? 'currentColor' : 'none' ?>" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
                                 </button>
@@ -122,6 +124,46 @@ ob_start();
             <?php endforeach; ?>
         </div>
     <?php endif; ?>
+
+    <!-- Customer Reviews Section -->
+    <div class="mt-20">
+        <div class="mb-10 flex items-center justify-between">
+            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Customer Reviews</h2>
+            <div class="h-px bg-slate-100 flex-grow mx-8 hidden md:block"></div>
+        </div>
+
+        <?php if (empty($reviews)): ?>
+            <div class="card-base p-12 text-center bg-slate-50/50 border-dashed">
+                <p class="text-slate-400 font-medium italic">No reviews yet for this chef. Be the first to order and leave feedback!</p>
+            </div>
+        <?php else: ?>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <?php foreach ($reviews as $r): ?>
+                    <div class="card-base p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-brand-50 flex items-center justify-center text-brand-600 font-bold text-sm">
+                                    <?= strtoupper(substr($r['customer_name'], 0, 1)) ?>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-slate-800 text-sm"><?= e($r['customer_name']) ?></p>
+                                    <p class="text-[10px] text-slate-400 font-medium uppercase tracking-wider"><?= date('d M Y', strtotime($r['created_at'])) ?></p>
+                                </div>
+                            </div>
+                            <div class="flex text-yellow-400">
+                                <?php for ($i = 0; $i < 5; $i++): ?>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="<?= $i < $r['rating'] ? 'currentColor' : 'none' ?>" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="<?= $i < $r['rating'] ? '' : 'text-slate-200' ?>"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                <?php endfor; ?>
+                            </div>
+                        </div>
+                        <p class="text-sm text-slate-600 leading-relaxed italic">
+                            "<?= e($r['comment'] ?? 'No written feedback provided.') ?>"
+                        </p>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
 </div>
 <?php
 $content = ob_get_clean();

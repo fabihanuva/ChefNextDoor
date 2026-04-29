@@ -12,6 +12,7 @@ class PostController extends Controller {
     }
 
     public function create() {
+        checkCsrf();
         $user = requireAuth();
 
         $content = trim($_POST['content'] ?? '');

@@ -28,7 +28,7 @@ ob_start();
                     <div class="card-base p-5 flex items-center gap-6">
                         <div class="w-20 h-20 shrink-0 rounded-2xl overflow-hidden bg-slate-100">
                             <?php if ($item['image']): ?>
-                                <img src="/ChefNextDoor/uploads/dishes/<?= htmlspecialchars($item['image']) ?>"
+                                <img src="/ChefNextDoor/uploads/dishes/<?= e($item['image']) ?>"
                                      class="w-full h-full object-cover" />
                             <?php else: ?>
                                 <div class="w-full h-full flex items-center justify-center text-3xl">🍲</div>
@@ -36,19 +36,21 @@ ob_start();
                         </div>
 
                         <div class="flex-grow">
-                            <h3 class="font-bold text-slate-800"><?= htmlspecialchars($item['title']) ?></h3>
+                            <h3 class="font-bold text-slate-800"><?= e($item['title']) ?></h3>
                             <p class="text-brand-600 font-black text-sm mt-1">৳<?= number_format($item['price'], 0) ?></p>
                             
                             <div class="flex items-center gap-4 mt-3">
                                 <form method="POST" action="<?= url('/cart/update') ?>" class="flex items-center bg-slate-50 rounded-lg p-1 border border-slate-100">
-                                    <input type="hidden" name="dish_id" value="<?= $item['id'] ?>" />
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="dish_id" value="<?= $id ?>" />
                                     <input type="number" name="quantity" value="<?= $item['quantity'] ?>" min="0"
                                         class="w-12 bg-transparent text-center text-sm font-bold text-slate-700 outline-none" />
                                     <button type="submit" class="text-[10px] font-black uppercase text-brand-600 px-2 hover:bg-white rounded-md transition-colors">Update</button>
                                 </form>
 
                                 <form method="POST" action="<?= url('/cart/remove') ?>">
-                                    <input type="hidden" name="dish_id" value="<?= $item['id'] ?>" />
+                                    <?= csrf_field() ?>
+                                    <input type="hidden" name="dish_id" value="<?= $id ?>" />
                                     <button type="submit" class="text-slate-300 hover:text-red-500 transition-colors">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
                                     </button>

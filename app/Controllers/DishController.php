@@ -19,6 +19,7 @@ class DishController extends Controller {
 
     // Handle add dish form submission
     public function store() {
+        checkCsrf();
         $user = requireAuth();
         if ($user['role'] !== 'chef') {
             header("Location: " . url('/dashboard'));
@@ -103,6 +104,7 @@ class DishController extends Controller {
 
     // Handle edit form submission
     public function update() {
+        checkCsrf();
         $user = requireAuth();
         $id   = (int) ($_POST['id'] ?? 0);
         $dish = Dish::findById($id);
@@ -161,6 +163,7 @@ class DishController extends Controller {
 
     // Delete dish
     public function destroy() {
+        checkCsrf();
         $user = requireAuth();
         $id   = (int) ($_POST['id'] ?? 0);
         $dish = Dish::findById($id);

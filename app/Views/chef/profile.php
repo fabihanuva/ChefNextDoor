@@ -38,29 +38,30 @@ ob_start();
                         <?= strtoupper(substr($user['name'], 0, 1)) ?>
                     </div>
                     <div>
-                        <h2 class="text-xl font-bold text-slate-800"><?= htmlspecialchars($user['name']) ?></h2>
+                        <h2 class="text-xl font-bold text-slate-800"><?= e($user['name']) ?></h2>
                         <p class="text-slate-400 text-sm">Update your public chef profile to attract more customers.</p>
                     </div>
                 </div>
 
                 <form method="POST" action="<?= url('/chef/profile/update') ?>" class="space-y-6">
+                    <?= csrf_field() ?>
                     <div>
                         <label class="block text-sm font-bold text-slate-700 mb-2">Professional Bio</label>
                         <textarea name="bio" rows="4" placeholder="Tell customers about your culinary journey, experience, and why they should choose your food..."
-                            class="input-base resize-none"><?= htmlspecialchars($profile['bio'] ?? '') ?></textarea>
+                            class="input-base resize-none"><?= e($profile['bio'] ?? '') ?></textarea>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
                             <label class="block text-sm font-bold text-slate-700 mb-2">Primary Specialty</label>
                             <input type="text" name="specialty" placeholder="e.g. Authentic Bengali Cuisine"
-                                value="<?= htmlspecialchars($profile['specialty'] ?? '') ?>"
+                                value="<?= e($profile['specialty'] ?? '') ?>"
                                 class="input-base" />
                         </div>
                         <div>
                             <label class="block text-sm font-bold text-slate-700 mb-2">Kitchen Location</label>
                             <input type="text" name="location" placeholder="e.g. Gulshan, Dhaka"
-                                value="<?= htmlspecialchars($profile['location'] ?? '') ?>"
+                                value="<?= e($profile['location'] ?? '') ?>"
                                 class="input-base" />
                         </div>
                     </div>

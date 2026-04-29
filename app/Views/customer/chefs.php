@@ -41,15 +41,15 @@ ob_start();
                             <?= strtoupper(substr($chef['name'], 0, 1)) ?>
                         </div>
                         <div class="flex-1">
-                            <h3 class="font-semibold text-gray-800 group-hover:text-brand-600"><?= htmlspecialchars($chef['name']) ?></h3>
+                            <h3 class="font-semibold text-gray-800 group-hover:text-brand-600"><?= e($chef['name']) ?></h3>
                             <?php if ($chef['specialty']): ?>
-                                <p class="text-xs text-brand-600 font-medium mt-0.5"><?= htmlspecialchars($chef['specialty']) ?></p>
+                                <p class="text-xs text-brand-600 font-medium mt-0.5"><?= e($chef['specialty']) ?></p>
                             <?php endif; ?>
                             <?php if ($chef['bio']): ?>
-                                <p class="text-xs text-gray-400 mt-1 line-clamp-1"><?= htmlspecialchars($chef['bio']) ?></p>
+                                <p class="text-xs text-gray-400 mt-1 line-clamp-1"><?= e($chef['bio']) ?></p>
                             <?php endif; ?>
                             <?php if ($chef['location']): ?>
-                                <p class="text-xs text-gray-400 mt-0.5">📍 <?= htmlspecialchars($chef['location']) ?></p>
+                                <p class="text-xs text-gray-400 mt-0.5">📍 <?= e($chef['location']) ?></p>
                             <?php endif; ?>
                         </div>
                         <div class="text-right shrink-0">

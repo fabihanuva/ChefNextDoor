@@ -35,6 +35,7 @@ class AuthController extends Controller {
     }
 
     public function register() {
+        checkCsrf();
         $name     = trim($_POST['name'] ?? '');
         $role     = $_POST['role'] ?? 'customer';
         $email    = trim($_POST['email'] ?? '');
@@ -73,6 +74,7 @@ class AuthController extends Controller {
     }
 
     public function login() {
+        checkCsrf();
         $email    = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
 

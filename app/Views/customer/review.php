@@ -22,6 +22,7 @@ ob_start();
             <p class="text-sm text-gray-500 mb-6">Order #<?= $order['id'] ?> — Share your experience!</p>
 
             <form method="POST" action="<?= url('/review/submit') ?>" class="space-y-5">
+                <?= csrf_field() ?>
                 <input type="hidden" name="order_id" value="<?= $order['id'] ?>" />
 
                 <!-- Star rating -->

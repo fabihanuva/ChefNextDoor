@@ -45,10 +45,12 @@ class CustomerController extends Controller {
         }
 
         $dishes = Dish::findByChef($chefId);
+        $reviews = Review::findByChef($chefId);
         $this->view('customer/chef.php', [
             'user' => $user, 
             'profile' => $profile, 
-            'dishes' => $dishes
+            'dishes' => $dishes,
+            'reviews' => $reviews
         ]);
     }
     
@@ -158,6 +160,7 @@ class CustomerController extends Controller {
 
     // Add to cart
     public function addToCart() {
+        checkCsrf();
         $user    = requireAuth();
         $dish_id = (int) ($_POST['dish_id'] ?? 0);
         $dish    = \App\Models\Dish::findById($dish_id);
@@ -191,6 +194,7 @@ class CustomerController extends Controller {
 
     // Remove from cart
     public function removeFromCart() {
+        checkCsrf();
         $dish_id = (int) ($_POST['dish_id'] ?? 0);
         $cart    = Session::get('cart') ?? [];
         unset($cart[$dish_id]);
@@ -201,6 +205,7 @@ class CustomerController extends Controller {
 
     // Update cart quantity
     public function updateCart() {
+        checkCsrf();
         $dish_id  = (int) ($_POST['dish_id'] ?? 0);
         $quantity = (int) ($_POST['quantity'] ?? 1);
         $cart     = Session::get('cart') ?? [];
@@ -244,6 +249,7 @@ class CustomerController extends Controller {
 
     // Place order
     public function placeOrder() {
+        checkCsrf();
         $user    = requireAuth();
         $cart    = Session::get('cart') ?? [];
         $address = trim($_POST['address'] ?? '');
@@ -268,8 +274,10 @@ class CustomerController extends Controller {
             $byChef[$item['chef_id']][] = $item;
         }
 
+        $deliveryFee = 50;
         foreach ($byChef as $chef_id => $items) {
-            $total = array_sum(array_map(fn($i) => $i['price'] * $i['quantity'], $items));
+            $subtotal = array_sum(array_map(fn($i) => $i['price'] * $i['quantity'], $items));
+            $total    = $subtotal + $deliveryFee;
 
             // Create order
             $stmt = $pdo->prepare('INSERT INTO orders (customer_id, chef_id, total_price, delivery_address, status) VALUES (?, ?, ?, ?, ?)');
@@ -328,6 +336,7 @@ class CustomerController extends Controller {
 
     // Submit review
     public function submitReview() {
+        checkCsrf();
         $user     = requireAuth();
         $order_id = (int) ($_POST['order_id'] ?? 0);
         $rating   = (int) ($_POST['rating'] ?? 0);
@@ -365,6 +374,7 @@ class CustomerController extends Controller {
 
     // Toggle favorite
     public function toggleFavorite() {
+        checkCsrf();
         $user    = requireAuth();
         $dish_id = (int) ($_POST['dish_id'] ?? 0);
 

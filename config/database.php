@@ -12,10 +12,10 @@ function getDatabase(): PDO {
     static $pdo = null;
 
     if ($pdo === null) {
-        $host = getenv('DB_HOST') ?: '127.0.0.1';
-        $db   = getenv('DB_NAME') ?: 'chefnextdoor';
-        $user = getenv('DB_USER') ?: 'root';
-        $pass = getenv('DB_PASS') ?: '';
+        $host = $_ENV['DB_HOST'] ?? '127.0.0.1';
+        $db   = $_ENV['DB_NAME'] ?? 'chefnextdoor';
+        $user = $_ENV['DB_USER'] ?? 'root';
+        $pass = $_ENV['DB_PASS'] ?? '';
 
         $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
 

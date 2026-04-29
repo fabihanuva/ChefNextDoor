@@ -35,7 +35,7 @@ $stepIcons = ['📋', '✅', '👨‍🍳', '🚴', '🎉'];
 
     <div class="max-w-2xl mx-auto px-6 py-10">
         <h1 class="text-2xl font-bold text-gray-800 mb-2">📍 Order Tracking</h1>
-        <p class="text-sm text-gray-400 mb-8">Order #<?= $order['id'] ?> — <?= htmlspecialchars($order['chef_name']) ?>'s Kitchen</p>
+        <p class="text-sm text-gray-400 mb-8">Order #<?= $order['id'] ?> — <?= e($order['chef_name']) ?>'s Kitchen</p>
 
         <!-- Status pipeline -->
         <div class="bg-white rounded-2xl border border-brand-100 p-6 mb-6">
@@ -92,13 +92,13 @@ $stepIcons = ['📋', '✅', '👨‍🍳', '🚴', '🎉'];
                 <?php foreach ($items as $item): ?>
                     <div class="flex items-center gap-3">
                         <?php if ($item['image']): ?>
-                            <img src="/ChefNextDoor/uploads/dishes/<?= htmlspecialchars($item['image']) ?>"
+                            <img src="/ChefNextDoor/uploads/dishes/<?= e($item['image']) ?>"
                                  class="w-10 h-10 rounded-lg object-cover" />
                         <?php else: ?>
                             <div class="w-10 h-10 rounded-lg bg-brand-50 flex items-center justify-center text-lg">🍽️</div>
                         <?php endif; ?>
                         <div class="flex-1">
-                            <p class="text-sm font-medium text-gray-800"><?= htmlspecialchars($item['title']) ?></p>
+                            <p class="text-sm font-medium text-gray-800"><?= e($item['title']) ?></p>
                             <p class="text-xs text-gray-400">× <?= $item['quantity'] ?></p>
                         </div>
                         <p class="text-sm font-bold text-brand-600">৳<?= number_format($item['subtotal'], 0) ?></p>
@@ -114,7 +114,7 @@ $stepIcons = ['📋', '✅', '👨‍🍳', '🚴', '🎉'];
         <!-- Delivery address -->
         <div class="bg-white rounded-2xl border border-brand-100 p-5">
             <h2 class="font-semibold text-gray-700 mb-2">Delivery Address</h2>
-            <p class="text-sm text-gray-500">📍 <?= htmlspecialchars($order['delivery_address']) ?></p>
+            <p class="text-sm text-gray-500">📍 <?= e($order['delivery_address']) ?></p>
             <p class="text-xs text-gray-300 mt-2">Ordered on <?= date('d M Y, h:i A', strtotime($order['created_at'])) ?></p>
         </div>
 

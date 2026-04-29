@@ -110,8 +110,14 @@ $router->post('/chef/profile/update', [$profile, 'updateChefProfile']);
 
 
 // --- 5. Fix URL before dispatch (CRITICAL) ---
+$basePath = rtrim($_ENV['BASE_PATH'] ?? '/ChefNextDoor/public', '/');
 $uri = $_SERVER['REQUEST_URI'] ?? '/';
-$uri = str_replace('/ChefNextDoor/public', '', $uri);
+
+// Strip BASE_PATH only from the beginning
+if ($basePath !== '' && strpos($uri, $basePath) === 0) {
+    $uri = substr($uri, strlen($basePath));
+}
+
 $uri = strtok($uri, '?');
 if ($uri === '' || $uri === false) $uri = '/';
 

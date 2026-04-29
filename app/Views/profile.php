@@ -37,8 +37,8 @@ ob_start();
                         <?= strtoupper(substr($user['name'], 0, 1)) ?>
                     </div>
                     <div>
-                        <h2 class="text-xl font-bold text-slate-800"><?= htmlspecialchars($user['name']) ?></h2>
-                        <p class="text-slate-400 text-sm"><?= htmlspecialchars($user['email']) ?></p>
+                        <h2 class="text-xl font-bold text-slate-800"><?= e($user['name']) ?></h2>
+                        <p class="text-slate-400 text-sm"><?= e($user['email']) ?></p>
                         <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-brand-50 text-brand-600 uppercase tracking-wider mt-2">
                             <?= $user['role'] ?> account
                         </span>
@@ -46,14 +46,15 @@ ob_start();
                 </div>
 
                 <form method="POST" action="<?= url('/profile/update') ?>" class="space-y-6">
+                    <?= csrf_field() ?>
                     <div>
                         <label class="block text-sm font-bold text-slate-700 mb-2">Full Name</label>
-                        <input type="text" name="name" required value="<?= htmlspecialchars($user['name']) ?>"
+                        <input type="text" name="name" required value="<?= e($user['name']) ?>"
                             class="input-base" placeholder="Your full name" />
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-slate-700 mb-2">Email Address</label>
-                        <input type="email" value="<?= htmlspecialchars($user['email']) ?>" disabled
+                        <input type="email" value="<?= e($user['email']) ?>" disabled
                             class="input-base bg-slate-50 border-slate-100 text-slate-400 cursor-not-allowed" />
                         <p class="text-xs text-slate-400 mt-2 italic">Contact support to change your email address.</p>
                     </div>
@@ -75,6 +76,7 @@ ob_start();
                 </div>
 
                 <form method="POST" action="<?= url('/profile/password') ?>" class="space-y-6">
+                    <?= csrf_field() ?>
                     <div>
                         <label class="block text-sm font-bold text-slate-700 mb-2">Current Password</label>
                         <input type="password" name="current_password" required placeholder="••••••••"

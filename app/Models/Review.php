@@ -49,4 +49,20 @@ class Review {
         $stmt->execute([$orderId]);
         return (bool) $stmt->fetch();
     }
+
+    public static function latestByChef(int $chefId, int $limit = 5): array {
+        $pdo  = getDatabase();
+        $stmt = $pdo->prepare('
+            SELECT reviews.*, users.name as customer_name
+            FROM reviews
+            JOIN users ON reviews.customer_id = users.id
+            WHERE reviews.chef_id = ?
+            ORDER BY reviews.created_at DESC
+            LIMIT ?
+        ');
+        $stmt->bindValue(1, $chefId, PDO::PARAM_INT);
+        $stmt->bindValue(2, $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 }

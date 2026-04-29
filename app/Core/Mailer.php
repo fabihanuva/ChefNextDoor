@@ -28,17 +28,17 @@ class Mailer {
         try {
             // SMTP settings from .env
             $mail->isSMTP();
-            $mail->Host       = getenv('MAIL_HOST') ?: 'sandbox.smtp.mailtrap.io';
+            $mail->Host       = $_ENV['MAIL_HOST'] ?? 'sandbox.smtp.mailtrap.io';
             $mail->SMTPAuth   = true;
-            $mail->Username   = getenv('MAIL_USER') ?: '';
-            $mail->Password   = getenv('MAIL_PASS') ?: '';
+            $mail->Username   = $_ENV['MAIL_USER'] ?? '';
+            $mail->Password   = $_ENV['MAIL_PASS'] ?? '';
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port       = (int)(getenv('MAIL_PORT') ?: 2525);
+            $mail->Port       = (int)($_ENV['MAIL_PORT'] ?? 2525);
 
             // Sender and recipient
             $mail->setFrom(
-                getenv('MAIL_FROM') ?: 'hello@example.com',
-                getenv('MAIL_FROM_NAME') ?: 'AuthBoard'
+                $_ENV['MAIL_FROM'] ?? 'hello@example.com',
+                $_ENV['MAIL_FROM_NAME'] ?? 'AuthBoard'
             );
             $mail->addAddress($to);
 

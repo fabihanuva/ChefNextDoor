@@ -29,9 +29,10 @@ ob_start();
                 </h2>
                 
                 <form method="POST" action="<?= url('/order/place') ?>" class="space-y-6">
+                    <?= csrf_field() ?>
                     <div>
                         <label class="block text-sm font-bold text-slate-700 mb-2">Recipient Name</label>
-                        <input type="text" value="<?= htmlspecialchars($user['name']) ?>" disabled
+                        <input type="text" value="<?= e($user['name']) ?>" disabled
                             class="input-base bg-slate-50 border-slate-100 text-slate-400" />
                     </div>
 
@@ -76,7 +77,7 @@ ob_start();
             <div class="space-y-2">
                 <?php foreach ($cart as $item): ?>
                     <div class="flex justify-between text-sm text-gray-600">
-                        <span><?= htmlspecialchars($item['title']) ?> × <?= $item['quantity'] ?></span>
+                        <span><?= e($item['title']) ?> × <?= $item['quantity'] ?></span>
                         <span class="font-medium">
                             ৳<?= number_format($item['price'] * $item['quantity'], 2) ?>
                         </span>

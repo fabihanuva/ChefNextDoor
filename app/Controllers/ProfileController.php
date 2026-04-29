@@ -16,6 +16,7 @@ class ProfileController extends Controller {
     }
 
     public function update() {
+        checkCsrf();
         $user = requireAuth();
         $name = trim($_POST['name'] ?? '');
 
@@ -38,6 +39,7 @@ class ProfileController extends Controller {
     }
 
     public function changePassword() {
+        checkCsrf();
         $user    = requireAuth();
         $current = $_POST['current_password'] ?? '';
         $new     = $_POST['new_password'] ?? '';
@@ -97,6 +99,7 @@ class ProfileController extends Controller {
     }
 
     public function updateChefProfile() {
+        checkCsrf();
         $user = requireAuth();
         if ($user['role'] !== 'chef') {
             header("Location: " . url('/dashboard'));

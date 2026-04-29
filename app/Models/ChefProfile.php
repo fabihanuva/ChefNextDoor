@@ -14,7 +14,17 @@ class ChefProfile {
 
     public static function findByUserId(int $userId): ?array {
         $pdo  = getDatabase();
-        $stmt = $pdo->prepare('SELECT chef_profiles.*, users.name, users.email FROM chef_profiles JOIN users ON chef_profiles.user_id = users.id WHERE chef_profiles.user_id = ? LIMIT 1');
+        $stmt = $pdo->prepare('
+            SELECT chef_profiles.*, users.name, users.email,
+                AVG(reviews.rating) as avg_rating,
+                COUNT(reviews.id) as review_count
+            FROM chef_profiles 
+            JOIN users ON chef_profiles.user_id = users.id 
+            LEFT JOIN reviews ON chef_profiles.user_id = reviews.chef_id
+            WHERE chef_profiles.user_id = ? 
+            GROUP BY chef_profiles.id, users.id
+            LIMIT 1
+        ');
         $stmt->execute([$userId]);
         $row  = $stmt->fetch();
         return $row ?: null;

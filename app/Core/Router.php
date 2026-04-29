@@ -48,7 +48,7 @@ class Router {
 
         // Strip BASE_PATH so routes work when the app is in a subdirectory
         // e.g., /admin-board/login becomes /login
-        $basePath = rtrim(getenv('BASE_PATH') ?: '', '/');
+        $basePath = rtrim($_ENV['BASE_PATH'] ?? '', '/');
         if ($basePath && strpos($path, $basePath) === 0) {
             $path = substr($path, strlen($basePath)) ?: '/';
         }

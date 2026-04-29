@@ -20,7 +20,7 @@ ob_start();
 
         <?php if (Session::get('success')): ?>
             <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl text-sm">
-                <?= htmlspecialchars(Session::get('success')) ?>
+                <?= e(Session::get('success')) ?>
                 <?php Session::remove('success'); ?>
             </div>
         <?php endif; ?>
@@ -40,8 +40,8 @@ ob_start();
                 <?php foreach ($dishes as $d): ?>
                     <div class="bg-white rounded-2xl border border-orange-100 overflow-hidden hover:border-brand-300 transition-colors">
                         <?php if ($d['image']): ?>
-                            <img src="/ChefNextDoor/uploads/dishes/<?= htmlspecialchars($d['image']) ?>"
-                                 alt="<?= htmlspecialchars($d['title']) ?>"
+                            <img src="/ChefNextDoor/uploads/dishes/<?= e($d['image']) ?>"
+                                 alt="<?= e($d['title']) ?>"
                                  class="w-full h-44 object-cover" />
                         <?php else: ?>
                             <div class="w-full h-44 bg-brand-50 flex items-center justify-center text-5xl">🍽️</div>
@@ -49,13 +49,14 @@ ob_start();
 
                         <div class="p-4">
                             <div class="flex items-start justify-between mb-1">
-                                <h3 class="font-semibold text-gray-800"><?= htmlspecialchars($d['title']) ?></h3>
+                                <h3 class="font-semibold text-gray-800"><?= e($d['title']) ?></h3>
                                 <span class="text-brand-600 font-bold text-sm ml-2">৳<?= number_format($d['price'], 2) ?></span>
                             </div>
-                            <p class="text-xs text-gray-400 mb-3">👨‍🍳 <?= htmlspecialchars($d['chef_name']) ?></p>
+                            <p class="text-xs text-gray-400 mb-3">👨‍🍳 <?= e($d['chef_name']) ?></p>
 
                             <div class="flex gap-2">
                                 <form method="POST" action="<?= url('/cart/add') ?>" class="flex-1">
+                                    <?= csrf_field() ?>
                                     <input type="hidden" name="dish_id" value="<?= $d['id'] ?>" />
                                     <button type="submit"
                                         class="w-full text-xs bg-brand-500 hover:bg-brand-600 text-white px-3 py-2 rounded-xl font-medium transition-colors">
@@ -63,6 +64,7 @@ ob_start();
                                     </button>
                                 </form>
                                 <form method="POST" action="<?= url('/favorite/toggle') ?>">
+                                    <?= csrf_field() ?>
                                     <input type="hidden" name="dish_id" value="<?= $d['id'] ?>" />
                                     <button type="submit"
                                         class="text-xs border border-red-200 text-red-400 hover:bg-red-50 px-3 py-2 rounded-xl transition-colors">

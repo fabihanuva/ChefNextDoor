@@ -37,13 +37,13 @@ ob_start();
                     <div class="bg-white rounded-2xl border border-orange-100 p-5">
                         <div class="flex items-start justify-between mb-2">
                             <div>
-                                <p class="font-semibold text-gray-800"><?= htmlspecialchars($review['customer_name']) ?></p>
+                                <p class="font-semibold text-gray-800"><?= e($review['customer_name']) ?></p>
                                 <p class="text-xs text-gray-400 mt-0.5"><?= date('d M Y', strtotime($review['created_at'])) ?></p>
                             </div>
                             <span class="text-lg"><?= str_repeat('⭐', $review['rating']) ?></span>
                         </div>
                         <?php if ($review['comment']): ?>
-                            <p class="text-sm text-gray-600 mt-2">"<?= htmlspecialchars($review['comment']) ?>"</p>
+                            <p class="text-sm text-gray-600 mt-2">"<?= e($review['comment']) ?>"</p>
                         <?php endif; ?>
                     </div>
                 <?php endforeach; ?>

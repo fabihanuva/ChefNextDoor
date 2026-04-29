@@ -1,91 +1,135 @@
 <?php
 use App\Core\Session;
-$title = 'Join ChefNextDoor';
+$title = 'Register | ChefNextDoor';
 ob_start();
 ?>
-<div class="min-h-screen flex items-center justify-center px-4 py-12">
-    <div class="w-full max-w-lg">
+<div class="min-h-screen flex flex-col md:flex-row">
 
-        <!-- Logo -->
-        <div class="text-center mb-10">
-            <div class="inline-flex items-center justify-center w-20 h-20 bg-brand-500 rounded-3xl shadow-xl shadow-brand-100 text-4xl mb-6 transform hover:-rotate-6 transition-transform">
-                🍳
+    <!-- Left Panel — Splash -->
+    <div class="hidden md:flex md:w-1/2 bg-brand-500 flex-col items-center justify-center px-12 py-16">
+        <img src="/ChefNextDoor/assets/images/chefnextdoor_logo.jpeg"
+             alt="ChefNextDoor Logo"
+             class="w-64 h-64 object-contain mb-8 drop-shadow-2xl" />
+        <h1 class="text-4xl font-black text-white text-center leading-tight mb-3">
+            ChefNextDoor
+        </h1>
+        <p class="text-brand-100 text-center text-lg font-medium">
+            From Their Home to Your Heart
+        </p>
+        <div class="mt-12 space-y-4 w-full max-w-xs">
+            <div class="bg-white bg-opacity-10 rounded-2xl p-4 flex items-center gap-4">
+                <span class="text-3xl">👨‍🍳</span>
+                <div>
+                    <p class="text-white font-bold text-sm">Become a Chef</p>
+                    <p class="text-brand-200 text-xs">Share your home-cooked meals</p>
+                </div>
             </div>
-            <h1 class="text-4xl font-black text-slate-900 tracking-tight">Create your account</h1>
-            <p class="text-slate-500 mt-2">Join our community of food lovers and talented chefs.</p>
+            <div class="bg-white bg-opacity-10 rounded-2xl p-4 flex items-center gap-4">
+                <span class="text-3xl">🛒</span>
+                <div>
+                    <p class="text-white font-bold text-sm">Order as Customer</p>
+                    <p class="text-brand-200 text-xs">Enjoy authentic home food</p>
+                </div>
+            </div>
         </div>
+    </div>
 
-        <!-- Card -->
-        <div class="card-base p-10 relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-500 to-orange-400"></div>
+    <!-- Right Panel — Register Form -->
+    <div class="flex-1 flex items-center justify-center px-6 py-12 bg-brand-50">
+        <div class="w-full max-w-md">
 
-            <form method="POST" action="<?= url('/register') ?>" class="space-y-6">
+            <!-- Mobile logo -->
+            <div class="flex flex-col items-center mb-8 md:hidden">
+                <img src="/ChefNextDoor/assets/images/logo.jpeg"
+                     alt="ChefNextDoor Logo"
+                     class="w-32 h-32 object-contain mb-3 drop-shadow-lg" />
+                <h1 class="text-2xl font-black text-brand-600">ChefNextDoor</h1>
+                <p class="text-gray-400 text-sm">From Their Home to Your Heart</p>
+            </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <h2 class="text-3xl font-black text-gray-900 mb-2">Create an account</h2>
+            <p class="text-gray-400 mb-8 text-sm">Join our community of home chefs and food lovers</p>
+
+            <?php if (Session::get('error')): ?>
+                <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
+                    <?= htmlspecialchars(Session::get('error')) ?>
+                    <?php Session::remove('error'); ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if (Session::get('success')): ?>
+                <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl text-sm">
+                    <?= htmlspecialchars(Session::get('success')) ?>
+                    <?php Session::remove('success'); ?>
+                </div>
+            <?php endif; ?>
+
+            <div class="card-base p-8">
+                <form method="POST" action="<?= url('/register') ?>" class="space-y-4">
+                    <?= csrf_field() ?>
+                    <div>
                     <!-- Name -->
-                    <div class="sm:col-span-2">
-                        <label class="block text-sm font-bold text-slate-700 mb-2">Full Name</label>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Full Name</label>
                         <input type="text" name="name" required placeholder="e.g. Fabiha Nuva"
-                            class="input-base" />
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400 text-sm" />
                     </div>
 
-                    <!-- Role Selection -->
-                    <div class="sm:col-span-2">
-                        <label class="block text-sm font-bold text-slate-700 mb-3 text-center">I want to...</label>
-                        <div class="grid grid-cols-2 gap-4">
-                            <label class="group relative cursor-pointer">
-                                <input type="radio" name="role" value="customer" class="peer sr-only" required checked />
-                                <div class="flex flex-col items-center justify-center border-2 border-slate-100 rounded-2xl py-6 px-4 text-slate-500 peer-checked:border-brand-500 peer-checked:bg-brand-50 peer-checked:text-brand-700 transition-all group-hover:border-brand-200">
-                                    <span class="text-3xl mb-2 group-hover:scale-110 transition-transform">🛒</span>
-                                    <span class="font-bold text-sm">Buy Food</span>
-                                    <p class="text-[10px] text-center mt-1 opacity-60">Order fresh home meals</p>
-                                </div>
-                                <div class="absolute -top-2 -right-2 hidden peer-checked:flex w-6 h-6 bg-brand-500 rounded-full border-4 border-white items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M20 6 9 17 4 12"/></svg>
+                    <!-- Role -->
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-3">I want to...</label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="cursor-pointer">
+                                <input type="radio" name="role" value="customer" class="peer sr-only" required />
+                                <div class="flex flex-col items-center justify-center border-2 border-gray-200 rounded-xl py-4 text-sm text-gray-600 peer-checked:border-brand-500 peer-checked:bg-brand-50 peer-checked:text-brand-700 font-medium transition-all">
+                                    <span class="text-2xl mb-1">🛒</span>
+                                    Order Food
                                 </div>
                             </label>
-                            <label class="group relative cursor-pointer">
+                            <label class="cursor-pointer">
                                 <input type="radio" name="role" value="chef" class="peer sr-only" />
-                                <div class="flex flex-col items-center justify-center border-2 border-slate-100 rounded-2xl py-6 px-4 text-slate-500 peer-checked:border-brand-500 peer-checked:bg-brand-50 peer-checked:text-brand-700 transition-all group-hover:border-brand-200">
-                                    <span class="text-3xl mb-2 group-hover:scale-110 transition-transform">👨‍🍳</span>
-                                    <span class="font-bold text-sm">Sell Food</span>
-                                    <p class="text-[10px] text-center mt-1 opacity-60">Share your cooking</p>
-                                </div>
-                                <div class="absolute -top-2 -right-2 hidden peer-checked:flex w-6 h-6 bg-brand-500 rounded-full border-4 border-white items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M20 6 9 17 4 12"/></svg>
+                                <div class="flex flex-col items-center justify-center border-2 border-gray-200 rounded-xl py-4 text-sm text-gray-600 peer-checked:border-brand-500 peer-checked:bg-brand-50 peer-checked:text-brand-700 font-medium transition-all">
+                                    <span class="text-2xl mb-1">👨‍🍳</span>
+                                    Cook & Sell
                                 </div>
                             </label>
                         </div>
                     </div>
 
                     <!-- Email -->
-                    <div class="sm:col-span-2">
-                        <label class="block text-sm font-bold text-slate-700 mb-2">Email Address</label>
-                        <input type="email" name="email" required placeholder="you@example.com"
-                            class="input-base" />
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Email Address</label>
+                        <input type="email" name="email" required placeholder="name@example.com"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400 text-sm" />
                     </div>
 
                     <!-- Password -->
-                    <div class="sm:col-span-2">
-                        <label class="block text-sm font-bold text-slate-700 mb-2">Create Password</label>
-                        <input type="password" name="password" required placeholder="Min. 6 characters"
-                            class="input-base" />
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Password</label>
+                        <input type="password" name="password" required placeholder="At least 6 characters"
+                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400 text-sm" />
                     </div>
+
+                    <button type="submit"
+                        class="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-3 rounded-xl transition-colors text-sm">
+                        Create Account →
+                    </button>
+                </form>
+
+                <div class="mt-6 pt-6 border-t border-gray-50 text-center">
+                    <p class="text-sm text-gray-500">
+                        Already have an account?
+                        <a href="<?= url('/login') ?>" class="text-brand-600 font-bold hover:underline">Sign in</a>
+                    </p>
                 </div>
-
-                <button type="submit" class="btn-primary w-full py-4 text-base mt-4 shadow-xl shadow-brand-100">
-                    Create Account
-                </button>
-            </form>
-
-            <div class="mt-8 pt-8 border-t border-gray-50 text-center">
-                <p class="text-sm text-slate-500">
-                    Already have an account?
-                    <a href="<?= url('/login') ?>" class="text-brand-600 font-bold hover:underline">Sign in instead</a>
-                </p>
             </div>
-        </div>
 
+            <p class="text-center text-xs text-gray-300 mt-6">
+                By registering, you agree to our
+                <a href="<?= url('/terms') ?>" class="underline">Terms</a> and
+                <a href="<?= url('/privacy') ?>" class="underline">Privacy Policy</a>.
+            </p>
+        </div>
     </div>
 </div>
 <?php

@@ -13,6 +13,7 @@ ob_start();
     <div class="card-base p-6 mb-10 overflow-hidden relative">
         <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-500 to-orange-400"></div>
         <form method="POST" action="<?= url('/posts') ?>" id="postForm" class="space-y-4">
+            <?= csrf_field() ?>
             <div class="flex items-start gap-4">
                 <div class="w-10 h-10 rounded-full bg-brand-100 flex items-center justify-center text-brand-600 font-bold shrink-0">
                     <?= strtoupper(substr($user['name'], 0, 1)) ?>
@@ -20,7 +21,7 @@ ob_start();
                 <div class="flex-grow">
                     <textarea name="content" 
                         class="w-full bg-slate-50 border-transparent focus:bg-white focus:ring-2 focus:ring-brand-400 rounded-xl p-4 text-sm text-slate-700 placeholder-slate-400 min-h-[100px] transition-all outline-none resize-none" 
-                        placeholder="What's cooking, <?= htmlspecialchars($user['name']) ?>?" required></textarea>
+                        placeholder="What's cooking, <?= e($user['name']) ?>?" required></textarea>
                 </div>
             </div>
             <div class="flex justify-end">

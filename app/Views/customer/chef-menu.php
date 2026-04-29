@@ -26,7 +26,7 @@ ob_start();
 
         <?php if (Session::get('success')): ?>
             <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl text-sm">
-                <?= htmlspecialchars(Session::get('success')) ?>
+                <?= e(Session::get('success')) ?>
                 <?php Session::remove('success'); ?>
             </div>
         <?php endif; ?>
@@ -38,9 +38,9 @@ ob_start();
                     <?= strtoupper(substr($chef['name'], 0, 1)) ?>
                 </div>
                 <div>
-                    <h1 class="text-xl font-bold text-gray-800"><?= htmlspecialchars($chef['name']) ?>'s Kitchen</h1>
+                    <h1 class="text-xl font-bold text-gray-800"><?= e($chef['name']) ?>'s Kitchen</h1>
                     <?php if ($chef['specialty']): ?>
-                        <p class="text-sm text-brand-600 font-medium"><?= htmlspecialchars($chef['specialty']) ?></p>
+                        <p class="text-sm text-brand-600 font-medium"><?= e($chef['specialty']) ?></p>
                     <?php endif; ?>
                     <?php if ($chef['avg_rating'] > 0): ?>
                         <p class="text-sm text-yellow-500 font-medium">⭐ <?= number_format($chef['avg_rating'], 1) ?> (<?= $chef['review_count'] ?> reviews)</p>
@@ -48,7 +48,7 @@ ob_start();
                 </div>
             </div>
             <?php if ($chef['bio']): ?>
-                <p class="text-sm text-gray-500"><?= htmlspecialchars($chef['bio']) ?></p>
+                <p class="text-sm text-gray-500"><?= e($chef['bio']) ?></p>
             <?php endif; ?>
         </div>
 
@@ -65,25 +65,26 @@ ob_start();
                     <?php $inCart = $cart[$d['id']]['quantity'] ?? 0; ?>
                     <div class="bg-white rounded-2xl border border-brand-100 overflow-hidden">
                         <?php if ($d['image']): ?>
-                            <img src="/ChefNextDoor/uploads/dishes/<?= htmlspecialchars($d['image']) ?>"
-                                 alt="<?= htmlspecialchars($d['title']) ?>"
+                            <img src="/ChefNextDoor/uploads/dishes/<?= e($d['image']) ?>"
+                                 alt="<?= e($d['title']) ?>"
                                  class="w-full h-44 object-cover" />
                         <?php endif; ?>
                         <div class="p-4">
                             <div class="flex items-start justify-between mb-1">
-                                <h3 class="font-semibold text-gray-800"><?= htmlspecialchars($d['title']) ?></h3>
+                                <h3 class="font-semibold text-gray-800"><?= e($d['title']) ?></h3>
                                 <span class="text-brand-600 font-bold ml-2">৳<?= number_format($d['price'], 0) ?></span>
                             </div>
-                            <p class="text-xs text-gray-400 mb-4"><?= htmlspecialchars($d['description'] ?? '') ?></p>
+                            <p class="text-xs text-gray-400 mb-4"><?= e($d['description'] ?? '') ?></p>
 
                             <!-- Quantity selector -->
                             <div class="flex items-center justify-between">
                                 <span class="text-xs px-2 py-0.5 rounded-full bg-brand-50 text-brand-600">
-                                    <?= htmlspecialchars($d['category'] ?? 'Other') ?>
+                                    <?= e($d['category'] ?? 'Other') ?>
                                 </span>
                                 <div class="flex items-center gap-3">
                                     <?php if ($inCart > 0): ?>
                                         <form method="POST" action="<?= url('/cart/update') ?>" class="flex items-center gap-2">
+                                            <?= csrf_field() ?>
                                             <input type="hidden" name="dish_id" value="<?= $d['id'] ?>" />
                                             <input type="hidden" name="quantity" value="<?= $inCart - 1 ?>" />
                                             <button type="submit" class="w-8 h-8 rounded-full bg-brand-500 text-white font-bold text-lg flex items-center justify-center hover:bg-brand-600 transition-colors">−</button>
@@ -94,6 +95,7 @@ ob_start();
                                         <span class="font-semibold text-gray-300 w-4 text-center">0</span>
                                     <?php endif; ?>
                                     <form method="POST" action="<?= url('/cart/add') ?>">
+                                        <?= csrf_field() ?>
                                         <input type="hidden" name="dish_id" value="<?= $d['id'] ?>" />
                                         <button type="submit" class="w-8 h-8 rounded-full bg-brand-500 text-white font-bold text-lg flex items-center justify-center hover:bg-brand-600 transition-colors">+</button>
                                     </form>

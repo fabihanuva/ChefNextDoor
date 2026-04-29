@@ -26,13 +26,13 @@ ob_start();
     <!-- Flash messages -->
     <?php if (Session::get('success')): ?>
         <div class="mb-6 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl text-sm">
-            <?= htmlspecialchars(Session::get('success')) ?>
+            <?= e(Session::get('success')) ?>
             <?php Session::remove('success'); ?>
         </div>
     <?php endif; ?>
     <?php if (Session::get('error')): ?>
         <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
-            <?= htmlspecialchars(Session::get('error')) ?>
+            <?= e(Session::get('error')) ?>
             <?php Session::remove('error'); ?>
         </div>
     <?php endif; ?>
@@ -50,7 +50,7 @@ ob_start();
             </div>
             <div>
                 <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">
-                    Chef <span class="text-brand-600"><?= htmlspecialchars($user['name']) ?></span>
+                    Chef <span class="text-brand-600"><?= e($user['name']) ?></span>
                 </h1>
                 <p class="text-gray-500 mt-1 flex items-center gap-2 text-sm">
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-brand-100 text-brand-700">
@@ -148,14 +148,14 @@ ob_start();
                     <?php foreach (array_slice($reviews, 0, 3) as $review): ?>
                         <div class="card-base p-5">
                             <div class="flex items-center justify-between mb-3">
-                                <p class="font-bold text-gray-800 text-sm"><?= htmlspecialchars($review['customer_name']) ?></p>
+                                <p class="font-bold text-gray-800 text-sm"><?= e($review['customer_name']) ?></p>
                                 <div class="flex text-yellow-400">
                                     <?php for ($i = 0; $i < $review['rating']; $i++): ?>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                                     <?php endfor; ?>
                                 </div>
                             </div>
-                            <p class="text-xs text-gray-500 leading-relaxed mb-3">"<?= htmlspecialchars($review['comment'] ?? 'No comment provided.') ?>"</p>
+                            <p class="text-xs text-gray-500 leading-relaxed mb-3">"<?= e($review['comment'] ?? 'No comment provided.') ?>"</p>
                             <p class="text-xs text-gray-300 uppercase"><?= date('d M Y', strtotime($review['created_at'])) ?></p>
                         </div>
                     <?php endforeach; ?>
