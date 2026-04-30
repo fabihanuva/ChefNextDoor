@@ -3,7 +3,7 @@
 
 > A home-cooked food delivery platform connecting customers with talented home chefs in their community.
 
-![ChefNextDoor](assets/images/logo.jpeg)
+![ChefNextDoor](assets/images/chefnextdoor_logo.jpeg)
 
 ---
 
