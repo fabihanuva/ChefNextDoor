@@ -67,7 +67,7 @@ ob_start();
             <div class="card-base p-8">
                 <form method="POST" action="<?= url('/register') ?>" class="space-y-4">
                     <?= csrf_field() ?>
-                    <div>
+                    
                     <!-- Name -->
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-2">Full Name</label>

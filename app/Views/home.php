@@ -4,58 +4,59 @@ ob_start();
 ?>
 
 <!-- Navbar -->
-<nav class="bg-white border-b border-brand-100 px-4 py-3 flex items-center justify-between sticky top-0 z-50">
-    <div class="flex items-center gap-2">
-        <img src="/ChefNextDoor/assets/images/chefnextdoor_logo.jpeg" alt="ChefNextDoor" class="w-8 h-8 object-contain" />
-        <span class="text-base font-bold text-brand-600">ChefNextDoor</span>
-    </div>
-    <div class="flex items-center gap-2">
-        <a href="<?= url('/login') ?>" class="text-xs text-gray-500 hover:text-brand-600 font-medium transition-colors px-2 py-1">Sign In</a>
-        <a href="<?= url('/register') ?>" class="text-xs bg-brand-500 hover:bg-brand-600 text-white px-3 py-2 rounded-xl font-medium transition-colors">Get Started</a>
-    </div>
-</nav>
+<?php include __DIR__ . '/partials/navbar.php'; ?>
 
 <!-- Hero Section -->
-<div class="bg-brand-500 py-20 px-6">
-    <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-12">
-        <div class="flex-1 text-center md:text-left">
-            <span class="inline-block bg-white bg-opacity-20 text-white text-xs font-bold px-3 py-1 rounded-full mb-4 uppercase tracking-wider">Home-Cooked Food Delivery</span>
-            <h1 class="text-4xl md:text-5xl font-black text-white leading-tight mb-4">
+<div class="bg-brand-500 py-12 sm:py-20 px-4 sm:px-6 overflow-hidden">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-10 sm:gap-12">
+        <div class="flex-1 text-center md:text-left z-10">
+            <span class="inline-block bg-white/20 text-white text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full mb-4 uppercase tracking-wider">Home-Cooked Food Delivery</span>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-4 sm:mb-6">
                 Taste the warmth of<br/>
                 <span class="text-brand-200">home cooking</span>
             </h1>
-            <p class="text-brand-100 text-lg mb-8 leading-relaxed">
+            <p class="text-brand-100 text-base sm:text-lg mb-8 sm:mb-10 leading-relaxed max-w-xl mx-auto md:mx-0">
                 Connect with talented home chefs in your community. Order authentic, freshly made meals delivered straight to your door.
             </p>
-            <div class="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
-                <a href="<?= url('/register') ?>" class="bg-white text-brand-600 font-bold px-8 py-3 rounded-xl hover:bg-brand-50 transition-colors text-center">
+            <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                <a href="<?= url('/register') ?>" class="bg-white text-brand-600 font-bold px-8 py-3.5 rounded-xl hover:bg-brand-50 transition-all text-center shadow-xl shadow-brand-700/20 active:scale-95">
                     Order Food Now
                 </a>
-                <a href="<?= url('/register') ?>" class="border-2 border-white text-white font-bold px-8 py-3 rounded-xl hover:bg-white hover:bg-opacity-10 transition-colors text-center">
+                <a href="<?= url('/register') ?>" class="border-2 border-white/30 text-white font-bold px-8 py-3.5 rounded-xl hover:bg-white/10 transition-all text-center active:scale-95">
                     Become a Chef
                 </a>
             </div>
         </div>
-        <div class="flex-shrink-0">
-            <img src="/ChefNextDoor/assets/images/chefnextdoor_logo.jpeg" alt="ChefNextDoor" class="w-56 h-56 object-contain drop-shadow-2xl" />
+        <div class="flex-shrink-0 relative group">
+            <div class="absolute inset-0 bg-brand-400 rounded-full blur-3xl opacity-20 group-hover:opacity-30 transition-opacity"></div>
+            <img src="/ChefNextDoor/assets/images/chefnextdoor_logo.jpeg" alt="ChefNextDoor" class="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 object-contain drop-shadow-2xl relative z-10 animate-float" />
         </div>
     </div>
 </div>
 
+<style>
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+.animate-float { animation: float 6s ease-in-out infinite; }
+</style>
+
 <!-- Stats Bar -->
-<div class="bg-brand-600 py-6 px-6">
-    <div class="max-w-4xl mx-auto grid grid-cols-3 gap-6 text-center">
-        <div>
-            <p class="text-3xl font-black text-white">50+</p>
-            <p class="text-brand-200 text-sm mt-1">Home Chefs</p>
+<div class="bg-brand-600 py-8 px-6">
+    <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6 text-center">
+        <div class="group">
+            <p class="text-3xl sm:text-4xl font-black text-white group-hover:scale-110 transition-transform">50+</p>
+            <p class="text-brand-200 text-xs sm:text-sm mt-1 font-medium">Home Chefs</p>
         </div>
-        <div>
-            <p class="text-3xl font-black text-white">200+</p>
-            <p class="text-brand-200 text-sm mt-1">Dishes Available</p>
+        <div class="group">
+            <p class="text-3xl sm:text-4xl font-black text-white group-hover:scale-110 transition-transform">200+</p>
+            <p class="text-brand-200 text-xs sm:text-sm mt-1 font-medium">Dishes Available</p>
         </div>
-        <div>
-            <p class="text-3xl font-black text-white">★ 4.8</p>
-            <p class="text-brand-200 text-sm mt-1">Average Rating</p>
+        <div class="group border-t sm:border-t-0 border-brand-500 pt-8 sm:pt-0">
+            <p class="text-3xl sm:text-4xl font-black text-white group-hover:scale-110 transition-transform">★ 4.8</p>
+            <p class="text-brand-200 text-xs sm:text-sm mt-1 font-medium">Average Rating</p>
         </div>
     </div>
 </div>

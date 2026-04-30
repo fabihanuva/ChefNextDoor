@@ -14,70 +14,97 @@ class CustomerController extends Controller {
 
     // Browse all available dishes
     public function browse() {
-        $user = requireAuth();
-        if ($user['role'] !== 'customer') {
-            header("Location: " . url('/chef-dashboard'));
+        try {
+            $user = requireAuth();
+            if ($user['role'] !== 'customer') {
+                header("Location: " . url('/chef-dashboard'));
+                exit;
+            }
+
+            $keyword  = $_GET['s'] ?? null;
+            $category = $_GET['category'] ?? null;
+            $page     = (int) ($_GET['page'] ?? 1);
+            $limit    = 12;
+            $offset   = ($page - 1) * $limit;
+
+            $dishes     = Dish::search($keyword, $category, $limit, $offset);
+            $totalItems = Dish::countSearch($keyword, $category);
+            $totalPages = ceil($totalItems / $limit);
+
+            $this->view('customer/browse.php', [
+                'user'            => $user, 
+                'dishes'          => $dishes,
+                'search'          => $keyword,
+                'currentCategory' => $category ?: 'All',
+                'currentPage'     => $page,
+                'totalPages'      => $totalPages
+            ]);
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+            Session::set('error', 'Something went wrong. Please try again later.');
+            header("Location: " . url('/dashboard'));
             exit;
         }
-
-        $keyword  = $_GET['s'] ?? null;
-        $category = $_GET['category'] ?? null;
-
-        $dishes = Dish::search($keyword, $category);
-        $this->view('customer/browse.php', [
-            'user' => $user, 
-            'dishes' => $dishes,
-            'search' => $keyword,
-            'currentCategory' => $category ?: 'All'
-        ]);
     }
 
     // Public chef profile
     public function chef() {
-        $user    = requireAuth();
-        $chefId  = (int) ($_GET['id'] ?? 0);
-        $profile = ChefProfile::findByUserId($chefId);
+        try {
+            $user    = requireAuth();
+            $chefId  = (int) ($_GET['id'] ?? 0);
+            $profile = ChefProfile::findByUserId($chefId);
 
-        if (!$profile) {
-            Session::set('error', 'Chef not found.');
+            if (!$profile) {
+                Session::set('error', 'Chef not found.');
+                header("Location: " . url('/browse'));
+                exit;
+            }
+
+            $dishes = Dish::findByChef($chefId);
+            $reviews = Review::findByChef($chefId);
+            $this->view('customer/chef.php', [
+                'user' => $user, 
+                'profile' => $profile, 
+                'dishes' => $dishes,
+                'reviews' => $reviews
+            ]);
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
             header("Location: " . url('/browse'));
             exit;
         }
-
-        $dishes = Dish::findByChef($chefId);
-        $reviews = Review::findByChef($chefId);
-        $this->view('customer/chef.php', [
-            'user' => $user, 
-            'profile' => $profile, 
-            'dishes' => $dishes,
-            'reviews' => $reviews
-        ]);
     }
     
     
     // Browse chefs
     public function chefs() {
-        $user = requireAuth();
-        if ($user['role'] !== 'customer') {
-            header("Location: " . url('/chef-dashboard'));
+        try {
+            $user = requireAuth();
+            if ($user['role'] !== 'customer') {
+                header("Location: " . url('/chef-dashboard'));
+                exit;
+            }
+
+            $page     = (int) ($_GET['page'] ?? 1);
+            $limit    = 10;
+            $offset   = ($page - 1) * $limit;
+
+            $chefs      = ChefProfile::allPaginated($limit, $offset);
+            $totalItems = ChefProfile::countAll();
+            $totalPages = ceil($totalItems / $limit);
+
+            $this->view('customer/chefs.php', [
+                'user'        => $user, 
+                'chefs'       => $chefs,
+                'currentPage' => $page,
+                'totalPages'  => $totalPages
+            ]);
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+            Session::set('error', 'Unable to load chefs.');
+            header("Location: " . url('/dashboard'));
             exit;
         }
-        $pdo  = \getDatabase();
-        $stmt = $pdo->prepare('
-            SELECT users.id, users.name, chef_profiles.bio, chef_profiles.specialty,
-                chef_profiles.location, chef_profiles.rating,
-                AVG(reviews.rating) as avg_rating,
-                COUNT(reviews.id) as review_count
-            FROM users
-            LEFT JOIN chef_profiles ON users.id = chef_profiles.user_id
-            LEFT JOIN reviews ON users.id = reviews.chef_id
-            WHERE users.role = "chef"
-            GROUP BY users.id
-            ORDER BY avg_rating DESC
-        ');
-        $stmt->execute();
-        $chefs = $stmt->fetchAll();
-        $this->view('customer/chefs.php', ['user' => $user, 'chefs' => $chefs]);
     }
 
     // View chef menu
@@ -188,7 +215,9 @@ class CustomerController extends Controller {
 
         Session::set('cart', $cart);
         Session::set('success', '✓ ' . $dish['title'] . ' added to cart!');
-        header("Location: " . url('/chef-menu?id=' . $dish['chef_id']));
+        
+        // Redirect back to the previous page (Browse, Menu, etc.)
+        header("Location: " . ($_SERVER['HTTP_REFERER'] ?? url('/browse')));
         exit;
     }
 
@@ -412,8 +441,8 @@ class CustomerController extends Controller {
             Session::set('success', 'Added to favourites! ❤️');
         }
 
-        $dish = \App\Models\Dish::findById($dish_id);
-        header("Location: " . url('/chef-menu?id=' . ($dish['chef_id'] ?? '')));
+        // Redirect back to the previous page (Browse, Menu, or Favorites)
+        header("Location: " . ($_SERVER['HTTP_REFERER'] ?? url('/browse')));
         exit;
     }
 

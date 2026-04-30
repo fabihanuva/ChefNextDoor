@@ -23,40 +23,46 @@ class DashboardController extends Controller {
     }
 
     public function chef() {
-        $user = requireAuth();
+        try {
+            $user = requireAuth();
 
-        if ($user['role'] !== 'chef') {
+            if ($user['role'] !== 'chef') {
+                header("Location: " . url('/dashboard'));
+                exit;
+            }
+
+            $pdo = \getDatabase();
+
+            // Total dishes
+            $stmt = $pdo->prepare('SELECT COUNT(*) as total FROM dishes WHERE chef_id = ?');
+            $stmt->execute([$user['id']]);
+            $totalDishes = $stmt->fetch()['total'];
+
+            // Pending orders
+            $pendingOrders = Order::countPendingByChef($user['id']);
+
+            // Total earnings (delivered orders only)
+            $earnings = Order::earningsByChef($user['id']);
+
+            // Average rating
+            $avgRating = Review::averageRating($user['id']);
+
+            // Recent reviews
+            $reviews = Review::latestByChef($user['id']);
+
+            $this->view('chef-dashboard.php', [
+                'user'          => $user,
+                'totalDishes'   => $totalDishes,
+                'pendingOrders' => $pendingOrders,
+                'earnings'      => $earnings,
+                'avgRating'     => $avgRating,
+                'reviews'       => $reviews,
+            ]);
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
             header("Location: " . url('/dashboard'));
             exit;
         }
-
-        $pdo = \getDatabase();
-
-        // Total dishes
-        $stmt = $pdo->prepare('SELECT COUNT(*) as total FROM dishes WHERE chef_id = ?');
-        $stmt->execute([$user['id']]);
-        $totalDishes = $stmt->fetch()['total'];
-
-        // Pending orders
-        $pendingOrders = Order::countPendingByChef($user['id']);
-
-        // Total earnings (delivered orders only)
-        $earnings = Order::earningsByChef($user['id']);
-
-        // Average rating
-        $avgRating = Review::averageRating($user['id']);
-
-        // Recent reviews
-        $reviews = Review::latestByChef($user['id']);
-
-        $this->view('chef-dashboard.php', [
-            'user'          => $user,
-            'totalDishes'   => $totalDishes,
-            'pendingOrders' => $pendingOrders,
-            'earnings'      => $earnings,
-            'avgRating'     => $avgRating,
-            'reviews'       => $reviews,
-        ]);
     }
 
     public function chefReviews() {

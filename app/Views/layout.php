@@ -24,6 +24,19 @@
         border: 1px solid #d6ebe2;
         box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
+    .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #2D6A4F;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
 </style>
     <script>
         tailwind.config = {

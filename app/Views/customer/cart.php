@@ -40,18 +40,28 @@ ob_start();
                             <p class="text-brand-600 font-black text-sm mt-1">৳<?= number_format($item['price'], 0) ?></p>
                             
                             <div class="flex items-center gap-4 mt-3">
-                                <form method="POST" action="<?= url('/cart/update') ?>" class="flex items-center bg-slate-50 rounded-lg p-1 border border-slate-100">
-                                    <?= csrf_field() ?>
-                                    <input type="hidden" name="dish_id" value="<?= $id ?>" />
-                                    <input type="number" name="quantity" value="<?= $item['quantity'] ?>" min="0"
-                                        class="w-12 bg-transparent text-center text-sm font-bold text-slate-700 outline-none" />
-                                    <button type="submit" class="text-[10px] font-black uppercase text-brand-600 px-2 hover:bg-white rounded-md transition-colors">Update</button>
-                                </form>
+                                <div class="flex items-center bg-slate-50 rounded-lg p-1 border border-slate-100 gap-3">
+                                    <form method="POST" action="<?= url('/cart/update') ?>">
+                                        <?= csrf_field() ?>
+                                        <input type="hidden" name="dish_id" value="<?= $item['id'] ?>" />
+                                        <input type="hidden" name="quantity" value="<?= $item['quantity'] - 1 ?>" />
+                                        <button type="submit" class="w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-md text-brand-600 font-bold hover:bg-brand-50 transition-colors">−</button>
+                                    </form>
+
+                                    <span class="text-sm font-bold text-slate-700 min-w-[1rem] text-center"><?= $item['quantity'] ?></span>
+
+                                    <form method="POST" action="<?= url('/cart/update') ?>">
+                                        <?= csrf_field() ?>
+                                        <input type="hidden" name="dish_id" value="<?= $item['id'] ?>" />
+                                        <input type="hidden" name="quantity" value="<?= $item['quantity'] + 1 ?>" />
+                                        <button type="submit" class="w-8 h-8 flex items-center justify-center bg-brand-500 border border-brand-500 rounded-md text-white font-bold hover:bg-brand-600 transition-colors">+</button>
+                                    </form>
+                                </div>
 
                                 <form method="POST" action="<?= url('/cart/remove') ?>">
                                     <?= csrf_field() ?>
-                                    <input type="hidden" name="dish_id" value="<?= $id ?>" />
-                                    <button type="submit" class="text-slate-300 hover:text-red-500 transition-colors">
+                                    <input type="hidden" name="dish_id" value="<?= $item['id'] ?>" />
+                                    <button type="submit" class="p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all" title="Remove item">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
                                     </button>
                                 </form>

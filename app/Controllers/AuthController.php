@@ -49,42 +49,54 @@ class AuthController extends Controller {
     }
 
     public function register() {
-        checkCsrf();
-        $name     = trim($_POST['name'] ?? '');
-        $role     = $_POST['role'] ?? 'customer';
-        $email    = trim($_POST['email'] ?? '');
-        $password = $_POST['password'] ?? '';
+        try {
+            checkCsrf();
+            $name     = trim($_POST['name'] ?? '');
+            $role     = $_POST['role'] ?? 'customer';
+            $email    = trim($_POST['email'] ?? '');
+            $password = $_POST['password'] ?? '';
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            Session::set('error', 'Invalid email address.');
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                Session::set('error', 'Invalid email address.');
+                header("Location: " . url('/register'));
+                exit;
+            }
+
+            if (strlen($password) < 6) {
+                Session::set('error', 'Password must be at least 6 characters.');
+                header("Location: " . url('/register'));
+                exit;
+            }
+
+            if (User::findByEmail($email)) {
+                Session::set('error', 'This email is already registered. Please login.');
+                header("Location: " . url('/register'));
+                exit;
+            }
+
+            $hashed = password_hash($password, PASSWORD_BCRYPT);
+            $userId = User::create($name, $role, $email, $hashed);
+
+            if ($role === 'chef') {
+                \App\Models\ChefProfile::create($userId);
+            }
+
+            // Attempt to send email but don't crash if it fails
+            try {
+                Mailer::send($email, 'Welcome to ChefNextDoor', "Hello $name,\n\nThanks for joining ChefNextDoor!");
+            } catch (\Exception $e) {
+                error_log('Registration Email Failed: ' . $e->getMessage());
+            }
+
+            Session::set('success', 'Account created! Please login.');
+            header("Location: " . url('/login'));
+            exit;
+        } catch (\Exception $e) {
+            error_log('Registration Glitch: ' . $e->getMessage());
+            Session::set('error', 'Something went wrong during registration. Please try again.');
             header("Location: " . url('/register'));
             exit;
         }
-
-        if (strlen($password) < 6) {
-            Session::set('error', 'Password must be at least 6 characters.');
-            header("Location: " . url('/register'));
-            exit;
-        }
-
-        if (User::findByEmail($email)) {
-            Session::set('error', 'This email is already registered. Please login.');
-            header("Location: " . url('/register'));
-            exit;
-        }
-
-        $hashed = password_hash($password, PASSWORD_BCRYPT);
-        $userId = User::create($name, $role, $email, $hashed);
-
-        if ($role === 'chef') {
-            \App\Models\ChefProfile::create($userId);
-        }
-
-        Mailer::send($email, 'Welcome to ChefNextDoor', "Hello $name,\n\nThanks for joining ChefNextDoor!");
-
-        Session::set('success', 'Account created! Please login.');
-        header("Location: " . url('/login'));
-        exit;
     }
 
     public function login() {

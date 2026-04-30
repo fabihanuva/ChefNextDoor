@@ -75,7 +75,7 @@ class Dish {
         return $stmt->fetchAll();
     }
 
-    public static function search(?string $keyword = null, ?string $category = null): array {
+    public static function search(?string $keyword = null, ?string $category = null, int $limit = 12, int $offset = 0): array {
         $pdo    = getDatabase();
         $sql    = 'SELECT dishes.*, users.name as chef_name
                    FROM dishes
@@ -94,9 +94,30 @@ class Dish {
             $params[] = $category;
         }
 
-        $sql .= ' ORDER BY dishes.created_at DESC';
+        $sql .= ' ORDER BY dishes.created_at DESC LIMIT ' . (int)$limit . ' OFFSET ' . (int)$offset;
         $stmt = $pdo->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetchAll();
+    }
+
+    public static function countSearch(?string $keyword = null, ?string $category = null): int {
+        $pdo    = getDatabase();
+        $sql    = 'SELECT COUNT(*) FROM dishes WHERE availability = 1';
+        $params = [];
+
+        if ($keyword) {
+            $sql     .= ' AND (title LIKE ? OR description LIKE ?)';
+            $params[] = "%$keyword%";
+            $params[] = "%$keyword%";
+        }
+
+        if ($category && $category !== 'All') {
+            $sql     .= ' AND category = ?';
+            $params[] = $category;
+        }
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        return (int) $stmt->fetchColumn();
     }
 }

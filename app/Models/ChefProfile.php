@@ -35,4 +35,31 @@ class ChefProfile {
         $stmt = $pdo->prepare('UPDATE chef_profiles SET bio = ?, specialty = ?, location = ? WHERE user_id = ?');
         $stmt->execute([$data['bio'], $data['specialty'], $data['location'], $userId]);
     }
+
+    public static function allPaginated(int $limit = 10, int $offset = 0): array {
+        $pdo  = getDatabase();
+        $stmt = $pdo->prepare('
+            SELECT users.id, users.name, chef_profiles.bio, chef_profiles.specialty,
+                chef_profiles.location, chef_profiles.rating,
+                AVG(reviews.rating) as avg_rating,
+                COUNT(reviews.id) as review_count
+            FROM users
+            LEFT JOIN chef_profiles ON users.id = chef_profiles.user_id
+            LEFT JOIN reviews ON users.id = reviews.chef_id
+            WHERE users.role = "chef"
+            GROUP BY users.id
+            ORDER BY avg_rating DESC
+            LIMIT ? OFFSET ?
+        ');
+        $stmt->bindValue(1, $limit, PDO::PARAM_INT);
+        $stmt->bindValue(2, $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    public static function countAll(): int {
+        $pdo  = getDatabase();
+        $stmt = $pdo->query('SELECT COUNT(*) FROM users WHERE role = "chef"');
+        return (int) $stmt->fetchColumn();
+    }
 }

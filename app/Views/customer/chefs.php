@@ -64,6 +64,33 @@ ob_start();
                     </a>
                 <?php endforeach; ?>
             </div>
+
+            <!-- Pagination -->
+            <?php if ($totalPages > 1): ?>
+                <div class="mt-10 flex justify-center items-center gap-2">
+                    <?php if ($currentPage > 1): ?>
+                        <a href="<?= url('/chefs?page=' . ($currentPage - 1)) ?>" 
+                           class="w-10 h-10 rounded-xl bg-white border border-brand-100 flex items-center justify-center text-gray-500 hover:text-brand-600 transition-colors">
+                            ←
+                        </a>
+                    <?php endif; ?>
+
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <a href="<?= url('/chefs?page=' . $i) ?>" 
+                           class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold transition-all <?= $i === $currentPage ? 'bg-brand-500 text-white shadow-lg shadow-brand-100' : 'bg-white border border-brand-100 text-gray-500 hover:text-brand-600' ?>">
+                            <?= $i ?>
+                        </a>
+                    <?php endfor; ?>
+
+                    <?php if ($currentPage < $totalPages): ?>
+                        <a href="<?= url('/chefs?page=' . ($currentPage + 1)) ?>" 
+                           class="w-10 h-10 rounded-xl bg-white border border-brand-100 flex items-center justify-center text-gray-500 hover:text-brand-600 transition-colors">
+                            →
+                        </a>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+
         <?php endif; ?>
     </div>
 </div>
