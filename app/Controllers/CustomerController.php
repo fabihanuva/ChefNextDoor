@@ -247,6 +247,32 @@ class CustomerController extends Controller {
         ]);
     }
 
+    // Ajax API — get dishes by chef
+    public function getDishesApi() {
+        $chef_id  = (int) ($_GET['chef_id'] ?? 0);
+        $keyword  = trim($_GET['q'] ?? '');
+        $pdo      = \getDatabase();
+
+        $sql    = 'SELECT * FROM dishes WHERE chef_id = ? AND availability = 1';
+        $params = [$chef_id];
+
+        if ($keyword) {
+            $sql    .= ' AND (title LIKE ? OR description LIKE ? OR category LIKE ?)';
+            $params[] = "%$keyword%";
+            $params[] = "%$keyword%";
+            $params[] = "%$keyword%";
+        }
+
+        $sql .= ' ORDER BY created_at DESC';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        $dishes = $stmt->fetchAll();
+
+        header('Content-Type: application/json');
+        echo json_encode($dishes);
+        exit;
+    }
+
     // Place order
     public function placeOrder() {
         checkCsrf();

@@ -39,7 +39,7 @@ $support = new SupportController();
 // --- 4. Define routes ---
 
 // Auth (GET)
-$router->get('/',         [$auth, 'showLogin']);
+$router->get('/',     [$auth, 'showHome']);
 $router->get('/login',    [$auth, 'showLogin']);
 $router->get('/register', [$auth, 'showRegister']);
 $router->get('/logout',   [$auth, 'logout']);
@@ -68,6 +68,7 @@ $router->post('/posts',    [$posts, 'create']);
 $router->get('/dishes',        [$dish, 'index']);
 $router->get('/dishes/create', [$dish, 'create']);
 $router->get('/dishes/edit',   [$dish, 'edit']);
+$router->get('/api/dishes', [$customer, 'getDishesApi']);
 
 // Dishes (POST)
 $router->post('/dishes/store',  [$dish, 'store']);

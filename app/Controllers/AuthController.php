@@ -8,6 +8,20 @@ use App\Models\User;
 
 class AuthController extends Controller {
 
+    public function showHome() {
+        // If already logged in redirect to dashboard
+        $user = \App\Core\Session::get('user');
+        if ($user) {
+            if ($user['role'] === 'chef') {
+                header("Location: " . url('/chef-dashboard'));
+            } else {
+                header("Location: " . url('/dashboard'));
+           }
+            exit;
+    }
+        $this->view('home.php');
+    }
+
     public function showLogin() {
         $user = \App\Core\Session::get('user');
         if ($user) {

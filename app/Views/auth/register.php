@@ -40,7 +40,7 @@ ob_start();
 
             <!-- Mobile logo -->
             <div class="flex flex-col items-center mb-8 md:hidden">
-                <img src="/ChefNextDoor/assets/images/logo.jpeg"
+                <img src="/ChefNextDoor/assets/images/chefnextdoor_logo.jpeg"
                      alt="ChefNextDoor Logo"
                      class="w-32 h-32 object-contain mb-3 drop-shadow-lg" />
                 <h1 class="text-2xl font-black text-brand-600">ChefNextDoor</h1>
