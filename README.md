@@ -3,7 +3,7 @@
 
 > A home-cooked food delivery platform connecting customers with talented home chefs in their community.
 
-![ChefNextDoor](assets/images/logo.jpeg)
+![ChefNextDoor](assets/images/chefnextdoor_logo.jpeg)
 
 ---
 
@@ -100,6 +100,7 @@ Then restart Apache.
 ### Step 6 — Run the app
 Open your browser and visit:
 
+
 http://localhost/ChefNextDoor/public
 
 ---
@@ -149,7 +150,6 @@ ChefNextDoor/
 | Cart | Items with delivery fee |
 | Order Tracking | Live pipeline status |
 | Chef Dashboard | Stats, earnings, reviews |
-
 
 
 ---
