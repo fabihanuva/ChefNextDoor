@@ -6,3 +6,5 @@
 /vendor
 .env
 vendor/
+.env
+vendor/
