@@ -4,19 +4,10 @@ $title = 'Manage Orders | ChefNextDoor';
 ob_start();
 ?>
 <div class="min-h-screen bg-brand-50">
-    <nav class="bg-white border-b border-orange-100 px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-            <img src="/ChefNextDoor/assets/images/chefnextdoor_logo.jpeg" alt="ChefNextDoor" class="w-8 h-8 object-contain" />
-            <span class="text-lg font-bold text-brand-600">ChefNextDoor</span>
-        </div>
-        <div class="flex items-center gap-4">
-            <a href="<?= url('/chef-dashboard') ?>" class="text-sm text-gray-500 hover:text-brand-600">← Dashboard</a>
-            <a href="<?= url('/logout') ?>" class="text-sm bg-brand-500 hover:bg-brand-600 text-white px-4 py-2 rounded-xl font-medium transition-colors">Logout</a>
-        </div>
-    </nav>
+    <?php include __DIR__ . '/../partials/navbar.php'; ?>
 
-    <div class="max-w-4xl mx-auto px-6 py-10">
-        <h1 class="text-2xl font-bold text-gray-800 mb-6">📦 Manage Orders</h1>
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
+        <h1 class="text-xl sm:text-2xl font-bold text-gray-800 mb-6">📦 Manage Orders</h1>
 
         <?php if (Session::get('success')): ?>
             <div class="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl text-sm">
@@ -33,7 +24,7 @@ ob_start();
         <?php endif; ?>
 
         <?php if (empty($orders)): ?>
-            <div class="bg-white rounded-2xl border border-orange-100 p-12 text-center">
+            <div class="bg-white rounded-2xl border border-brand-100 p-12 text-center">
                 <div class="text-5xl mb-4">📦</div>
                 <h2 class="text-lg font-semibold text-gray-700">No orders yet</h2>
                 <p class="text-sm text-gray-400 mt-1">Orders from customers will appear here</p>
@@ -65,7 +56,7 @@ ob_start();
                         'delivered'        => '✅ Mark Delivered',
                     ];
                 ?>
-                    <div class="bg-white rounded-2xl border border-orange-100 p-5">
+                    <div class="bg-white rounded-2xl border border-brand-100 p-5">
                         <div class="flex items-start justify-between mb-3">
                             <div>
                                 <p class="font-semibold text-gray-800">Order #<?= $order['id'] ?></p>

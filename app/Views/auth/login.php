@@ -38,15 +38,25 @@ ob_start();
 
             <!-- Mobile logo -->
             <div class="flex flex-col items-center mb-8 md:hidden">
-                <img src="/ChefNextDoor/assets/images/chefnextdoor_logo.jpeg"
-                     alt="ChefNextDoor Logo"
-                     class="w-32 h-32 object-contain mb-3 drop-shadow-lg" />
+                <a href="<?= url('/') ?>">
+                    <img src="/ChefNextDoor/assets/images/chefnextdoor_logo.jpeg"
+                         alt="ChefNextDoor Logo"
+                         class="w-32 h-32 object-contain mb-3 drop-shadow-lg" />
+                </a>
                 <h1 class="text-2xl font-black text-brand-600">ChefNextDoor</h1>
                 <p class="text-gray-400 text-sm">From Their Home to Your Heart</p>
             </div>
 
-            <h2 class="text-3xl font-black text-gray-900 mb-2">Welcome back!</h2>
-            <p class="text-gray-400 mb-8 text-sm">Sign in to order delicious home-cooked meals</p>
+            <div class="mb-8 flex items-center justify-between">
+                <div>
+                    <h2 class="text-3xl font-black text-gray-900 mb-2">Welcome back!</h2>
+                    <p class="text-gray-400 text-sm">Sign in to order delicious home-cooked meals</p>
+                </div>
+                <a href="<?= url('/') ?>" class="hidden sm:flex items-center gap-2 text-xs font-bold text-brand-600 hover:text-brand-700 transition-colors uppercase tracking-widest">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                    Home
+                </a>
+            </div>
 
             <?php if (Session::get('error')): ?>
                 <div class="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
@@ -68,12 +78,12 @@ ob_start();
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-2">Email Address</label>
                         <input type="email" name="email" required placeholder="name@example.com"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400 text-sm" />
+                            class="input-base" />
                     </div>
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-2">Password</label>
                         <input type="password" name="password" required placeholder="••••••••"
-                            class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-400 text-sm" />
+                            class="input-base" />
                     </div>
                     <button type="submit"
                         class="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-3 rounded-xl transition-colors text-sm">

@@ -2,7 +2,11 @@
 $title = '404 | ChefNextDoor';
 ob_start();
 ?>
-<div class="min-h-screen bg-brand-50 flex items-center justify-center px-4">
+
+<!-- Navbar -->
+<?php include __DIR__ . '/partials/navbar.php'; ?>
+
+<div class="min-h-[60vh] flex items-center justify-center px-4 py-12">
     <div class="text-center">
         <div class="text-8xl mb-6">🍳</div>
         <h1 class="text-6xl font-bold text-brand-500 mb-2">404</h1>
@@ -14,7 +18,7 @@ ob_start();
                 Go to Dashboard
             </a>
             <a href="<?= url('/browse') ?>"
-                class="border border-orange-200 hover:bg-brand-50 text-brand-600 font-semibold px-6 py-2.5 rounded-xl transition-colors text-sm">
+                class="border border-brand-200 hover:bg-brand-50 text-brand-600 font-semibold px-6 py-2.5 rounded-xl transition-colors text-sm">
                 Browse Dishes
             </a>
         </div>

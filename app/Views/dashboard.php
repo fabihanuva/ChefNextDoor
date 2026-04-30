@@ -2,8 +2,11 @@
 use App\Core\Session;
 $title = 'Dashboard | ChefNextDoor';
 ob_start();
-?>
 
+// Make sure $user and $cartCount are available
+$user = \App\Core\Session::get('user') ?? [];
+$cartCount = array_sum(array_column(Session::get('cart') ?? [], 'quantity'));
+?>
 <!-- Navbar -->
 <?php include __DIR__ . '/partials/navbar.php'; ?>
 
@@ -46,9 +49,9 @@ ob_start();
             </div>
         </div>
         <div class="flex items-center gap-3">
-            <a href="<?= url('/browse') ?>" class="w-full sm:w-auto btn-primary flex items-center justify-center gap-2 py-3 sm:py-2.5 shadow-xl shadow-brand-100">
+            <a href="<?= url('/chefs') ?>" class="w-full sm:w-auto btn-primary flex items-center justify-center gap-2 py-3 sm:py-2.5 shadow-xl shadow-brand-100">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                Explore Dishes
+                Explore Chefs
             </a>
         </div>
     </div>
@@ -96,12 +99,12 @@ ob_start();
     <h2 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-6">Explore ChefNextDoor</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
 
-        <a href="<?= url('/browse') ?>" class="card-base p-6 sm:p-8 hover:-translate-y-1 transition-all duration-300 group">
+        <a href="<?= url('/chefs') ?>" class="card-base p-6 sm:p-8 hover:-translate-y-1 transition-all duration-300 group">
             <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-brand-50 flex items-center justify-center text-2xl sm:text-3xl mb-6 group-hover:scale-110 transition-transform">
-                🍽️
+                👨‍🍳
             </div>
-            <h3 class="font-bold text-gray-800 text-lg group-hover:text-brand-600 transition-colors">Browse Dishes</h3>
-            <p class="text-sm text-gray-500 mt-2 leading-relaxed">Explore delicious home-cooked meals prepared with love.</p>
+            <h3 class="font-bold text-gray-800 text-lg group-hover:text-brand-600 transition-colors">Browse Chefs</h3>
+            <p class="text-sm text-gray-500 mt-2 leading-relaxed">Discover talented home cooks in your area.</p>
         </a>
 
         <a href="<?= url('/orders/history') ?>" class="card-base p-6 sm:p-8 hover:-translate-y-1 transition-all duration-300 group">

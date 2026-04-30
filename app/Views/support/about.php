@@ -1,4 +1,8 @@
 <?php $title = 'About Us | ChefNextDoor'; ob_start(); ?>
+
+<!-- Navbar -->
+<?php include __DIR__ . '/../partials/navbar.php'; ?>
+
 <div class="max-w-3xl mx-auto px-6 py-16">
     <div class="text-center mb-12">
         <img src="/ChefNextDoor/assets/images/chefnextdoor_logo.jpeg" class="w-24 h-24 object-contain mx-auto mb-4" />

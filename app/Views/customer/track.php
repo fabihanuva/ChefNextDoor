@@ -22,26 +22,17 @@ $stepLabels = [
 $stepIcons = ['📋', '✅', '👨‍🍳', '🚴', '🎉'];
 ?>
 <div class="min-h-screen bg-brand-50">
-    <nav class="bg-white border-b border-brand-100 px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-            <img src="/ChefNextDoor/assets/images/chefnextdoor_logo.jpeg" alt="ChefNextDoor" class="w-8 h-8 object-contain" />
-            <span class="text-lg font-bold text-brand-600">ChefNextDoor</span>
-        </div>
-        <div class="flex items-center gap-3">
-            <a href="<?= url('/orders/history') ?>" class="text-sm text-gray-500 hover:text-brand-600">← My Orders</a>
-            <a href="<?= url('/logout') ?>" class="text-sm bg-brand-500 hover:bg-brand-600 text-white px-4 py-2 rounded-xl font-medium transition-colors">Logout</a>
-        </div>
-    </nav>
+    <?php include __DIR__ . '/../partials/navbar.php'; ?>
 
-    <div class="max-w-2xl mx-auto px-6 py-10">
-        <h1 class="text-2xl font-bold text-gray-800 mb-2">📍 Order Tracking</h1>
-        <p class="text-sm text-gray-400 mb-8">Order #<?= $order['id'] ?> — <?= e($order['chef_name']) ?>'s Kitchen</p>
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
+        <h1 class="text-xl sm:text-2xl font-bold text-gray-800 mb-2">📍 Order Tracking</h1>
+        <p class="text-xs sm:text-sm text-gray-400 mb-8">Order #<?= $order['id'] ?> — <?= e($order['chef_name']) ?>'s Kitchen</p>
 
         <!-- Status pipeline -->
-        <div class="bg-white rounded-2xl border border-brand-100 p-6 mb-6">
+        <div class="bg-white rounded-2xl border border-brand-100 p-4 sm:p-6 mb-6">
             <div class="relative">
                 <!-- Progress bar -->
-                <div class="absolute top-8 left-0 right-0 h-1 bg-gray-100 mx-8">
+                <div class="absolute top-6 sm:top-8 left-0 right-0 h-1 bg-gray-100 mx-6 sm:mx-8">
                     <div class="h-full bg-brand-500 transition-all duration-500"
                          style="width: <?= ($currentStep / 4) * 100 ?>%"></div>
                 </div>
@@ -50,16 +41,16 @@ $stepIcons = ['📋', '✅', '👨‍🍳', '🚴', '🎉'];
                 <div class="relative flex justify-between">
                     <?php foreach ($stepLabels as $i => $label): ?>
                         <div class="flex flex-col items-center gap-2 z-10">
-                            <div class="w-16 h-16 rounded-full flex items-center justify-center text-2xl border-4
+                            <div class="w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl border-4
                                 <?= $i <= $currentStep
                                     ? 'bg-brand-500 border-brand-500 text-white'
                                     : 'bg-white border-gray-200 text-gray-300' ?>
                                 transition-all duration-300">
-                                <?= $stepIcons[$i] ?>
+                                <span class="scale-75 sm:scale-100"><?= $stepIcons[$i] ?></span>
                             </div>
-                            <span class="text-xs font-medium text-center
+                            <span class="text-[9px] sm:text-xs font-medium text-center
                                 <?= $i <= $currentStep ? 'text-brand-600' : 'text-gray-300' ?>
-                                max-w-[60px] leading-tight">
+                                max-w-[50px] sm:max-w-[60px] leading-tight">
                                 <?= $label ?>
                             </span>
                         </div>

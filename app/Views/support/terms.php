@@ -1,4 +1,8 @@
 <?php $title = 'Terms of Service | ChefNextDoor'; ob_start(); ?>
+
+<!-- Navbar -->
+<?php include __DIR__ . '/../partials/navbar.php'; ?>
+
 <div class="max-w-3xl mx-auto px-6 py-16">
     <h1 class="text-4xl font-black text-gray-900 mb-3">Terms of Service</h1>
     <p class="text-gray-400 text-sm mb-10">Last updated: <?= date('d F Y') ?></p>

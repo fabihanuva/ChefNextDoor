@@ -3,6 +3,10 @@ use App\Core\Session;
 $title = 'My Profile | ChefNextDoor';
 ob_start();
 ?>
+
+<!-- Navbar -->
+<?php include __DIR__ . '/partials/navbar.php'; ?>
+
 <div class="max-w-4xl mx-auto px-6 py-12">
     <div class="flex items-center gap-4 mb-10">
         <a href="<?= url($user['role'] === 'chef' ? '/chef-dashboard' : '/dashboard') ?>" class="p-2 rounded-full hover:bg-white transition-colors text-slate-400 hover:text-brand-600">

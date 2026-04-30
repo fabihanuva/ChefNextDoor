@@ -3,7 +3,11 @@ use App\Core\Session;
 $title = 'My Dishes | ChefNextDoor';
 ob_start();
 ?>
-<div class="max-w-6xl mx-auto px-6 py-12">
+
+<!-- Navbar -->
+<?php include __DIR__ . '/../partials/navbar.php'; ?>
+
+<div class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
         <div class="flex items-center gap-4">
             <a href="<?= url('/chef-dashboard') ?>" class="p-2 rounded-full hover:bg-white transition-colors text-slate-400 hover:text-brand-600">

@@ -24,6 +24,27 @@
         border: 1px solid #d6ebe2;
         box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
+    .input-base {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border-radius: 0.75rem;
+        border: 1px solid #d6ebe2;
+        background-color: white;
+        transition: all 0.2s;
+        outline: none;
+        font-size: 0.875rem;
+    }
+    .input-base:focus {
+        border-color: #2D6A4F;
+        box-shadow: 0 0 0 4px rgba(45, 106, 79, 0.1);
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
     .spinner {
         width: 40px;
         height: 40px;
@@ -75,7 +96,7 @@
         <div class="max-w-5xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
             <div>
                 <div class="flex items-center gap-2 mb-3">
-                    <img src="/ChefNextDoor/assets/images/chefnextdoor_logo.jpeg" alt="ChefNextDoor" class="w-8 h-8 object-contain" />
+                    <img src="<?= url('/../assets/images/chefnextdoor_logo.jpeg') ?>" alt="ChefNextDoor" class="w-8 h-8 object-contain" />
                     <span class="text-lg font-bold text-brand-600">ChefNextDoor</span>
                 </div>
                 <p class="text-sm text-gray-500 leading-relaxed">From Their Home to Your Heart</p>

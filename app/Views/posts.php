@@ -3,7 +3,11 @@ use App\Core\Session;
 $title = 'Community Feed | ChefNextDoor';
 ob_start();
 ?>
-<div class="max-w-3xl mx-auto px-6 py-12">
+
+<!-- Navbar -->
+<?php include __DIR__ . '/partials/navbar.php'; ?>
+
+<div class="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
     <div class="mb-10">
         <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Community Feed</h1>
         <p class="text-slate-500 mt-2">Share your thoughts and experiences with the ChefNextDoor community.</p>

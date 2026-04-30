@@ -3,7 +3,11 @@ use App\Core\Session;
 $title = 'Chef Profile Settings | ChefNextDoor';
 ob_start();
 ?>
-<div class="max-w-4xl mx-auto px-6 py-12">
+
+<!-- Navbar -->
+<?php include __DIR__ . '/../partials/navbar.php'; ?>
+
+<div class="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
     <div class="flex items-center gap-4 mb-10">
         <a href="<?= url('/chef-dashboard') ?>" class="p-2 rounded-full hover:bg-white transition-colors text-slate-400 hover:text-brand-600">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>

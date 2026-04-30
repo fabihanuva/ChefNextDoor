@@ -3,6 +3,9 @@ use App\Core\Session;
 $title = 'Add New Dish | ChefNextDoor';
 ob_start();
 ?>
+
+<?php include __DIR__ . '/../partials/navbar.php'; ?>
+
 <div class="max-w-3xl mx-auto px-6 py-12">
     <div class="flex items-center gap-4 mb-10">
         <a href="<?= url('/dishes') ?>" class="p-2 rounded-full hover:bg-white transition-colors text-slate-400 hover:text-brand-600">

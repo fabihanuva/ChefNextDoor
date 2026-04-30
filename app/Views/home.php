@@ -29,7 +29,7 @@ ob_start();
         </div>
         <div class="flex-shrink-0 relative group">
             <div class="absolute inset-0 bg-brand-400 rounded-full blur-3xl opacity-20 group-hover:opacity-30 transition-opacity"></div>
-            <img src="/ChefNextDoor/assets/images/chefnextdoor_logo.jpeg" alt="ChefNextDoor" class="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 object-contain drop-shadow-2xl relative z-10 animate-float" />
+            <img src="<?= url('/../assets/images/chefnextdoor_logo.jpeg') ?>" alt="ChefNextDoor" class="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 object-contain drop-shadow-2xl relative z-10 animate-float" />
         </div>
     </div>
 </div>
